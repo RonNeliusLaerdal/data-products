@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>scenario-data-product</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400&family=Noto+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #fafafa;
+      --surface: #ffffff;
+      --text: #1a1a1a;
+      --text-muted: #555555;
+      --text-faint: #767676;
+      --border: #e5e5e5;
+      --border-strong: #cccccc;
+      --producer: #2e7fa1;
+      --producer-soft: #d4e9f2;
+      --producer-bg: #eef6fa;
+      --domain: #14892f;
+      --domain-soft: #cceed2;
+      --domain-bg: #ecf6ee;
+      --gold: #b58e45;
+      --gold-bg: #f8e2bf;
+      --page-width: 880px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    *:focus-visible { outline: 2px solid var(--text); }
+
+    body {
+      background: var(--bg);
+      font-family: 'Noto Sans', system-ui, sans-serif;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .scenario-data-product {
+      max-width: var(--page-width);
+      margin: 0 auto;
+      padding: 0 28px 80px;
+    }
+
+    /* ── EYEBROW ── */
+    .eyebrow {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      padding: 36px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .draft-tag {
+      background: var(--gold-bg);
+      color: var(--gold);
+      border: 1px solid #d4a84b;
+      border-radius: 3px;
+      padding: 1px 8px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+
+    /* ── COVER ── */
+    header.cover {
+      padding: 40px 0 52px;
+      border-bottom: 2px solid var(--border-strong);
+    }
+    header.cover h1 {
+      font-family: 'Lato', sans-serif;
+      font-size: 42px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.12;
+      color: var(--text);
+      margin-bottom: 18px;
+      max-width: 640px;
+    }
+    .cover-lead {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 620px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .big-idea {
+      padding: 18px 22px;
+      background: var(--producer-bg);
+      border-left: 4px solid var(--producer);
+      border-radius: 0 6px 6px 0;
+      max-width: 640px;
+      font-size: 15px;
+      color: var(--text);
+      line-height: 1.65;
+    }
+    .big-idea strong {
+      color: var(--producer);
+      font-family: 'Lato', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* ── SECTION ── */
+    .sdp-section {
+      margin-top: 56px;
+    }
+    .section-label {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--producer);
+      margin-bottom: 8px;
+    }
+    .sdp-section h2 {
+      font-family: 'Lato', sans-serif;
+      font-size: 27px;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      line-height: 1.22;
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+    .section-intro {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 660px;
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin-bottom: 36px;
+    }
+
+    /* ── TWO COLUMN ── */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .col-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 22px 22px 24px;
+    }
+    .col-card h3 {
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .col-card p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.68;
+    }
+
+    /* ── USE CASE CARDS ── */
+    .use-cases {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .uc-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      display: flex;
+    }
+    .uc-num {
+      background: var(--producer);
+      color: white;
+      font-family: 'Lato', sans-serif;
+      font-size: 26px;
+      font-weight: 900;
+      width: 56px;
+      min-height: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 22px 0 0;
+      flex-shrink: 0;
+    }
+    .uc-body {
+      padding: 20px 24px 24px;
+      flex: 1;
+    }
+    .uc-timing {
+      font-family: 'Lato', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+      margin-bottom: 5px;
+    }
+    .uc-body h3 {
+      font-family: 'Lato', sans-serif;
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .uc-body p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.68;
+      margin-bottom: 14px;
+    }
+    .uc-body p:last-child { margin-bottom: 0; }
+    .example-box {
+      background: var(--gold-bg);
+      border-left: 3px solid var(--gold);
+      padding: 12px 15px;
+      border-radius: 0 5px 5px 0;
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.62;
+      margin-bottom: 14px;
+      font-style: italic;
+    }
+    .example-box strong {
+      font-style: normal;
+      color: var(--gold);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    /* ── FLOWS DIAGRAM ── */
+    .flows-diagram {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .flows-header {
+      padding: 14px 22px;
+      background: #f4f4f4;
+      border-bottom: 1px solid var(--border);
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .flows-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .flow-col {
+      padding: 24px 26px 28px;
+    }
+    .flow-col:first-child {
+      border-right: 1px solid var(--border);
+    }
+    .flow-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .flow-tag .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .flow-tag.op { color: var(--domain); }
+    .flow-tag.op .dot { background: var(--domain); }
+    .flow-tag.dp { color: var(--producer); }
+    .flow-tag.dp .dot { background: var(--producer); }
+    .flow-col h3 {
+      font-family: 'Lato', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+    .flow-col p {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 16px;
+    }
+    .flow-nodes {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .flow-node {
+      border-radius: 5px;
+      padding: 5px 11px;
+      font-family: 'Lato', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .flow-node.green {
+      background: var(--domain-bg);
+      border: 1px solid var(--domain-soft);
+      color: var(--domain);
+    }
+    .flow-node.blue {
+      background: var(--producer-bg);
+      border: 1px solid var(--producer-soft);
+      color: var(--producer);
+    }
+    .flow-arrow {
+      color: var(--text-faint);
+      font-size: 14px;
+    }
+    .flow-note {
+      font-size: 12px;
+      color: var(--text-faint);
+      font-style: italic;
+    }
+
+    /* ── SCHEMA SECTION ── */
+    .schema-callout {
+      background: var(--domain-bg);
+      border: 1px solid var(--domain-soft);
+      border-radius: 8px;
+      padding: 26px 28px;
+    }
+    .schema-callout h3 {
+      font-family: 'Lato', sans-serif;
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--domain);
+      margin-bottom: 12px;
+    }
+    .schema-callout p {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.68;
+      margin-bottom: 10px;
+    }
+    .schema-callout p:last-of-type { margin-bottom: 0; }
+    .schema-points {
+      margin-top: 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .schema-point {
+      background: var(--surface);
+      border: 1px solid var(--domain-soft);
+      border-radius: 6px;
+      padding: 13px 15px;
+      font-size: 13.5px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .schema-point strong {
+      display: block;
+      color: var(--domain);
+      font-family: 'Lato', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    /* ── THE ASK ── */
+    .ask-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 24px 28px;
+    }
+    .ask-box p {
+      font-size: 14.5px;
+      color: var(--text-muted);
+      line-height: 1.72;
+      margin-bottom: 12px;
+    }
+    .ask-box p:last-child { margin-bottom: 0; }
+
+    /* ── IN SHORT ── */
+    .in-short {
+      margin-top: 52px;
+      background: var(--producer);
+      border-radius: 8px;
+      padding: 34px 38px;
+      color: white;
+    }
+    .in-short .label {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 12px;
+    }
+    .in-short h2 {
+      font-family: 'Lato', sans-serif;
+      font-size: 22px;
+      font-weight: 800;
+      line-height: 1.3;
+      margin-bottom: 22px;
+    }
+    .summary-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .summary-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+    .summary-icon {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .not-icon {
+      background: rgba(255,255,255,0.15);
+      color: rgba(255,255,255,0.65);
+    }
+    .yes-icon {
+      background: rgba(255,255,255,0.25);
+      color: white;
+    }
+    .summary-row span { color: rgba(255,255,255,0.88); }
+    .summary-row span strong { color: white; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 60px;
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer span {
+      font-family: 'Lato', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+
+    @media (max-width: 640px) {
+      .two-col, .flows-grid, .schema-points { grid-template-columns: 1fr; }
+      .flow-col:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+      header.cover h1 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="scenario-data-product">
+
+    <!-- EYEBROW -->
+    <div class="eyebrow">
+      <span class="draft-tag">Draft</span>
+      Scenario Data · 10.06.2026
+    </div>
+
+    <!-- COVER -->
+    <header class="cover">
+      <h1>Scenario Data as a Laerdal Data Product</h1>
+      <p class="cover-lead">
+        A proposal for publishing Scenario Editor content through Unity Catalog —
+        so AI and analytics teams can access it through one shared, managed path,
+        rather than each building their own direct integration.
+      </p>
+      <div class="big-idea">
+        <strong>The proposal in one sentence</strong>
+        We are not changing how simulators consume scenarios today. We are asking whether Scenario Editor can also publish a governed, downstream projection of scenario data — one that makes the same content accessible to AI and analytics in a safer, more scalable, and more manageable way.
+      </div>
+    </header>
+
+    <!-- SECTION: CONTEXT -->
+    <section class="sdp-section">
+      <hr class="section-divider">
+      <div class="section-label">Context</div>
+      <h2>Scenarios are becoming a shared reference point</h2>
+      <p class="section-intro">
+        Scenario Editor is already where simulation content lives. Scenarios sit at the center of how simulation is designed, how it runs, how AI can support it, and what we can eventually learn from it. The question is whether that content can also be made accessible in a structured, governed way — not just for simulators, but for the teams building on top of simulation.
+      </p>
+      <div class="two-col">
+        <div class="col-card">
+          <h3>Today's reality</h3>
+          <p>Every team that needs scenario context builds its own direct connection into Scenario Editor's backend. Each integration is undocumented, couples the consumer to internal implementation, and must be rebuilt from scratch by the next team that needs it.</p>
+        </div>
+        <div class="col-card">
+          <h3>What we're proposing</h3>
+          <p>Scenario Editor publishes a governed, read-only catalog of scenario data through Unity Catalog. One managed path. Any approved AI or analytics team can discover it, understand it, and build on it — without reverse-engineering the source.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: USE CASES -->
+    <section class="sdp-section">
+      <hr class="section-divider">
+      <div class="section-label">Why we need it</div>
+      <h2>Three use cases drive this</h2>
+      <p class="section-intro">
+        Each use case is independent, but they share the same foundation: a stable, accessible layer of scenario data in the catalog.
+      </p>
+      <div class="use-cases">
+
+        <div class="uc-card">
+          <div class="uc-num">1</div>
+          <div class="uc-body">
+            <div class="uc-timing">Near-term</div>
+            <h3>Samaritan Companion</h3>
+            <p>Samaritan is being built as a context-aware assistant that connects data across Laerdal's products. For simulation, it needs to know what scenario was running — the patient, the clinical setting, the narrative — to interpret what happened during a session. Without that context, it can see what a learner did, but not what the situation called for.</p>
+            <div class="example-box">
+              <strong>Example</strong>
+              A learner finishes a simulation and asks Samaritan "did I do the right thing?" Samaritan can see every action the learner took — but not what the scenario was asking them to do. Without that, it is like a teacher marking a test without the questions. It can describe what happened, but not whether it was right or wrong for this situation.
+            </div>
+            <p>Publishing through Unity Catalog is not the only way to give Samaritan that context — but it is the better way. Any team building on scenario data finds it through the catalog, not through inside knowledge of Scenario Editor's backend. It carries its own schema and contract, so each new consumer does not have to reverse-engineer the source. Every direct integration, by contrast, is an undocumented dependency that couples consumers to Scenario Editor's internal implementation.</p>
+          </div>
+        </div>
+
+        <div class="uc-card">
+          <div class="uc-num">2</div>
+          <div class="uc-body">
+            <div class="uc-timing">Near-term</div>
+            <h3>Portfolio visibility for PSim</h3>
+            <p>Scenario Editor is positioned as the content hub for simulation across the Laerdal ecosystem. But right now there is no way to see how that content is actually being used. How many scenarios are actively running across SimGo deployments? Which are being reused across customers? Which are sitting dormant? Where are the gaps?</p>
+            <div class="example-box">
+              <strong>Example</strong>
+              Right now, scenarios leave Scenario Editor and become invisible. PSim has no way of knowing whether a scenario is being run daily across dozens of customer sites, or has never been opened once. A catalog view would change that — and give PSim direct line of sight into the real-world reach of what they build.
+            </div>
+            <p>A governed catalog view creates that picture, and gives PSim visible evidence of Scenario Editor's reach and impact across the portfolio.</p>
+          </div>
+        </div>
+
+        <div class="uc-card">
+          <div class="uc-num">3</div>
+          <div class="uc-body">
+            <div class="uc-timing">Longer term</div>
+            <h3>Design intelligence</h3>
+            <p>Once scenario definitions can be joined with session outcomes, we can start answering questions that are not currently possible. If scenarios that teams keep coming back to share something in common — a certain structure, a length, a type of situation — that is a signal worth knowing. It should change how new scenarios are designed.</p>
+            <div class="example-box">
+              <strong>Example</strong>
+              This feedback loop does not currently exist. Connecting scenario design data with session outcomes would create it, and the answers feed directly back into how scenarios are built. The scenario ID becomes the natural link between the authored scenario and the outcome.
+            </div>
+            <p>This is not the first step — but it is a strong reason to build the foundation properly now, rather than having to retrofit it later.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION: TWO FLOWS -->
+    <section class="sdp-section">
+      <hr class="section-divider">
+      <div class="section-label">What we are proposing</div>
+      <h2>Two flows, kept separate</h2>
+      <p class="section-intro">
+        The operational flow already exists and we are not touching it. The data product flow is additive — a separate, read-only projection for AI and analytics use.
+      </p>
+      <div class="flows-diagram">
+        <div class="flows-header">Architecture overview</div>
+        <div class="flows-grid">
+          <div class="flow-col">
+            <div class="flow-tag op"><span class="dot"></span>Operational flow — unchanged</div>
+            <h3>How simulators consume scenarios</h3>
+            <p>Scenario Editor packages scenarios. SimGo and other simulators consume them to run simulations. This stays as it is — fast, direct, reliable. We are not moving simulation execution into a data platform.</p>
+            <div class="flow-nodes">
+              <span class="flow-node green">Scenario Editor</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-node green">SimGo</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-node green">Session runs</span>
+            </div>
+            <div class="flow-note">No changes to this path.</div>
+          </div>
+          <div class="flow-col">
+            <div class="flow-tag dp"><span class="dot"></span>Data product flow — additive</div>
+            <h3>How AI and analytics access scenarios</h3>
+            <p>Scenario Editor publishes a curated scenario catalog to Unity Catalog: a read-only projection of the scenario library. Not the same artifact simulators consume. Its purpose is to expose a stable, useful layer of scenario information through one managed path.</p>
+            <div class="flow-nodes">
+              <span class="flow-node blue">Scenario Editor</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-node blue">Unity Catalog</span>
+              <span class="flow-arrow">→</span>
+              <span class="flow-node blue">AI · Analytics</span>
+            </div>
+            <div class="flow-note">The scenario ID links authored scenarios with session outcomes.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: SCHEMA FIRST -->
+    <section class="sdp-section">
+      <hr class="section-divider">
+      <div class="section-label">How we get there</div>
+      <h2>Schema comes first</h2>
+      <p class="section-intro">
+        Before we can publish anything, we need a shared understanding of scenario structure as it exists today. The schema session already on the calendar is exactly designed to do this.
+      </p>
+      <div class="schema-callout">
+        <h3>Why this matters beyond the data product</h3>
+        <p>If the scenario structure is mostly understood implicitly in the codebase rather than explicitly documented, that creates risk in every existing dependency — not just a future pipeline. The same structural ambiguity that could break a downstream data consumer could also cause friction in the operational connection between Scenario Editor and the products that consume it today.</p>
+        <p>Mapping the schema is valuable regardless of whether the data product moves ahead immediately. It clarifies the existing contract surface for everyone who depends on it.</p>
+        <div class="schema-points">
+          <div class="schema-point">
+            <strong>Fields and objects</strong>
+            Walk through the current scenario structure at a practical level — what exists today.
+          </div>
+          <div class="schema-point">
+            <strong>Catalog boundary</strong>
+            Identify the stable, publishable layer vs. what should stay internal to Scenario Editor.
+          </div>
+          <div class="schema-point">
+            <strong>First version scope</strong>
+            A realistic starting point — not trying to expose the full ecosystem in one step.
+          </div>
+          <div class="schema-point">
+            <strong>PSim concerns</strong>
+            Data sensitivity, customer boundaries, product flexibility, structures that should stay private.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: THE ASK -->
+    <section class="sdp-section">
+      <hr class="section-divider">
+      <div class="section-label">What we'd like to do together</div>
+      <h2>One shared session, one concrete output</h2>
+      <p class="section-intro">
+        The goal is not to finalize a contract. The goal is to build a shared foundation — which aligns with the schema session already on the calendar.
+      </p>
+      <div class="ask-box">
+        <p>Walk through the current scenario structure together — what fields and objects exist today. From there, identify what a realistic first publishable version could look like, and surface any concerns on the PSim side: data sensitivity, customer boundaries, product flexibility, or structures that should stay outside the catalog.</p>
+        <p>From there, the Data and AI team turns the output into a concrete proposal covering ingestion, governance, and contract design. That proposal comes back to PSim before anything moves.</p>
+        <p>The point is not to finalize a contract in one meeting. The point is to build a shared foundation — and that is exactly what the schema session is already designed to do.</p>
+      </div>
+    </section>
+
+    <!-- IN SHORT -->
+    <div class="in-short">
+      <div class="label">In short</div>
+      <h2>What we are asking — and what we are not</h2>
+      <div class="summary-rows">
+        <div class="summary-row">
+          <div class="summary-icon not-icon">✕</div>
+          <span>We are <strong>not</strong> asking you to redesign the operational flow or change how simulators consume scenarios.</span>
+        </div>
+        <div class="summary-row">
+          <div class="summary-icon not-icon">✕</div>
+          <span>We are <strong>not</strong> asking PSim to give up flexibility in Scenario Editor's internal model.</span>
+        </div>
+        <div class="summary-row">
+          <div class="summary-icon not-icon">✕</div>
+          <span>We are <strong>not</strong> proposing to expose all scenario data at once, or flatten it into a simple metadata table.</span>
+        </div>
+        <div class="summary-row">
+          <div class="summary-icon yes-icon">✓</div>
+          <span>We <strong>are</strong> asking whether Scenario Editor can publish a governed downstream projection: one that makes the same content accessible to AI and analytics in a safer, more scalable, and more manageable way.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <span>Confidential · Laerdal Medical</span>
+      <span>Product Data Team · Scenario Data Product</span>
+    </footer>
+
+  </div>
+</body>
+</html>

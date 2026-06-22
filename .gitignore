@@ -1,0 +1,18 @@
+# Private project files
+CLAUDE.md
+contracts/
+resources/
+transcripts/
+
+# Archive folders
+data-journey/archive/
+governance-model/archive/
+
+# Draft files
+*-draft.html
+
+# Internal markdown notes
+*.md
+
+# macOS
+.DS_Store

@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data-mesh-principles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+<style>
+.data-mesh-principles {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --text: #1a1a1a;
+  --text-muted: #666666;
+  --text-faint: #767676;
+  --border: #e5e5e5;
+  --border-strong: #cccccc;
+
+  --producer: #2e7fa1;
+  --domain: #14892f;
+  --domain-deep: #166534;
+  --domain-soft: #ecf6ee;
+  --domain-mid: #d0ecd5;
+  --highlight: #b58e45;
+  --neutral: #4a5568;
+
+  font-family: 'Lato', 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { margin: 0; background: var(--bg); padding: 32px 24px 64px; }
+.data-mesh-principles .container { max-width: 1080px; margin: 0 auto; }
+
+/* ---- Header ---- */
+.data-mesh-principles .eyebrow {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--text-muted); margin-bottom: 8px;
+}
+.data-mesh-principles h1 {
+  font-size: 34px; font-weight: 900;
+  line-height: 1.08; margin: 0 0 12px;
+  letter-spacing: -0.025em;
+}
+.data-mesh-principles .subtitle {
+  font-size: 16px; color: var(--text-muted);
+  margin: 0 0 32px; max-width: 620px;
+  line-height: 1.5;
+}
+
+
+/* ---- Section label ---- */
+.data-mesh-principles .section-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--text-faint);
+  margin-bottom: 14px;
+}
+
+/* ---- Principles grid ---- */
+.data-mesh-principles .principles-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.data-mesh-principles .principle {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 26px 28px;
+  display: flex;
+  flex-direction: column;
+}
+
+.data-mesh-principles .principle.p-ownership { border-top: 3px solid var(--producer); }
+.data-mesh-principles .principle.p-product   { border-top: 3px solid var(--domain); background: var(--domain-soft); border-color: var(--domain-mid); }
+.data-mesh-principles .principle.p-platform  { border-top: 3px solid var(--neutral); }
+.data-mesh-principles .principle.p-governance { border-top: 3px solid var(--highlight); }
+
+.data-mesh-principles .principle-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.data-mesh-principles .principle-num {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.16em;
+  color: var(--text-faint);
+}
+.data-mesh-principles .principle.p-ownership .principle-num  { color: var(--producer); }
+.data-mesh-principles .principle.p-product .principle-num    { color: var(--domain-deep); }
+.data-mesh-principles .principle.p-platform .principle-num   { color: var(--neutral); }
+.data-mesh-principles .principle.p-governance .principle-num { color: var(--highlight); }
+
+.data-mesh-principles .spotlight-tag {
+  display: inline-block;
+  padding: 2px 8px; border-radius: 3px;
+  background: var(--domain); color: white;
+  font-size: 9.5px; font-weight: 700;
+  letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+.data-mesh-principles .principle-title {
+  font-size: 22px; font-weight: 800;
+  letter-spacing: -0.02em; line-height: 1.15;
+  margin-bottom: 10px;
+}
+
+.data-mesh-principles .principle-statement {
+  font-size: 14px; line-height: 1.6;
+  color: var(--text-muted);
+  flex: 1;
+}
+
+/* ---- Laerdal sub-section inside principle card ---- */
+.data-mesh-principles .principle-laerdal {
+  margin-top: 18px;
+  padding-top: 15px;
+  border-top: 1px solid var(--border-strong);
+}
+.data-mesh-principles .principle.p-product .principle-laerdal {
+  border-top-color: var(--domain-mid);
+}
+.data-mesh-principles .principle-laerdal-label {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--text-faint);
+  margin-bottom: 5px;
+}
+.data-mesh-principles .principle-laerdal-text {
+  font-size: 13px; color: var(--text-muted);
+  line-height: 1.5;
+}
+.data-mesh-principles .principle-laerdal-text strong { color: var(--text); font-weight: 700; }
+
+/* ---- Footer ---- */
+.data-mesh-principles .page-footer {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-faint);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.data-mesh-principles .back-link {
+  color: var(--text-faint); text-decoration: none;
+}
+.data-mesh-principles .back-link:hover { color: var(--text); }
+
+/* ---- Next (forward bridge) ---- */
+.data-mesh-principles .next-row {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  margin-top: 40px;
+}
+.data-mesh-principles .next-label {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.16em; color: var(--text-faint);
+}
+.data-mesh-principles .next-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--surface); border: 1px solid var(--border-strong);
+  border-radius: 6px; padding: 9px 14px;
+  text-decoration: none; color: var(--domain-deep);
+  font-size: 13px; font-weight: 700;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.05s;
+}
+.data-mesh-principles .next-link:hover { border-color: var(--domain); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.data-mesh-principles .next-link:active { transform: translateY(1px); }
+.data-mesh-principles .next-link .arrow { color: var(--domain); }
+
+.data-mesh-principles *:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 2px;
+}
+
+/* ---- Data as a product — six qualities ---- */
+.data-mesh-principles .dap-section {
+  margin-top: 44px;
+  margin-bottom: 8px;
+  background: var(--domain-soft);
+  border: 1px solid var(--domain-mid);
+  border-radius: 8px;
+  padding: 28px 28px 24px;
+}
+.data-mesh-principles .dap-intro {
+  font-size: 18px; font-weight: 800;
+  letter-spacing: -0.015em; line-height: 1.3;
+  color: var(--text);
+  margin-bottom: 20px;
+  max-width: 640px;
+}
+.data-mesh-principles .dap-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.data-mesh-principles .dap-card {
+  background: var(--surface);
+  border: 1px solid var(--domain-mid);
+  border-left: 3px solid var(--domain);
+  border-radius: 6px;
+  padding: 16px 18px;
+}
+.data-mesh-principles .dap-card-num {
+  font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  color: var(--domain);
+  margin-bottom: 5px;
+}
+.data-mesh-principles .dap-card-title {
+  font-size: 14.5px; font-weight: 800;
+  letter-spacing: -0.01em; line-height: 1.2;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+.data-mesh-principles .dap-card-desc {
+  font-size: 13px; color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ---- Reveal card interaction ---- */
+.data-mesh-principles .principle {
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  align-self: start; /* prevent CSS grid from stretching this card when its row partner opens */
+}
+/* The head block transitions its translateY offset (set by JS) to 0 on open */
+.data-mesh-principles .pc-head {
+  transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.data-mesh-principles .principle.open .pc-head {
+  transform: translateY(0) !important;
+}
+/* The reveal block: hidden by default, fades + slides in */
+.data-mesh-principles .pc-reveal {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition:
+    max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity    0.3s  ease 0.18s;
+}
+.data-mesh-principles .principle.open .pc-reveal {
+  max-height: 500px;
+  opacity: 1;
+}
+/* Revealed state: role-coloured border + soft shadow */
+.data-mesh-principles .principle.open.p-ownership  { border-color: var(--producer);  box-shadow: 0 2px 16px rgba(46,127,161,0.10); }
+.data-mesh-principles .principle.open.p-product    { border-color: var(--domain);    box-shadow: 0 2px 16px rgba(20,137,47,0.10);  background: var(--domain-soft); }
+.data-mesh-principles .principle.open.p-platform   { border-color: var(--neutral);   box-shadow: 0 2px 16px rgba(74,85,104,0.10);  }
+.data-mesh-principles .principle.open.p-governance { border-color: var(--highlight); box-shadow: 0 2px 16px rgba(181,142,69,0.10); }
+
+@media (max-width: 820px) {
+  .data-mesh-principles h1 { font-size: 26px; }
+  .data-mesh-principles .principles-grid { grid-template-columns: 1fr; }
+  .data-mesh-principles .dap-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.data-mesh-principles .sources { margin-top: 22px; font-size: 12px; color: var(--text-muted); }
+.data-mesh-principles .sources summary { cursor: pointer; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-faint); padding: 6px 0; list-style: none; }
+.data-mesh-principles .sources summary::-webkit-details-marker { display: none; }
+.data-mesh-principles .sources summary::before { content: "▸  "; color: var(--text-faint); }
+.data-mesh-principles .sources[open] summary::before { content: "▾  "; }
+.data-mesh-principles .sources ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 7px; max-width: 920px; }
+.data-mesh-principles .sources li { line-height: 1.5; padding-left: 14px; position: relative; }
+.data-mesh-principles .sources li::before { content: "·"; position: absolute; left: 4px; color: var(--text-faint); font-weight: 700; }
+.data-mesh-principles .sources .src-title { font-weight: 700; color: var(--text); }
+.data-mesh-principles .sources .src-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+.data-mesh-principles .sources .src-note { font-style: italic; color: var(--text-faint); font-size: 11px; margin-top: 10px; display: block; }
+</style>
+</head>
+<body>
+
+<div class="data-mesh-principles">
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Data &amp; AI strategy · the way forward</div>
+    <h1>Data you can trust, by design.</h1>
+    <p class="subtitle">Data mesh: four principles that make every product owned, documented, and built to be used — defined by Zhamak Dehghani (2019).</p>
+  </header>
+
+  <div class="section-label">The four principles — and how they show up at Laerdal</div>
+  <div class="principles-grid">
+
+    <div class="principle p-ownership" role="button" tabindex="0" aria-expanded="false">
+      <div class="pc-head">
+        <div class="principle-header">
+          <div class="principle-num">01 · Domain-oriented ownership</div>
+        </div>
+        <div class="principle-title">Owned by the domain that creates value from it.</div>
+      </div>
+      <div class="pc-reveal">
+        <div class="principle-statement">It sits with the business domain, not a central data team — accountable for what the data means and the value it creates.</div>
+        <div class="principle-laerdal">
+          <div class="principle-laerdal-label">At Laerdal</div>
+          <div class="principle-laerdal-text">A source domain owns what it generates; an <strong>aggregated domain owns the canonical definition every producer adheres to</strong>.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle p-product" role="button" tabindex="0" aria-expanded="false">
+      <div class="pc-head">
+        <div class="principle-header">
+          <div class="principle-num">02 · Data as a product</div>
+          <span class="spotlight-tag">Spotlight</span>
+        </div>
+        <div class="principle-title">Data is designed and built for its consumers.</div>
+      </div>
+      <div class="pc-reveal">
+        <div class="principle-statement">Data is designed, built, and maintained for its consumers — discoverable, trustworthy, documented, and secure.</div>
+        <div class="principle-laerdal">
+          <div class="principle-laerdal-label">At Laerdal</div>
+          <div class="principle-laerdal-text">Every product is <strong>built for the people, and the AI, that will use it</strong> — the six qualities below set the bar.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle p-platform" role="button" tabindex="0" aria-expanded="false">
+      <div class="pc-head">
+        <div class="principle-header">
+          <div class="principle-num">03 · Self-serve data platform</div>
+        </div>
+        <div class="principle-title">A shared platform lowers the barrier.</div>
+      </div>
+      <div class="pc-reveal">
+        <div class="principle-statement">A shared platform lets domain teams build, share, and consume data products on their own.</div>
+        <div class="principle-laerdal">
+          <div class="principle-laerdal-label">At Laerdal</div>
+          <div class="principle-laerdal-text">One <strong>Data Backbone — Databricks, Unity Catalog, Unified Events</strong> — so any domain can publish without building the plumbing.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="principle p-governance" role="button" tabindex="0" aria-expanded="false">
+      <div class="pc-head">
+        <div class="principle-header">
+          <div class="principle-num">04 · Federated (computational) governance</div>
+        </div>
+        <div class="principle-title">Global rules, automated and embedded.</div>
+      </div>
+      <div class="pc-reveal">
+        <div class="principle-statement">Global rules are automated and embedded in the platform — not enforced by a central gatekeeper.</div>
+        <div class="principle-laerdal">
+          <div class="principle-laerdal-label">At Laerdal</div>
+          <div class="principle-laerdal-text">Standards set once by the Data Governance Hub, then enforced automatically — so <strong>governance is a service, not a gatekeeper</strong>.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── DATA AS A PRODUCT ── -->
+  <div class="dap-section">
+    <div class="section-label">02 · Data as a product</div>
+    <div class="dap-intro">Treat data like a product we ship — not a byproduct we leave behind.</div>
+    <div class="dap-grid">
+
+      <div class="dap-card">
+        <div class="dap-card-num">01</div>
+        <div class="dap-card-title">Has a clear owner</div>
+        <div class="dap-card-desc">Someone is accountable — like a product manager for the data.</div>
+      </div>
+
+      <div class="dap-card">
+        <div class="dap-card-num">02</div>
+        <div class="dap-card-title">Easy to find &amp; understand</div>
+        <div class="dap-card-desc">Named, described, and discoverable — not hidden in someone's spreadsheet.</div>
+      </div>
+
+      <div class="dap-card">
+        <div class="dap-card-num">03</div>
+        <div class="dap-card-title">Comes with a promise</div>
+        <div class="dap-card-desc">A contract: what it contains, how often it updates, what quality to expect.</div>
+      </div>
+
+      <div class="dap-card">
+        <div class="dap-card-num">04</div>
+        <div class="dap-card-title">Trusted &amp; secure</div>
+        <div class="dap-card-desc">Accurate, compliant, and only accessible to those who should see it.</div>
+      </div>
+
+      <div class="dap-card">
+        <div class="dap-card-num">05</div>
+        <div class="dap-card-title">Built for consumers</div>
+        <div class="dap-card-desc">Designed around who will use it — reporting, apps, partners, AI.</div>
+      </div>
+
+      <div class="dap-card">
+        <div class="dap-card-num">06</div>
+        <div class="dap-card-title">Maintained over time</div>
+        <div class="dap-card-desc">Versioned, improved, and supported — not a one-off extract.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="next-row">
+    <span class="next-label">Next</span>
+    <a class="next-link" href="data-journey/data-journey-ideal.html">The data journey <span class="arrow">→</span></a>
+    <a class="next-link" href="governance-model/domain-map.html">Domain map <span class="arrow">→</span></a>
+  </div>
+
+  <details class="sources">
+    <summary>Sources &amp; further reading</summary>
+    <ul>
+      <li><span class="src-title">Zhamak Dehghani — Data Mesh: Delivering Data-Driven Value at Scale</span> (O'Reilly, 2022). The source of the four principles and the foundational argument for domain ownership, data as a product, self-serve infrastructure, and federated governance.</li>
+      <li><span class="src-title">Gartner — Reference Architecture Brief: Data Products</span> (L. Ferguson, Aug 2025) <span class="src-tag">internal</span>. Canonical four-attribute product definition and the six qualities of a governed data product.</li>
+      <li><span class="src-title">Gartner — How Data Architects Can Effectively Govern Data Products</span> (S. Das, Oct 2025) <span class="src-tag">internal</span>. Federated governance in practice — the six policy types and how they map to the principles.</li>
+    </ul>
+    <span class="src-note">Gartner items are confidential subscription material — internal reference only.</span>
+  </details>
+
+  <footer class="page-footer">
+    <a class="back-link" href="index.html">← Overview</a>
+    <span>Confidential · Laerdal Medical · 19.06.2026</span>
+  </footer>
+
+</div>
+</div>
+
+<script>
+(function () {
+  function initRevealCards() {
+    var cards = Array.prototype.slice.call(
+      document.querySelectorAll('.data-mesh-principles .principle')
+    );
+    if (cards.length === 0) return;
+
+    // ── 1. Find the tallest card and apply that height to ALL cards uniformly.
+    //       align-self:start (CSS) means CSS grid won't override this with row-height.
+    var maxH = cards.reduce(function (m, c) {
+      return Math.max(m, c.offsetHeight);
+    }, 0);
+    cards.forEach(function (card) {
+      card.style.minHeight = maxH + 'px';
+    });
+
+    // ── 2. For each card, measure its pc-head height and calculate the translateY
+    //       offset needed to visually center the head in the uniform card height.
+    //       (Measured after uniform height is set — card heights are now stable.)
+    cards.forEach(function (card) {
+      var head   = card.querySelector('.pc-head');
+      if (!head) return;
+      var padTop = parseFloat(getComputedStyle(card).paddingTop) || 26;
+      var headH  = head.offsetHeight;
+      var offset = Math.max(0, Math.round((maxH - headH) / 2 - padTop));
+      head.style.transform = 'translateY(' + offset + 'px)';
+    });
+
+    // ── 3. Wire up click / keyboard handlers.
+    //       Cards only open — they stay open to support progressive reveal.
+    //       align-self:start ensures opening a card never resizes its sibling.
+    cards.forEach(function (card) {
+      function openCard() {
+        if (card.classList.contains('open')) return;
+        card.classList.add('open');
+        card.setAttribute('aria-expanded', 'true');
+      }
+      card.addEventListener('click', openCard);
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openCard(); }
+      });
+    });
+  }
+
+  // Wait for fonts so height measurements are accurate.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(initRevealCards);
+  } else {
+    window.addEventListener('load', initRevealCards);
+  }
+}());
+</script>
+</body>
+</html>

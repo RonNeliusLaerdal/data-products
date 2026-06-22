@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>From consumer need to data product</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Life Design System tokens mapped to semantic roles for this artefact */
+
+    /* Surfaces and text */
+    --bg: #fafafa;                /* bg-surface-subtle */
+    --surface: #ffffff;           /* bg-surface-default */
+    --text: #1a1a1a;              /* text-default */
+    --text-muted: #666666;        /* text-subtle */
+    --text-faint: #767676;        /* between subtle and disabled */
+    --border: #e5e5e5;            /* border-disabled / surface-neutral */
+    --border-strong: #cccccc;     /* border-subtle */
+
+    /* Producer = Life Primary (blue) */
+    --producer: #2e7fa1;          /* icon-primary */
+    --producer-bg: #d4e9f2;       /* bg-surface-primary */
+
+    /* Domain = Life Positive (green) */
+    --domain: #14892f;            /* icon-positive */
+    --domain-bg: #cceed2;         /* bg-surface-positive */
+    --domain-hover: #cce5d3;      /* slightly darker positive surface for hover states */
+
+    /* Consumer = Life subtle (gray) */
+    --consumer: #666666;          /* icon-subtle */
+    --consumer-bg: #f2f2f2;       /* bg-surface-low-subtle */
+
+    /* Highlight = Life Accent2 (gold) */
+    --highlight: #b58e45;         /* border-accent2 */
+    --highlight-bg: #f8e2bf;      /* bg-surface-accent2 */
+    --highlight-soft: #fdf7eb;    /* faint accent2 wash */
+
+    /* Link colors (Life primary) */
+    --link: #276d8b;              /* text-link */
+    --link-hover: #215369;        /* text-link-hover */
+    --link-active: #163746;       /* text-link-active */
+
+    /* Focus indicator */
+    --focus: #1a1a1a;             /* border-focus */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Lato', 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.5;
+    padding: 32px 24px 40px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* WCAG 2.2 AA focus indicators */
+  *:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 2px;
+  }
+
+  .container { max-width: 1240px; margin: 0 auto; }
+
+  header {
+    margin-bottom: 20px;
+    padding-bottom: 0;
+  }
+
+  .eyebrow {
+    font-size: 11px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--text-muted); margin-bottom: 6px;
+  }
+
+  h1 {
+    font-size: 26px; font-weight: 700;
+    letter-spacing: -0.02em; line-height: 1.15;
+  }
+
+  .subtitle {
+    font-size: 14px; color: var(--text-muted);
+    margin-top: 4px; max-width: 880px;
+  }
+
+  /* ── Journey rail: flat stepper, dots on a progress line ── */
+  .journey-rail {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: start;
+    gap: 16px;
+    margin-bottom: 22px;
+  }
+
+  .step-strip {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  /* track line behind the dots (dot centre sits 13px from the top) */
+  .step-strip::before,
+  .step-strip::after {
+    content: "";
+    position: absolute;
+    top: 13px;
+    height: 2px;
+    z-index: 0;
+  }
+  .step-strip::before { left: 10%; right: 10%; background: var(--border); }
+  /* green progress fill — width driven by --rail-progress (0..4 of the 4 gaps) */
+  .step-strip::after {
+    left: 10%;
+    width: calc((80% / 4) * var(--rail-progress, 0));
+    background: var(--domain);
+    transition: width 0.35s ease;
+  }
+
+  .rail-node-wrap { display: flex; justify-content: center; }
+
+  .step-btn {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0 4px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .rail-dot {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--surface);
+    border: 2px solid var(--border-strong);
+    color: var(--text-faint);
+    transition: all 0.25s ease;
+  }
+  .rail-dot .num { font-size: 12px; font-weight: 700; line-height: 1; }
+
+  .rail-label {
+    font-size: 11px; font-weight: 600;
+    color: var(--text-faint);
+    text-align: center; line-height: 1.2;
+    transition: color 0.25s ease;
+  }
+
+  /* completed → solid green */
+  .step-btn.done .rail-dot { background: var(--domain); border-color: var(--domain); color: #fff; }
+  .step-btn.done .rail-label { color: var(--text-muted); }
+
+  /* active → gold ring */
+  .step-btn.active .rail-dot {
+    background: var(--surface);
+    border-color: var(--highlight);
+    color: var(--text);
+    box-shadow: 0 0 0 3px var(--highlight-bg);
+  }
+  .step-btn.active .rail-label { color: var(--text); font-weight: 700; }
+
+  .step-btn:not(.active):hover .rail-dot { border-color: var(--domain); }
+  .step-btn:not(.active):hover .rail-label { color: var(--text); }
+
+  /* subtle text prev/next (keyboard ←/→ remain primary) */
+  .rail-edge {
+    align-self: center;
+    background: none; border: none;
+    color: var(--text-faint);
+    font-family: inherit; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.02em; cursor: pointer;
+    padding: 4px 2px; white-space: nowrap;
+    transition: color 0.15s;
+  }
+  .rail-edge:not(:disabled):hover { color: var(--domain); }
+  .rail-edge:disabled { opacity: 0.3; cursor: default; }
+
+  /* Framed panel wrapping directions + diagram + steps as one section (matches master cards) */
+  .journey-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 22px 22px;
+    margin-bottom: 16px;
+  }
+
+  /* Step area — flat readout, divided from the diagram by a hairline */
+  .step-area {
+    margin: 8px 0 0;
+    padding: 18px 2px 0;
+    border-top: 1px solid var(--border);
+  }
+  .step-readout { max-width: 920px; }
+
+  .step-title {
+    font-size: 18px; font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25; margin-bottom: 6px;
+  }
+
+  .step-body {
+    font-size: 14px; color: var(--text);
+    line-height: 1.5; max-width: 920px;
+  }
+
+  footer {
+    margin-top: 48px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px; color: var(--text-faint);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  footer a {
+    color: var(--text-faint); text-decoration: none;
+  }
+
+  footer a:hover { color: var(--text); }
+
+  @media (max-width: 1000px) {
+    .step-strip { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* ========================================
+     NEW FLOW VISUAL (replaces .diagram)
+     ======================================== */
+  :root {
+    --rule: #d8d8d8;
+    --rule-soft: #ececec;
+    --producer-soft: #e8f1f6;
+    --domain-soft: #e3f3e6;
+    --domain-deep: #166534;
+    --domain-mid: #d0ecd5;
+    --consumer-soft: #f0f0f0;
+
+    /* State illustrations — past / current / desired tokens */
+    --past:        #b45309;
+    --past-bg:     #fef6ec;
+    --current:     #b91c1c;
+    --current-bg:  #fdecec;
+    --desired:     #166534;
+    --desired-bg:  #ecf6ee;
+  }
+
+  .flow {
+    display: grid;
+    grid-template-columns:
+      minmax(90px, 0.75fr)
+      minmax(40px, 0.3fr)
+      minmax(260px, 2.2fr)
+      minmax(40px, 0.3fr)
+      minmax(110px, 0.75fr)
+      minmax(80px, 0.6fr)
+      minmax(150px, 0.9fr)
+      minmax(80px, 0.6fr)
+      minmax(90px, 0.75fr);
+    grid-template-rows: 32px 1fr;
+    align-items: center;
+    column-gap: 0;
+    row-gap: 0;
+    position: relative;
+    min-height: 320px;
+    padding: 16px 12px 28px;
+    margin-bottom: 16px;
+  }
+
+  .flow-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: visible;
+  }
+
+  .flow .stage-label {
+    grid-row: 1;
+    align-self: end;
+    justify-self: center;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--text-faint);
+    padding-bottom: 14px;
+    z-index: 1;
+    margin-bottom: 0;
+  }
+  .flow .stage-label.producer { color: var(--producer); }
+  .flow .stage-label.domain { color: var(--domain); }
+  .flow .stage-label.consumer { color: var(--consumer); }
+
+
+  .flow .content {
+    grid-row: 2;
+    z-index: 1;
+    position: relative;
+    align-self: stretch;   /* stretch to grid row height so all columns share the same total height */
+  }
+
+  /* Producers */
+  .producer-list { display: grid; grid-template-rows: 1fr 1fr; gap: 12px; height: 100%; align-items: center; }
+  .icon-row {
+    display: grid;
+    grid-template-columns: auto 34px;
+    gap: 10px;
+    align-items: center;
+    padding: 4px 0;
+    opacity: 0.4;
+    transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .icon-row.active { opacity: 1; }
+  .icon-row .info { text-align: right; }
+  .icon-row .name { display: block; font-size: 12px; font-weight: 700; line-height: 1.15; }
+  .icon-row .desc { display: block; font-size: 9.5px; color: var(--text-muted); font-weight: 400; margin-top: 1px; }
+  .icon-row .icon {
+    width: 34px; height: 34px;
+    border: 1.5px solid var(--producer);
+    border-radius: 4px;
+    display: grid; place-items: center;
+    background: var(--producer-soft);
+    color: var(--producer);
+  }
+
+  /* Contract */
+  .flow .contract {
+    position: relative;
+    border: 1.5px solid var(--domain);
+    border-radius: 3px;
+    background: #fdfcf7;
+    padding: 12px 14px;
+    text-align: left;
+    opacity: 0.4;
+    transition: opacity 0.4s, background 0.4s;
+    min-width: 180px;
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.04);
+  }
+  .flow .contract.active { opacity: 1; background: #f6faf6; }
+  .flow .contract::before {
+    content: "";
+    position: absolute;
+    top: 0; right: 0;
+    width: 12px; height: 12px;
+    background: linear-gradient(135deg, transparent 50%, var(--domain-soft) 50%);
+    border-left: 1px solid var(--domain-mid);
+    border-bottom: 1px solid var(--domain-mid);
+  }
+  .flow .contract-list { display: grid; grid-template-rows: 1fr 1fr; gap: 12px; height: 100%; align-items: center; }
+  /* fill the column so both contract cards are the same width (and roomy enough for the schema pill) */
+  .flow .contract.contract-card { padding: 8px 12px; width: 100%; align-self: center; }
+  /* contract inner — same as the master's .contract card (name · schema pill · signed) */
+  .contract .cname { font-size: 11.5px; font-weight: 700; }
+  .contract .cev {
+    display: block; width: fit-content; white-space: nowrap;
+    font-family: "SF Mono", Menlo, monospace; font-size: 9px;
+    background: rgba(20, 137, 47, 0.10); color: var(--domain-deep);
+    padding: 2px 6px; border-radius: 3px; margin-top: 6px;
+  }
+  .contract .cev.canonical { background: var(--highlight-bg); color: var(--highlight); }
+  .contract .cev.source { background: var(--producer-soft); color: var(--producer); }
+  .contract .csig {
+    display: flex; align-items: center; gap: 4px; margin-top: 8px;
+    font-size: 9.5px; font-weight: 700; color: var(--domain-deep);
+  }
+  .contract .csig .who { color: var(--text-muted); font-weight: 400; }
+
+  /* Pipe column */
+  .pipe-col { position: relative; }
+  .pipe-row { display: flex; align-items: center; gap: 6px; }
+  /* Multi-pipeline variant — stacks 3 pipe-rows to mirror the 3 contracts */
+  .pipe-col-multi .pipe-list {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .pipe-col-multi .pipe-row { gap: 4px; }
+  .pipe-col-multi .checkpoint { width: 32px; height: 32px; }
+  .pipe-col-multi .pipe { height: 14px; border-radius: 7px; min-width: 80px; }
+
+  /* Schema seal */
+  .flow .checkpoint {
+    flex: 0 0 auto;
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px dashed var(--domain);
+    background: var(--surface);
+    color: var(--domain);
+    opacity: 0.45;
+    transition: all 0.4s;
+    z-index: 2;
+    margin-right: -10px;
+  }
+  .flow .checkpoint.active {
+    opacity: 1;
+    background: var(--domain);
+    color: white;
+    border-style: solid;
+    box-shadow: 0 0 0 3px var(--surface), 0 0 0 4.5px var(--domain-soft);
+  }
+  .ck-stamp-seal {
+    position: absolute;
+    top: -6px;
+    right: -8px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1.5px solid var(--highlight);
+    color: var(--highlight);
+    background: rgba(255, 252, 245, 0.95);
+    display: grid;
+    place-items: center;
+    transform: rotate(-15deg) scale(0.5);
+    opacity: 0;
+    transition: opacity 0.5s 0.25s, transform 0.6s 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .flow .checkpoint.active .ck-stamp-seal {
+    opacity: 1;
+    transform: rotate(-15deg) scale(1);
+  }
+
+  /* Pipe */
+  .pipe {
+    flex: 1;
+    min-width: 120px;
+    height: 22px;
+    border-radius: 11px;
+    background: linear-gradient(to bottom,
+      #f0f0f0 0%,
+      #dedede 30%,
+      #bababa 70%,
+      #a4a4a4 100%);
+    border: 1px solid #888;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.12), inset 0 -1px 0 rgba(255,255,255,0.5);
+    position: relative;
+    overflow: hidden;
+    opacity: 0.4;
+    transition: opacity 0.4s;
+  }
+  .pipe.active { opacity: 1; }
+  .pipe::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 8px;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(20, 137, 47, 0.55) 50%,
+      transparent 100%);
+    background-size: 80px 100%;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .pipe.active::after {
+    opacity: 1;
+    animation: pipe-shimmer 1.4s linear infinite;
+  }
+  @keyframes pipe-shimmer {
+    from { background-position: -80px 0; }
+    to { background-position: 100% 0; }
+  }
+
+  /* Consumer tiles — vertical layout, icon centred, text below */
+  .consumer-list { display: flex; flex-direction: column; gap: 10px; }
+  .consumer-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 4px;
+    padding: 4px 2px;
+    opacity: 0.35;
+    transition: opacity 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .consumer-tile.active { opacity: 1; }
+  .consumer-mini {
+    width: 64px;
+    height: 50px;
+    border: 1px solid var(--consumer);
+    border-radius: 4px;
+    background: var(--surface);
+    padding: 4px;
+    display: grid;
+    place-items: center;
+    color: var(--consumer);
+    flex-shrink: 0;
+  }
+  .consumer-tile.active .consumer-mini { background: var(--consumer-soft); }
+  .consumer-tile .name { font-size: 12px; font-weight: 700; line-height: 1.25; }
+  .consumer-tile .role { display: block; font-size: 10px; color: var(--text-muted); font-weight: 400; margin-top: 1px; }
+
+  /* Connection paths */
+  .conn-path {
+    fill: none;
+    stroke: transparent;     /* hidden until active — flow only appears at Step 5, no faint latent lines */
+    stroke-width: 1.8;
+    stroke-dasharray: 0.5 6;
+    stroke-linecap: round;
+    transition: stroke 0.3s;
+    marker-end: none;
+  }
+  .conn-path.producer.active {
+    stroke: var(--producer);
+    marker-end: url(#arr-producer);
+    animation: dash-flow 1.5s linear infinite;
+  }
+  .conn-path.domain.active {
+    stroke: var(--domain);
+    marker-end: url(#arr-domain);
+    animation: dash-flow 1.5s linear infinite;
+  }
+  .conn-path.consumer.active {
+    stroke: var(--consumer);
+    marker-end: url(#arr-consumer);
+    animation: dash-flow 1.5s linear infinite;
+  }
+  /* design-direction journey lines (steps 1–4): plain solid static line, one quiet neutral tone */
+  .conn-path.design.active {
+    stroke: var(--text-faint);
+    stroke-dasharray: none;
+    marker-end: url(#arr-design);
+    animation: none;
+  }
+  /* design phase is over once data flows — fade the journey curves at step 5 */
+  .flow.ingestion-active .conn-path.design { opacity: 0; transition: opacity 0.35s ease; }
+  @keyframes dash-flow {
+    to { stroke-dashoffset: -13; }
+  }
+
+  /* ═══════════════════════════════════════════
+     DATA PRODUCT JOURNEY — new components
+     ═══════════════════════════════════════════ */
+
+  /* ── Joint product tile ── */
+  /* Data product cards — same vertical catalog card as the master (icon · name · id) */
+  .joint-product, .sub-product {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    border: 1.5px solid var(--domain); border-radius: 4px;
+    background: var(--surface); padding: 9px 12px; color: var(--domain);
+    min-width: 104px; width: 100%;   /* fill each half so cards in a column match */
+    opacity: 0.3; transform: translateY(4px);
+    transition: all 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .joint-product.active, .sub-product.active { opacity: 1; transform: translateY(0); }
+  /* aggregate product carries the "owned" treatment (gold ring + owner badge) */
+  .joint-product.owned { border-color: var(--highlight); box-shadow: 0 0 0 3px var(--highlight-soft); }
+  .joint-product.just-activated, .sub-product.just-activated {
+    box-shadow: 0 0 0 3px var(--highlight-bg), 0 0 0 4px var(--highlight);
+  }
+  .cat-name { font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.2; text-align: center; }
+  .cat-id { font-family: "SF Mono", Menlo, monospace; font-size: 8px; color: var(--text-muted); }
+  .owner-tag {
+    font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    background: var(--highlight-bg); color: var(--highlight); padding: 2px 7px; border-radius: 3px;
+  }
+
+  /* ── Data Products column: horizontal 2-col layout ── */
+  .dp-products-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    align-items: stretch;  /* both sides stretch to full height so 1fr rows align with pipeline rows */
+    height: 100%;
+    min-width: 220px;
+  }
+
+  /* LEFT half: Simulation Intelligence — centred within its stretched cell */
+  .dp-joint-side {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+
+  /* RIGHT half: source products (faces schema) — grid rows to align with schema / contract / producer lanes */
+  .dp-source-side {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    height: 100%;
+    align-items: center;
+    justify-items: center;
+  }
+
+
+  /* ── Schema cards — "data structure / blueprint" look (distinct from the contract document) ── */
+  .schema-list { display: grid; grid-template-rows: 1fr 1fr; gap: 12px; height: 100%; align-items: center; }
+  .schema-card {
+    position: relative;
+    border: 1.5px solid var(--domain);
+    border-radius: 4px;
+    background: var(--surface);              /* cool white — not the warm contract paper */
+    overflow: hidden;
+    opacity: 0.3;
+    transition: opacity 0.4s;
+    min-width: 120px; width: 100%;   /* both schema cards match the column width */
+    box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+    align-self: center;
+  }
+  .schema-card.active { opacity: 1; }
+  .schema-card.just-activated {
+    box-shadow: 0 0 0 3px var(--highlight-bg), 0 0 0 4px var(--highlight);
+  }
+  /* Tinted header strip (table-header motif) with a { } braces glyph */
+  .schema-head {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--domain-soft);
+    border-bottom: 1px solid var(--domain);
+    padding: 5px 9px;
+  }
+  .schema-brace {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 12px; font-weight: 700; color: var(--domain);
+    line-height: 1;
+  }
+  .schema-name { font-size: 12px; font-weight: 700; line-height: 1.2; color: var(--domain); }
+  .schema-body { padding: 7px 9px 8px; }
+  .schema-id {
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 8.5px; color: var(--text-muted); margin-bottom: 6px;
+  }
+  /* Field rows — small bars with a leading tick, reading as a data structure */
+  .schema-fields-mini { display: flex; flex-direction: column; gap: 4px; margin-bottom: 7px; }
+  .sf-row { display: flex; align-items: center; gap: 6px; }
+  .sf-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--domain); opacity: 0.55; flex-shrink: 0; }
+  .sf-bar { height: 4px; border-radius: 2px; background: var(--rule-soft); }
+  /* The join key — highlighted row */
+  .schema-key-row {
+    display: flex; align-items: center; gap: 5px;
+    font-family: "SF Mono", Menlo, monospace;
+    font-size: 9px; font-weight: 700;
+    color: var(--highlight);
+    background: var(--highlight-bg);
+    border: 1px solid var(--highlight);
+    border-radius: 3px;
+    padding: 2px 6px;
+  }
+  .schema-key-label {
+    font-size: 8px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--highlight); margin-right: 1px;
+  }
+
+  /* ── Producer column: icon on left, text on right ── */
+  .icon-row-left { grid-template-columns: 34px auto; align-self: center; }
+  .icon-row-left .info { text-align: left; }
+
+  /* ── RTL pipe-row: pipe on left, checkpoint on RIGHT (normal row order, no reversal needed) ── */
+  .pipe-row-rtl .checkpoint {
+    margin-right: 0;       /* reset global -10px */
+    margin-left: -10px;    /* pipe right-edge overlaps checkpoint left-edge */
+  }
+  .pipe-row-rtl .pipe.active::after {
+    animation: pipe-shimmer-rtl 1.4s linear infinite;
+  }
+
+  /* ── Ingestion pipeline overlay (hidden by default, shows at Step 5) ── */
+  .ingestion-pipeline {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.55s ease;
+    z-index: 3;
+    background: transparent;     /* no white box — part of the diagram */
+    display: flex;
+    align-items: stretch;        /* stretch so pipe-col can fill full height */
+    justify-content: center;
+  }
+  .flow.ingestion-active .ingestion-pipeline {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  /* Fade schema & contract content when pipeline appears */
+  .flow.ingestion-active #schema-content,
+  .flow.ingestion-active #contract-content {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+  }
+  /* Pipeline internal layout — lanes match schema/contract/producer lane spacing */
+  .ingestion-pipeline .pipe-col {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .ingestion-pipeline .pipe-col-multi .pipe-list {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 12px;
+    height: 100%;
+    align-items: center;
+  }
+  .ingestion-pipeline .pipe-col-multi .pipe {
+    min-width: 120px;
+    height: 14px;
+    border-radius: 7px;
+  }
+
+  /* Per-pipe label — absolutely positioned under each pipe so the pipe itself
+     stays at the lane centre (keeps producer→pipe→product connections horizontal) */
+  .pipe-row-labeled {
+    position: relative;
+    align-self: center;
+    width: 100%;
+  }
+  .pipe-row-cap {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    right: 0;
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-muted);
+    letter-spacing: 0.04em;
+    text-align: center;
+    transition: color 0.3s;
+  }
+  .pipe-row-cap .sep { color: var(--text-faint); margin: 0 4px; }
+  .flow.ingestion-active .pipe-row-cap { color: var(--domain); }
+
+  /* Stage label: swap Schema+Contract → Ingestion & Pipeline at step 5 */
+  .ingestion-stage-label { display: none; }
+  .flow.ingestion-active .ingestion-stage-label { display: block; text-align: center; }
+  .flow.ingestion-active #stage-schema,
+  .flow.ingestion-active #stage-contract { display: none; }
+
+  @keyframes pipe-shimmer-rtl {
+    from { background-position: 80px 0; }
+    to   { background-position: -80px 0; }
+  }
+
+
+  .subtitle strong { color: var(--domain); font-weight: 700; }
+
+  /* ── Dual-direction annotation bar (design → / ← data flow) ── */
+  .flow-directions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    padding: 0 14px;
+    flex-wrap: wrap;
+  }
+  .dir {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .dir-flow { color: var(--text-muted); }
+  .dir-design { color: var(--domain); }
+  .dir .dir-sub {
+    font-size: 10px;
+    font-weight: 400;
+    color: var(--text-faint);
+    letter-spacing: 0;
+  }
+
+  /* ── Meta bar: data-mesh principle ribbon + colour legend ── */
+  /* ── Inline data-mesh principle (folds into the step readout, no box) ── */
+  .principle-inline {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 8px; margin-top: 16px;
+  }
+  .principle-eyebrow {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--text-faint);
+  }
+  /* hidden by default; only the .on principle(s) for this step show */
+  .principle {
+    display: none;
+    font-size: 11px; font-weight: 700;
+    color: var(--domain);
+    background: var(--domain-soft);
+    padding: 2px 10px;
+    border-radius: 20px;
+  }
+  .principle.on { display: inline-block; }
+
+  /* ── Sources & further reading (collapsible) ── */
+  .sources { margin-top: 22px; font-size: 12px; color: var(--text-muted); }
+  .sources summary {
+    cursor: pointer;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    color: var(--text-faint);
+    padding: 6px 0;
+    list-style: none;
+  }
+  .sources summary::-webkit-details-marker { display: none; }
+  .sources summary::before { content: "▸  "; color: var(--text-faint); }
+  .sources[open] summary::before { content: "▾  "; }
+  .sources ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 7px; max-width: 920px; }
+  .sources li { line-height: 1.5; padding-left: 14px; position: relative; }
+  .sources li::before { content: "·"; position: absolute; left: 4px; color: var(--text-faint); font-weight: 700; }
+  .sources .src-title { font-weight: 700; color: var(--text); }
+  .sources .src-tag {
+    font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--text-faint); border: 1px solid var(--border); border-radius: 3px;
+    padding: 0 5px; margin-left: 4px; white-space: nowrap;
+  }
+  .sources .src-note { font-style: italic; color: var(--text-faint); font-size: 11px; margin-top: 10px; display: block; }
+
+  /* ── Accessibility: respect reduced-motion preference ── */
+  @media (prefers-reduced-motion: reduce) {
+    .pipe.active::after,
+    .pipe-row-rtl .pipe.active::after,
+    .conn-path.active,
+    .ck-stamp-seal { animation: none !important; transition: none !important; }
+  }
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Data &amp; AI strategy · data mesh in practice</div>
+    <h1>From consumer need to data product.</h1>
+    <p class="subtitle">A data product starts with <strong>the need, not the data</strong>. So the design runs backwards — from the consumer, through products, schema, and contract, to the producer — and the data that flows forward is exactly what was asked for.</p>
+  </header>
+
+  <!-- FRAMED PANEL: directions + diagram + steps as one section -->
+  <div class="journey-card">
+
+  <!-- DUAL-DIRECTION ANNOTATION -->
+  <div class="flow-directions">
+    <span class="dir dir-design">How we design → <span class="dir-sub">from the consumer need back</span></span>
+    <span class="dir dir-flow">← How data flows <span class="dir-sub">producer to consumer</span></span>
+  </div>
+
+  <!-- DIAGRAM -->
+  <div class="flow" id="flow">
+    <svg class="flow-overlay" id="flow-overlay" preserveAspectRatio="none">
+      <defs>
+        <marker id="arr-producer" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#2e7fa1"/>
+        </marker>
+        <marker id="arr-domain" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#14892f"/>
+        </marker>
+        <marker id="arr-consumer" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#666666"/>
+        </marker>
+        <marker id="arr-design" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto" markerUnits="strokeWidth">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="#767676"/>
+        </marker>
+      </defs>
+    </svg>
+
+    <div class="stage-label consumer" style="grid-column:1;">Consumer</div>
+    <div class="stage-label domain" style="grid-column:3;">Data Products</div>
+    <div class="stage-label domain" id="stage-schema" style="grid-column:5;">Schema</div>
+    <div class="stage-label domain" id="stage-contract" style="grid-column:7;">Contract</div>
+    <div class="stage-label domain ingestion-stage-label" style="grid-column:5/8;grid-row:1;">Ingestion &amp; Pipeline</div>
+    <div class="stage-label producer" style="grid-column:9;">Producer</div>
+
+    <!-- ── Col 1: Consumer ── -->
+    <div class="content" style="grid-column:1;">
+      <div class="consumer-list">
+
+        <div class="consumer-tile" data-active-from="0">
+          <div class="consumer-mini">
+            <svg viewBox="0 0 36 28" width="52" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="8" width="14" height="12" rx="1.5"/>
+              <circle cx="10" cy="14" r="2"/>
+              <line x1="17" y1="14" x2="24" y2="14"/>
+              <line x1="24" y1="14" x2="24" y2="9"/>
+              <line x1="24" y1="14" x2="24" y2="19"/>
+              <circle cx="29" cy="9" r="2"/>
+              <circle cx="29" cy="19" r="2"/>
+            </svg>
+          </div>
+          <div>
+            <span class="name">Samaritan Companion</span>
+            <span class="role">Context-aware feedback</span>
+          </div>
+        </div>
+
+        <div class="consumer-tile" data-active-from="0">
+          <div class="consumer-mini">
+            <svg viewBox="0 0 36 28" width="52" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="32" height="24" rx="1.5"/>
+              <line x1="2" y1="22" x2="34" y2="22"/>
+              <rect x="6" y="14" width="3" height="8" fill="currentColor"/>
+              <rect x="12" y="10" width="3" height="12" fill="currentColor"/>
+              <rect x="18" y="6" width="3" height="16" fill="currentColor"/>
+              <rect x="24" y="12" width="3" height="10" fill="currentColor"/>
+            </svg>
+          </div>
+          <div>
+            <span class="name">Analytics</span>
+            <span class="role">Portfolio visibility</span>
+          </div>
+        </div>
+
+        <div class="consumer-tile" data-active-from="0">
+          <div class="consumer-mini">
+            <svg viewBox="0 0 36 28" width="52" height="40" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="32" height="24" rx="1.5"/>
+              <polyline points="5,21 12,15 17,18 23,9 31,6"/>
+              <circle cx="12" cy="15" r="1" fill="currentColor"/>
+              <circle cx="17" cy="18" r="1" fill="currentColor"/>
+              <circle cx="23" cy="9" r="1" fill="currentColor"/>
+              <circle cx="31" cy="6" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <div>
+            <span class="name">Product &amp; design teams</span>
+            <span class="role">Design improvement</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Col 3: Data Products (horizontal: joint left, sources right) ── -->
+    <div class="content" style="grid-column:3;">
+      <div class="dp-products-col">
+
+        <!-- LEFT: Simulation Intelligence (the aggregate — owned product) -->
+        <div class="dp-joint-side">
+          <div class="joint-product owned" data-active-from="1" id="joint-product">
+            <span class="owner-tag">Owned by P&amp;C</span>
+            <svg viewBox="0 0 48 48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="11" rx="14" ry="4.5"/><path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/><path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/></svg>
+            <div class="cat-name">Simulation Intelligence</div>
+            <div class="cat-id">dp:sim-intelligence:v1</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Scenario Catalog + Session Data (source-aligned products) -->
+        <div class="dp-source-side">
+          <div class="sub-product" data-active-from="1" id="dp-scenario">
+            <svg viewBox="0 0 48 48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="11" rx="14" ry="4.5"/><path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/><path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/></svg>
+            <div class="cat-name">Scenario Catalog</div>
+            <div class="cat-id">dp:scenario:v1</div>
+          </div>
+          <div class="sub-product" data-active-from="1" id="dp-session">
+            <svg viewBox="0 0 48 48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="11" rx="14" ry="4.5"/><path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/><path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/></svg>
+            <div class="cat-name">Session Data</div>
+            <div class="cat-id">dp:session-data:v1</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Col 5: Schema & Model ── -->
+    <div class="content" id="schema-content" style="grid-column:5;">
+      <div class="schema-list">
+
+        <div class="schema-card" data-active-from="2" id="schema-scenario">
+          <div class="schema-head">
+            <span class="schema-brace">{ }</span>
+            <span class="schema-name">Scenario Schema</span>
+          </div>
+          <div class="schema-body">
+            <div class="schema-id">schema:scenario:v1</div>
+            <div class="schema-fields-mini">
+              <div class="sf-row"><span class="sf-dot"></span><span class="sf-bar" style="width:78px"></span></div>
+              <div class="sf-row"><span class="sf-dot"></span><span class="sf-bar" style="width:58px"></span></div>
+              <div class="sf-row"><span class="sf-dot"></span><span class="sf-bar" style="width:66px"></span></div>
+            </div>
+            <div class="schema-key-row">
+              <span class="schema-key-label">key</span>
+              scenario_id
+            </div>
+          </div>
+        </div>
+
+        <div class="schema-card" data-active-from="2" id="schema-session">
+          <div class="schema-head">
+            <span class="schema-brace">{ }</span>
+            <span class="schema-name">Session Schema</span>
+          </div>
+          <div class="schema-body">
+            <div class="schema-id">schema:session:v1</div>
+            <div class="schema-fields-mini">
+              <div class="sf-row"><span class="sf-dot"></span><span class="sf-bar" style="width:70px"></span></div>
+              <div class="sf-row"><span class="sf-dot"></span><span class="sf-bar" style="width:56px"></span></div>
+            </div>
+            <div class="schema-key-row">
+              <span class="schema-key-label">join</span>
+              scenario_id
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Col 7: Contract ── -->
+    <div class="content" id="contract-content" style="grid-column:7;">
+      <div class="contract-list" id="contract-list">
+
+        <div class="contract contract-card" data-active-from="3" id="contract-scenario">
+          <div class="cname">Data Contract</div>
+          <span class="cev">schema:scenario:v1</span>
+          <div class="csig"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>Signed <span class="who">· Scenario Editor</span></div>
+        </div>
+
+        <div class="contract contract-card" data-active-from="3" id="contract-session">
+          <div class="cname">Data Contract</div>
+          <span class="cev">schema:session:v1</span>
+          <div class="csig"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>Signed <span class="who">· SimGo</span></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Col 9: Ingestion ── -->
+    <div class="content" style="grid-column:9;">
+      <div class="producer-list">
+
+        <div class="icon-row icon-row-left" data-active-from="4" id="producer-scenario">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <path d="M9 3v18"/>
+              <path d="M3 9h6"/>
+              <path d="M3 15h6"/>
+            </svg>
+          </div>
+          <div class="info">
+            <span class="name">Scenario Editor</span>
+            <span class="desc">Data Producer</span>
+          </div>
+        </div>
+
+        <div class="icon-row icon-row-left" data-active-from="4" id="producer-simgo">
+          <div class="icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="6" r="2.5"/>
+              <path d="M12 8.5v6"/>
+              <path d="M8 11l4-2 4 2"/>
+              <path d="M9 21l3-6 3 6"/>
+            </svg>
+          </div>
+          <div class="info">
+            <span class="name">SimGo</span>
+            <span class="desc">Data Producer</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ── Ingestion pipeline: spans cols 5–7, replaces schema/contract at Step 5 ── -->
+    <div class="content ingestion-pipeline" id="ingestion-pipeline" style="grid-column: 5 / 8; grid-row: 2;">
+      <div class="pipe-col pipe-col-multi">
+        <div class="pipe-list">
+
+          <!-- Lane 1: Scenario Editor -->
+          <div class="pipe-row-labeled">
+            <div class="pipe-row pipe-row-rtl">
+              <div class="pipe" data-active-from="4"></div>
+              <div class="checkpoint" data-active-from="4">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="5 12 10 17 19 7"/>
+                </svg>
+                <div class="ck-stamp-seal">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="5 12 10 17 19 7"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="pipe-row-cap">Validate <span class="sep">·</span> Structure <span class="sep">·</span> Govern</div>
+          </div>
+
+          <!-- Lane 2: SimGo -->
+          <div class="pipe-row-labeled">
+            <div class="pipe-row pipe-row-rtl">
+              <div class="pipe" data-active-from="4"></div>
+              <div class="checkpoint" data-active-from="4">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="5 12 10 17 19 7"/>
+                </svg>
+                <div class="ck-stamp-seal">
+                  <svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="5 12 10 17 19 7"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+            <div class="pipe-row-cap">Validate <span class="sep">·</span> Structure <span class="sep">·</span> Govern</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- STEP AREA (flat journey rail + clean readout) -->
+  <div class="step-area" id="step-content">
+
+    <nav class="journey-rail" aria-label="Journey steps">
+      <button class="rail-edge prev" id="prev-btn" aria-label="Previous step">‹ Prev</button>
+
+      <ol class="step-strip" role="tablist">
+        <li class="rail-node-wrap">
+          <button class="step-btn" data-step="0" role="tab"><span class="rail-dot"><span class="num">1</span></span><span class="rail-label">Consumer need</span></button>
+        </li>
+        <li class="rail-node-wrap">
+          <button class="step-btn" data-step="1" role="tab"><span class="rail-dot"><span class="num">2</span></span><span class="rail-label">Data products</span></button>
+        </li>
+        <li class="rail-node-wrap">
+          <button class="step-btn" data-step="2" role="tab"><span class="rail-dot"><span class="num">3</span></span><span class="rail-label">Schema</span></button>
+        </li>
+        <li class="rail-node-wrap">
+          <button class="step-btn" data-step="3" role="tab"><span class="rail-dot"><span class="num">4</span></span><span class="rail-label">Contracts</span></button>
+        </li>
+        <li class="rail-node-wrap">
+          <button class="step-btn" data-step="4" role="tab"><span class="rail-dot"><span class="num">5</span></span><span class="rail-label">Data flows</span></button>
+        </li>
+      </ol>
+
+      <button class="rail-edge next" id="next-btn" aria-label="Next step">Next ›</button>
+    </nav>
+
+    <div class="step-readout">
+      <h2 class="step-title" id="step-title"></h2>
+      <p class="step-body" id="step-body"></p>
+
+      <!-- data-mesh principle for this step (sits below the step text) -->
+      <div class="principle-inline" id="principles" aria-live="polite">
+        <span class="principle-eyebrow">Data mesh principle</span>
+        <span class="principle" data-principle="product">Data as a product</span>
+        <span class="principle" data-principle="ownership">Domain ownership</span>
+        <span class="principle" data-principle="governance">Federated governance</span>
+        <span class="principle" data-principle="platform">Self-serve platform</span>
+      </div>
+    </div>
+
+  </div>
+  </div><!-- /journey-card -->
+
+
+  <details class="sources">
+    <summary>Sources &amp; further reading</summary>
+    <ul>
+      <li><span class="src-title">Zhamak Dehghani — Data Mesh: Delivering Data-Driven Value at Scale</span> (O'Reilly, 2022). The four principles, and the product archetypes used here: source-aligned, aggregate, consumer-aligned.</li>
+      <li><span class="src-title">Gartner — Reference Architecture Brief: Data Products</span> (L. Ferguson, Aug 2025) <span class="src-tag">internal</span>. Canonical definition of a data product.</li>
+      <li><span class="src-title">Gartner — How Data Architects Can Effectively Govern Data Products</span> (S. Das, Oct 2025) <span class="src-tag">internal</span>. Federated governance and the six data-product policy types.</li>
+      <li><span class="src-title">Gartner — Use Data Modeling for Better Architectures and Business Outcomes</span> (J. Maguire, Aug 2024) <span class="src-tag">internal</span>. Why the conceptual model and schema layer carries the meaning.</li>
+      <li><span class="src-title">Open Data Contract Standard (ODCS)</span> — Bitol, Linux Foundation. The machine-readable shape behind the data contract.</li>
+    </ul>
+    <span class="src-note">Gartner items are confidential subscription material — internal reference only.</span>
+  </details>
+
+  <footer>
+    <a href="../index.html">← Overview</a>
+    <span>Confidential · Laerdal Medical · 19.06.2026</span>
+  </footer>
+
+</div>
+
+<script>
+  const steps = [
+    {
+      title: "Start with the consumer need",
+      body: "Samaritan Companion, analytics, and product teams all need to know how scenarios are used and how learners perform. That data doesn't exist yet — so we design it, starting from the need."
+    },
+    {
+      title: "Define the data products",
+      body: "One aggregate product, Simulation Intelligence, joins two source-aligned products: Scenario Catalog (what was designed) and Session Data (what actually happened). Owned by Performance & Competency."
+    },
+    {
+      title: "Model the schemas",
+      body: "Each product gets a schema. The scenario_id key lives in both — the join that ties what was designed to what actually happened."
+    },
+    {
+      title: "Producers sign the contract",
+      body: "Each producing team signs a contract: a promise to deliver data to the agreed schema. Scenario Editor signs for scenarios, SimGo for sessions."
+    },
+    {
+      title: "Data flows, the need is met",
+      body: "A governed pipeline enforces every contract — validate, structure, govern. Joined on scenario_id, the products power Simulation Intelligence, and the need we started with is met."
+    }
+  ];
+
+  const stepContent = document.getElementById("step-content");
+  const stepNumEl = document.getElementById("step-num");
+  const stepTitleEl = document.getElementById("step-title");
+  const stepBodyEl = document.getElementById("step-body");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const stepBtns = document.querySelectorAll(".step-strip:not(.state-strip) .step-btn");
+  const allItems = document.querySelectorAll("[data-active-from]");
+  const principleEls = document.querySelectorAll(".principle");
+
+  // Which data-mesh principle each step most clearly demonstrates
+  const stepPrinciples = [
+    ["product"],                  // Step 1 — start from the need (product thinking)
+    ["product", "ownership"],     // Step 2 — define products + assign their owning domains
+    ["governance"],               // Step 3 — shared model & schemas (federated governance)
+    ["governance"],               // Step 4 — contracts are the governed interface
+    ["platform"]                  // Step 5 — governed self-serve pipeline
+  ];
+
+  let currentStep = 0;
+
+  function render() {
+    const step = steps[currentStep];
+
+    stepTitleEl.textContent = step.title;
+    stepBodyEl.textContent = step.body;
+
+    stepContent.classList.toggle("step-final", currentStep === 4);
+
+    // Step 5: replace schema+contract with animated ingestion pipeline
+    const flowEl = document.getElementById("flow");
+    if (flowEl) flowEl.classList.toggle("ingestion-active", currentStep === 4);
+
+    // Highlight the data-mesh principle(s) for this step
+    const activePrinciples = stepPrinciples[currentStep] || [];
+    principleEls.forEach(el => {
+      el.classList.toggle("on", activePrinciples.includes(el.getAttribute("data-principle")));
+    });
+
+    stepBtns.forEach((btn, i) => {
+      btn.classList.toggle("active", i === currentStep);
+      btn.classList.toggle("done", i < currentStep);
+    });
+
+    // Drive the journey-rail green progress fill (0..4 of the 4 inter-node gaps)
+    const strip = document.querySelector(".step-strip:not(.state-strip)");
+    if (strip) strip.style.setProperty("--rail-progress", currentStep);
+
+    allItems.forEach(item => {
+      const activeFrom = parseInt(item.getAttribute("data-active-from"), 10);
+      item.classList.toggle("active", currentStep >= activeFrom);
+      item.classList.toggle("just-activated", currentStep === activeFrom);
+    });
+
+    if (typeof updateFlowPaths === "function") updateFlowPaths(currentStep);
+
+    prevBtn.disabled = currentStep === 0;
+    nextBtn.disabled = currentStep === steps.length - 1;
+  }
+
+  function go(delta) {
+    const target = currentStep + delta;
+    if (target < 0 || target >= steps.length) return;
+    currentStep = target;
+    render();
+  }
+
+  function jump(target) {
+    if (target < 0 || target >= steps.length) return;
+    currentStep = target;
+    render();
+  }
+
+  prevBtn.addEventListener("click", () => go(-1));
+  nextBtn.addEventListener("click", () => go(1));
+  stepBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      jump(parseInt(btn.getAttribute("data-step"), 10));
+    });
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "ArrowRight") { go(1); e.preventDefault(); }
+    if (e.key === "ArrowLeft") { go(-1); e.preventDefault(); }
+  });
+
+  render();
+
+  // ===== STATE TRANSITION SECTION (static) =====
+  // The three state cards are displayed simultaneously without navigation.
+
+  // ===== FLOW VISUAL: connection line drawing =====
+  const SVG_NS = "http://www.w3.org/2000/svg";
+
+  function flowRectIn(el, container) {
+    const r = el.getBoundingClientRect();
+    const c = container.getBoundingClientRect();
+    return {
+      left: r.left - c.left,
+      right: r.right - c.left,
+      top: r.top - c.top,
+      bottom: r.bottom - c.top,
+      cy: (r.top + r.bottom) / 2 - c.top,
+    };
+  }
+  function flowCurve(x1, y1, x2, y2, tension) {
+    const t = tension == null ? 0.55 : tension;
+    const dx = Math.max(20, Math.abs(x2 - x1) * t);
+    return `M${x1},${y1} C${x1 + dx},${y1} ${x2 - dx},${y2} ${x2},${y2}`;
+  }
+  function flowCurveRTL(x1, y1, x2, y2, tension) {
+    // Right-to-left: x1 > x2; arrowhead ends at x2 (left/destination side)
+    const t = tension == null ? 0.55 : tension;
+    const dx = Math.max(20, Math.abs(x1 - x2) * t);
+    return `M${x1},${y1} C${x1 - dx},${y1} ${x2 + dx},${y2} ${x2},${y2}`;
+  }
+  // Perfectly horizontal segment (0°): both ends share the same y.
+  function hSeg(x1, x2, y) { return `M${x1},${y} L${x2},${y}`; }
+  // Orthogonal route: horizontal out of source, vertical jog, horizontal into target
+  // (so the visible arrow segment at each end is exactly horizontal). Falls back to a
+  // straight horizontal line when source and target are already on the same y.
+  function ortho(sx, sy, tx, ty) {
+    if (Math.abs(sy - ty) < 1.5) return `M${sx},${sy} L${tx},${sy}`;
+    const mx = (sx + tx) / 2;
+    return `M${sx},${sy} L${mx},${sy} L${mx},${ty} L${tx},${ty}`;
+  }
+  function flowAddPath(overlay, d, kind, activeFrom) {
+    const p = document.createElementNS(SVG_NS, "path");
+    p.setAttribute("d", d);
+    p.setAttribute("class", "conn-path " + kind);
+    p.dataset.activeFrom = activeFrom;
+    overlay.appendChild(p);
+  }
+  function drawFlowLines() {
+    const flowEl = document.getElementById("flow");
+    const flowOverlay = document.getElementById("flow-overlay");
+    if (!flowEl || !flowOverlay) return;
+
+    flowOverlay.querySelectorAll(".conn-path").forEach(p => p.remove());
+    const r = flowEl.getBoundingClientRect();
+    if (r.width === 0 || r.height === 0) return;
+    flowOverlay.setAttribute("viewBox", `0 0 ${r.width} ${r.height}`);
+
+    // ── Design-direction journey lines (steps 1–4): left→right, solid static, hidden at step 5 ──
+    const dConsEl  = flowEl.querySelector(".consumer-list");
+    const dJpEl    = document.getElementById("joint-product");
+    const dDpScEl  = document.getElementById("dp-scenario");
+    const dDpSsEl  = document.getElementById("dp-session");
+    const dSchScEl = document.getElementById("schema-scenario");
+    const dSchSsEl = document.getElementById("schema-session");
+    const dCtrScEl = document.getElementById("contract-scenario");
+    const dCtrSsEl = document.getElementById("contract-session");
+    if (dConsEl && dJpEl && dDpScEl && dDpSsEl && dSchScEl && dSchSsEl && dCtrScEl && dCtrSsEl) {
+      const consR  = flowRectIn(dConsEl, flowEl);
+      const jpR    = flowRectIn(dJpEl, flowEl);
+      const dpScR  = flowRectIn(dDpScEl, flowEl);
+      const dpSsR  = flowRectIn(dDpSsEl, flowEl);
+      const schScR = flowRectIn(dSchScEl, flowEl);
+      const schSsR = flowRectIn(dSchSsEl, flowEl);
+      const ctrScR = flowRectIn(dCtrScEl, flowEl);
+      const ctrSsR = flowRectIn(dCtrSsEl, flowEl);
+      // Consumer → the aggregate data product (perfectly horizontal at the joint card's centre)
+      flowAddPath(flowOverlay, hSeg(consR.right + 2, jpR.left - 6, jpR.cy), "design", 1);
+      // Data products → Schema — one perfectly horizontal line per lane (source → its schema)
+      flowAddPath(flowOverlay, hSeg(dpScR.right + 2, schScR.left - 6, dpScR.cy), "design", 2);
+      flowAddPath(flowOverlay, hSeg(dpSsR.right + 2, schSsR.left - 6, dpSsR.cy), "design", 2);
+      // Schema → Contract — one perfectly horizontal line per lane (schema → its contract)
+      flowAddPath(flowOverlay, hSeg(schScR.right + 2, ctrScR.left - 6, schScR.cy), "design", 3);
+      flowAddPath(flowOverlay, hSeg(schSsR.right + 2, ctrSsR.left - 6, schSsR.cy), "design", 3);
+    }
+
+    const jointEl      = document.getElementById("joint-product");
+    const dpScenarioEl = document.getElementById("dp-scenario");
+    const dpSessionEl  = document.getElementById("dp-session");
+    const schemaScEl   = document.getElementById("schema-scenario");
+    const schemaSsEl   = document.getElementById("schema-session");
+    const contractScEl = document.getElementById("contract-scenario");
+    const contractSsEl = document.getElementById("contract-session");
+    const producerScEl = document.getElementById("producer-scenario");
+    const producerSsEl = document.getElementById("producer-simgo");
+    const consumerMinis = flowEl.querySelectorAll(".consumer-tile .consumer-mini");
+
+    if (!jointEl || !dpScenarioEl || !dpSessionEl || !schemaScEl || !schemaSsEl ||
+        !contractScEl || !contractSsEl || !producerScEl || !producerSsEl || !consumerMinis.length) return;
+
+    const jp   = flowRectIn(jointEl, flowEl);
+    const dpsc = flowRectIn(dpScenarioEl, flowEl);
+    const dpss = flowRectIn(dpSessionEl, flowEl);
+    const psc  = flowRectIn(producerScEl, flowEl);
+    const pss  = flowRectIn(producerSsEl, flowEl);
+
+    // Pipeline endpoints (two lanes: [0] scenario, [1] session)
+    const pipes = flowEl.querySelectorAll("#ingestion-pipeline .pipe");
+    const checkpoints = flowEl.querySelectorAll("#ingestion-pipeline .checkpoint");
+    if (pipes.length < 2 || checkpoints.length < 2) return;
+    const pipe1 = flowRectIn(pipes[0], flowEl);
+    const pipe2 = flowRectIn(pipes[1], flowEl);
+    const ck1 = flowRectIn(checkpoints[0], flowEl);
+    const ck2 = flowRectIn(checkpoints[1], flowEl);
+
+    // ── Step 5: right→left data flow, producer → pipeline → products → joint → consumers.
+    // Every visible arrow segment is perfectly horizontal; merge/fan use a clean
+    // orthogonal jog (horizontal-vertical-horizontal), never a diagonal or curve.
+
+    // Producer → pipeline checkpoint (same lane → horizontal)
+    flowAddPath(flowOverlay, hSeg(psc.left - 2, ck1.right + 4, psc.cy), "producer", 4);
+    flowAddPath(flowOverlay, hSeg(pss.left - 2, ck2.right + 4, pss.cy), "producer", 4);
+
+    // Pipeline → source data product (same lane → horizontal)
+    flowAddPath(flowOverlay, hSeg(pipe1.left - 2, dpsc.right + 4, dpsc.cy), "domain", 4);
+    flowAddPath(flowOverlay, hSeg(pipe2.left - 2, dpss.right + 4, dpss.cy), "domain", 4);
+
+    // Source products → Simulation Intelligence (merge → orthogonal, horizontal into the card)
+    flowAddPath(flowOverlay, ortho(dpsc.left - 2, dpsc.cy, jp.right + 4, jp.cy), "domain", 4);
+    flowAddPath(flowOverlay, ortho(dpss.left - 2, dpss.cy, jp.right + 4, jp.cy), "domain", 4);
+
+    // Simulation Intelligence → consumers (fan-out → orthogonal, horizontal into each tile)
+    consumerMinis.forEach(mini => {
+      const tile = mini.closest(".consumer-tile");
+      const mr   = flowRectIn(mini, flowEl);
+      const tr   = tile ? flowRectIn(tile, flowEl) : mr;
+      flowAddPath(flowOverlay, ortho(jp.left - 2, jp.cy, mr.right + 4, tr.cy), "consumer", 4);
+    });
+  }
+
+  function updateFlowPaths(step) {
+    const overlay = document.getElementById("flow-overlay");
+    if (!overlay) return;
+    overlay.querySelectorAll(".conn-path").forEach(p => {
+      const from = parseInt(p.dataset.activeFrom, 10);
+      p.classList.toggle("active", step >= from);
+    });
+  }
+
+  function initFlow() {
+    requestAnimationFrame(() => {
+      drawFlowLines();
+      updateFlowPaths(typeof currentStep !== "undefined" ? currentStep : 0);
+    });
+  }
+  window.addEventListener("load", initFlow);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(initFlow);
+  }
+  window.addEventListener("resize", () => {
+    drawFlowLines();
+    updateFlowPaths(typeof currentStep !== "undefined" ? currentStep : 0);
+  });
+</script>
+
+</body>
+</html>

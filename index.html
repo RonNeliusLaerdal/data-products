@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data-products-index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+<style>
+  .data-products-index {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #666666;
+    --text-faint: #767676;
+    --border: #e5e5e5;
+    --border-strong: #cccccc;
+
+    --producer: #2e7fa1;
+    --producer-soft: #eaf3f7;
+    --domain: #14892f;
+    --domain-deep: #166534;
+    --domain-soft: #ecf6ee;
+    --consumer: #666666;
+    --highlight: #b58e45;
+    --highlight-bg: #f8e2bf;
+    --highlight-soft: #fdf7eb;
+
+    font-family: 'Lato', 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body { margin: 0; background: var(--bg); padding: 56px 24px 64px; }
+  .data-products-index .container { max-width: 1080px; margin: 0 auto; }
+
+  /* ----- Hero ----- */
+  .data-products-index .eyebrow {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--text-muted); margin-bottom: 12px;
+  }
+  .data-products-index h1 {
+    font-size: 36px; font-weight: 900;
+    line-height: 1.05; margin: 0 0 14px;
+    letter-spacing: -0.025em;
+    color: var(--text);
+  }
+  .data-products-index .lead {
+    font-size: 17px; color: var(--text-muted);
+    margin: 0 0 56px;
+    max-width: 700px;
+    line-height: 1.5;
+  }
+  .data-products-index .lead strong { color: var(--text); font-weight: 700; }
+
+  /* ----- Sections ----- */
+  .data-products-index .section {
+    margin-bottom: 44px;
+  }
+  .data-products-index .section-head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+  .data-products-index .section-num {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-faint);
+    letter-spacing: 0.16em;
+    font-family: "SF Mono", Menlo, monospace;
+  }
+  .data-products-index .section-title {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--text);
+  }
+  .data-products-index .section-blurb {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+  }
+
+  /* ----- Cards ----- */
+  .data-products-index .cards {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .data-products-index .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--border-strong);
+    border-radius: 6px;
+    padding: 18px 22px;
+    text-decoration: none;
+    color: inherit;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    column-gap: 20px;
+    row-gap: 4px;
+    transition: border-color 0.15s, transform 0.05s, box-shadow 0.15s;
+  }
+  .data-products-index .card:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+  .data-products-index .card:active { transform: translateY(1px); }
+  .data-products-index .card.master { border-left-color: var(--domain); }
+  .data-products-index .card.draft  { border-left-color: var(--highlight); }
+
+  .data-products-index .card-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.01em;
+  }
+  .data-products-index .card-desc {
+    font-size: 13.5px;
+    color: var(--text-muted);
+    grid-column: 1;
+    line-height: 1.5;
+  }
+  .data-products-index .card-meta {
+    grid-row: 1 / span 2;
+    grid-column: 2;
+    justify-self: end;
+    align-self: center;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+  .data-products-index .status {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .data-products-index .status.master {
+    background: var(--domain-soft);
+    color: var(--domain-deep);
+  }
+  .data-products-index .status.draft {
+    background: var(--highlight-bg);
+    color: var(--highlight);
+  }
+  .data-products-index .date {
+    font-size: 11px;
+    color: var(--text-faint);
+    letter-spacing: 0.04em;
+  }
+
+  /* ----- Footer ----- */
+  .data-products-index .page-footer {
+    margin-top: 56px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+
+  .data-products-index *:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 720px) {
+    .data-products-index h1 { font-size: 32px; }
+    .data-products-index .section-blurb { display: none; }
+    .data-products-index .card {
+      grid-template-columns: 1fr;
+    }
+    .data-products-index .card-meta {
+      grid-row: auto;
+      grid-column: 1;
+      justify-self: start;
+      margin-top: 6px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="data-products-index">
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Data &amp; AI strategy · updated 19.06.2026</div>
+    <h1>Our data, governed as products.</h1>
+    <p class="lead">Our mission: transform the product portfolio through <strong>governed data products</strong> — owned, documented, and built to be used.</p>
+  </header>
+
+  <!-- 00 · THE PROBLEM -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">00</span>
+      <span class="section-title">The problem</span>
+      <span class="section-blurb">Why this matters — where we are today.</span>
+    </div>
+    <div class="cards">
+      <a class="card master" href="data-journey/data-journey-today.html">
+        <div class="card-title">The data journey, today</div>
+        <div class="card-meta">
+          <span class="status master">Master</span>
+          <span class="date">19.06.2026</span>
+        </div>
+        <div class="card-desc">Data shipped with no owner, contract, or schema — why it breaks, and the value left on the table.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 01 · FOUNDATIONS -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">01</span>
+      <span class="section-title">Foundations</span>
+      <span class="section-blurb">The building blocks every other artefact refers to.</span>
+    </div>
+    <div class="cards">
+      <a class="card master" href="data-mesh-principles.html">
+        <div class="card-title">Data you can trust, by design</div>
+        <div class="card-meta">
+          <span class="status master">Master</span>
+          <span class="date">19.06.2026</span>
+        </div>
+        <div class="card-desc">Data mesh — four principles that make every data product owned, documented, and built to be used.</div>
+      </a>
+      <a class="card draft" href="governance-model/data-product-definition.html">
+        <div class="card-title">Data product definition</div>
+        <div class="card-meta">
+          <span class="status draft">Draft</span>
+          <span class="date">20.05.2026</span>
+        </div>
+        <div class="card-desc">What it takes to be a governed data product — identity, composition, value, access, compliance, life cycle, quality. Illustrated with Session.</div>
+      </a>
+      <a class="card draft" href="governance-model/data-contract-definition.html">
+        <div class="card-title">Data contract definition</div>
+        <div class="card-meta">
+          <span class="status draft">Draft</span>
+          <span class="date">20.05.2026</span>
+        </div>
+        <div class="card-desc">The template every producer signs: identity, composition, access &amp; governance, compliance, quality &amp; support.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 02 · ARCHITECTURE -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">02</span>
+      <span class="section-title">Architecture</span>
+      <span class="section-blurb">The map — what data we have, and how it's organised.</span>
+    </div>
+    <div class="cards">
+      <a class="card draft" href="governance-model/domain-map.html">
+        <div class="card-title">Domain map</div>
+        <div class="card-meta">
+          <span class="status draft">Draft</span>
+          <span class="date">20.05.2026</span>
+        </div>
+        <div class="card-desc">15 data domains, their subdomains, and the data products inside them. Click any domain to dive in.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 03 · PROCESS -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">03</span>
+      <span class="section-title">Process</span>
+      <span class="section-blurb">How data moves from producers to value — and what teams have to do.</span>
+    </div>
+    <div class="cards">
+      <a class="card master" href="data-journey/data-journey-ideal.html">
+        <div class="card-title">The data journey, done right</div>
+        <div class="card-meta">
+          <span class="status master">Master</span>
+          <span class="date">19.06.2026</span>
+        </div>
+        <div class="card-desc">How a product team's data becomes a trusted product — from producer, through one contract, to every consumer.</div>
+      </a>
+      <a class="card master" href="data-journey/from-single-product-to-cross-product-domains.html">
+        <div class="card-title">From single-product to cross-product domains</div>
+        <div class="card-meta">
+          <span class="status master">Master</span>
+          <span class="date">19.06.2026</span>
+        </div>
+        <div class="card-desc">How governed single products scale into a shared domain — one owner, one canonical schema, one trusted cross-product product.</div>
+      </a>
+      <a class="card master" href="data-journey/data-product-journey.html">
+        <div class="card-title">From consumer need to data product</div>
+        <div class="card-meta">
+          <span class="status master">Master</span>
+          <span class="date">19.06.2026</span>
+        </div>
+        <div class="card-desc">Start from the consumer need, design backwards — step by step through products, schema, and contract to the producer.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- 04 · POLICY -->
+  <section class="section">
+    <div class="section-head">
+      <span class="section-num">04</span>
+      <span class="section-title">Policy</span>
+      <span class="section-blurb">Which path data should take. Decisions on the table.</span>
+    </div>
+    <div class="cards">
+      <a class="card draft" href="governance-model/mcp-data-paths.html">
+        <div class="card-title">How data flows to and from AI agents</div>
+        <div class="card-meta">
+          <span class="status draft">Draft</span>
+          <span class="date">28.05.2026</span>
+        </div>
+        <div class="card-desc">Two read paths, one action loop. Plus Laerdal's MCP policy and FAQ.</div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="page-footer">
+    Confidential · Laerdal Medical
+  </footer>
+
+</div>
+</div>
+
+</body>
+</html>

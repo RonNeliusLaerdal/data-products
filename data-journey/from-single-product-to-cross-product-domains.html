@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>single-to-cross-product-domains</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+<style>
+.s2c {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --text: #1a1a1a;
+  --text-muted: #666666;
+  --text-faint: #767676;
+  --border: #e5e5e5;
+  --border-strong: #cccccc;
+
+  --producer: #2e7fa1;
+  --producer-soft: #e8f1f6;
+  --consumer: #666666;
+  --consumer-soft: #f0f0f0;
+  --domain: #14892f;
+  --domain-deep: #166534;
+  --domain-soft: #e3f3e6;
+  --domain-mid: #d0ecd5;
+  --highlight: #b58e45;
+  --highlight-bg: #f8e2bf;
+  --highlight-soft: #fdf7eb;
+  --amber: #b45309;
+  --amber-soft: #fef3e6;
+  --amber-border: #f0d3a8;
+
+  font-family: 'Lato', 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text); line-height: 1.5; -webkit-font-smoothing: antialiased;
+}
+body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
+.s2c .container { max-width: 1080px; margin: 0 auto; }
+
+/* header */
+.s2c .eyebrow { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em; color: var(--domain-deep); margin-bottom: 10px; }
+.s2c h1 { font-size: 36px; font-weight: 900; line-height: 1.08; margin: 0 0 14px; letter-spacing: -0.025em; }
+.s2c .subtitle { font-size: 16px; color: var(--text-muted); margin: 0; max-width: 700px; line-height: 1.55; }
+.s2c .subtitle strong { color: var(--text); font-weight: 700; }
+
+/* state block */
+.s2c .state { margin-top: 40px; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 24px 24px 28px; }
+.s2c .state-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
+.s2c .snum { font-size: 12px; font-weight: 700; letter-spacing: 0.16em; color: var(--text-faint); font-family: "SF Mono", Menlo, monospace; }
+.s2c .stitle { font-size: 19px; font-weight: 800; letter-spacing: -0.015em; }
+.s2c .ssub { font-size: 13.5px; color: var(--text-muted); line-height: 1.5; max-width: 760px; margin-bottom: 20px; }
+.s2c .ssub strong { color: var(--text); font-weight: 700; }
+
+/* flow grid: row1 labels · row2 objects (arrows centred here) · row3 notes */
+.s2c .flow { display: grid; align-items: center; justify-items: center; justify-content: center; column-gap: 14px; row-gap: 12px; padding: 4px 2px; }
+.s2c .lab { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; text-align: center; align-self: end; }
+.s2c .lab.producer { color: var(--producer); }
+.s2c .lab.domain { color: var(--domain-deep); }
+.s2c .lab.consumer { color: var(--consumer); }
+.s2c .lab.amber { color: var(--amber); }
+.s2c .node { align-self: center; }
+.s2c .note { align-self: start; margin-top: 6px; font-size: 10px; color: var(--text-faint); font-style: italic; text-align: center; max-width: 150px; line-height: 1.3; }
+
+/* stacked producers / contracts / products */
+/* every box in a column takes the width of the widest, and is centred */
+.s2c .stack { align-self: stretch; display: flex; flex-direction: column; justify-content: space-around; height: 100%; min-height: 190px; align-items: stretch; }
+/* state 3 stacks are taller (contracts carry two stacked schemas) — give them more height for clean gaps.
+   every column in the s3 row shares one height so arrows/stubs land on box centres (space-around → centres at H/6, H/2, 5H/6) */
+.s2c .flow.s3 .stack, .s2c .flow.s3 .consumer-list, .s2c .flow.s3 .conn-rows, .s2c .flow.s3 .merge, .s2c .flow.s3 .fan { min-height: 330px; }
+
+/* producer */
+.s2c .icon-row { display: grid; grid-template-columns: 34px auto; gap: 10px; align-items: center; }
+.s2c .icon-row .icon { width: 34px; height: 34px; border: 1.5px solid var(--producer); border-radius: 4px; display: grid; place-items: center; background: var(--producer-soft); color: var(--producer); }
+.s2c .icon-row .name { display: block; font-size: 12px; font-weight: 700; line-height: 1.15; }
+.s2c .icon-row .desc { display: block; font-size: 9.5px; color: var(--text-muted); margin-top: 1px; }
+
+/* contract card (signed) */
+.s2c .contract { position: relative; border: 1.5px solid var(--domain); border-radius: 3px; background: #fdfcf7; padding: 8px 10px; min-width: 132px; text-align: left; box-shadow: 1px 1px 0 rgba(0,0,0,0.04); }
+.s2c .contract::before { content: ""; position: absolute; top: 0; right: 0; width: 11px; height: 11px; background: linear-gradient(135deg, transparent 50%, var(--domain-soft) 50%); border-left: 1px solid var(--domain-mid); border-bottom: 1px solid var(--domain-mid); }
+.s2c .contract .cname { font-size: 11.5px; font-weight: 700; }
+.s2c .contract .cev { display: block; width: fit-content; font-family: "SF Mono", Menlo, monospace; font-size: 9px; background: rgba(20,137,47,0.10); color: var(--domain-deep); padding: 2px 6px; border-radius: 3px; margin-top: 6px; }
+.s2c .contract .cev.canonical { background: var(--highlight-bg); color: var(--highlight); }
+.s2c .contract .cev.source { background: var(--producer-soft); color: var(--producer); }
+.s2c .contract .csig { display: flex; align-items: center; gap: 4px; margin-top: 8px; font-size: 9.5px; font-weight: 700; color: var(--domain-deep); }
+.s2c .contract .csig .who { color: var(--text-muted); font-weight: 400; }
+
+/* product / catalog card */
+.s2c .catalog { display: flex; flex-direction: column; align-items: center; gap: 3px; border: 1.5px solid var(--domain); border-radius: 4px; background: var(--surface); padding: 9px 12px; color: var(--domain); min-width: 104px; }
+.s2c .catalog .cat-name { font-size: 12px; font-weight: 700; color: var(--text); }
+.s2c .catalog .cat-id { font-family: "SF Mono", Menlo, monospace; font-size: 8px; color: var(--text-muted); }
+/* domain-owned product (state 3): gold accent + owner badge */
+.s2c .catalog.owned { border-color: var(--highlight); box-shadow: 0 0 0 3px var(--highlight-soft); }
+.s2c .catalog .owner-tag { font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; background: var(--highlight-bg); color: var(--highlight); padding: 2px 7px; border-radius: 3px; }
+
+/* pipeline */
+.s2c .pipe-mini { display: flex; align-items: center; justify-content: center; }
+.s2c .pipe-mini .checkpoint { flex: 0 0 auto; position: relative; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; border: 1.5px solid var(--domain); background: var(--domain); color: #fff; z-index: 2; margin-right: -8px; }
+.s2c .pipe-mini .schema-label { position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--domain-deep); white-space: nowrap; }
+.s2c .pipe-mini .pipe { position: relative; width: 56px; height: 15px; border-radius: 8px; overflow: hidden; background: linear-gradient(to bottom, #f0f0f0, #dedede 30%, #bababa 70%, #a4a4a4); border: 1px solid #999; }
+.s2c .pipe-mini .pipe::after { content: ""; position: absolute; top: 50%; left: 0; right: 0; height: 6px; transform: translateY(-50%); background: linear-gradient(90deg, transparent, rgba(20,137,47,0.55), transparent); }
+
+/* consumer chip */
+.s2c .consumer-list { display: flex; flex-direction: column; justify-content: space-around; height: 100%; min-height: 124px; align-items: stretch; }
+.s2c .chip { display: grid; grid-template-columns: 28px auto; gap: 10px; align-items: center; }
+.s2c .chip .mini { width: 28px; height: 28px; border: 1px solid var(--consumer); border-radius: 4px; background: var(--consumer-soft); display: grid; place-items: center; color: var(--consumer); }
+.s2c .chip .name { font-size: 12px; font-weight: 700; line-height: 1.2; }
+.s2c .chip .says { display: block; font-size: 9.5px; color: var(--domain-deep); line-height: 1.35; margin-top: 3px; max-width: 175px; }
+.s2c .chip.want .mini { border-color: var(--amber); color: var(--amber); background: var(--amber-soft); }
+.s2c .chip.want .says { color: var(--amber); font-weight: 700; max-width: none; white-space: nowrap; }
+
+/* connectors -------------------------------------------------- */
+/* single arrow */
+.s2c .conn { align-self: center; position: relative; height: 2px; width: 100%; min-width: 26px; }
+.s2c .conn::before { content: ""; position: absolute; top: 50%; left: 0; right: 7px; transform: translateY(-50%); border-top: 2px solid var(--domain); }
+.s2c .conn::after { content: ""; position: absolute; top: 50%; right: 0; transform: translateY(-50%); border-left: 7px solid var(--domain); border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
+
+/* multi-row: one .conn arrow per stacked row (producer → its own contract / pipeline) */
+.s2c .conn-rows { align-self: stretch; display: flex; flex-direction: column; justify-content: space-around; height: 100%; min-height: 190px; }
+
+/* merge: three inputs → one output — exact mirror of .fan (orthogonal, height-independent) */
+.s2c .merge { align-self: stretch; position: relative; width: 100%; min-height: 190px; }
+.s2c .merge .b { position: absolute; left: 1px; width: 50%; border-top: 2px solid var(--domain); }
+.s2c .merge .b.top { top: 17%; } .s2c .merge .b.mid { top: 50%; } .s2c .merge .b.bot { top: 83%; }
+.s2c .merge .riser { position: absolute; left: 50%; top: 17%; bottom: 17%; border-left: 2px solid var(--domain); }
+.s2c .merge::before { content: ""; position: absolute; top: 50%; left: 50%; right: 7px; transform: translateY(-1px); border-top: 2px solid var(--domain); }
+.s2c .merge::after { content: ""; position: absolute; top: 50%; right: 0; transform: translateY(-50%); border-left: 7px solid var(--domain); border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
+.s2c .merge.friction .b, .s2c .merge.friction::before { border-top-color: var(--amber); border-top-style: dashed; }
+.s2c .merge.friction .riser { border-left-style: dashed; border-left-color: var(--amber); }
+.s2c .merge.friction::after { border-left-color: var(--amber); }
+
+/* fan: one input → two consumers — horizontal trunk, short bridge, horizontal branches + arrowheads (ideal-page style) */
+.s2c .fan { align-self: stretch; position: relative; width: 100%; min-height: 124px; }
+.s2c .fan::before { content: ""; position: absolute; top: 50%; left: 0; width: 50%; transform: translateY(-1px); border-top: 2px solid var(--domain); }
+.s2c .fan .riser { position: absolute; left: 50%; top: 25%; bottom: 25%; border-left: 2px solid var(--domain); }
+.s2c .fan .b { position: absolute; left: 50%; right: 1px; border-top: 2px solid var(--domain); }
+.s2c .fan .b.top { top: 25%; } .s2c .fan .b.bot { top: 75%; }
+.s2c .fan .b::after { content: ""; position: absolute; right: -1px; top: 50%; transform: translateY(-50%); border-left: 7px solid var(--domain); border-top: 4px solid transparent; border-bottom: 4px solid transparent; }
+
+/* ownership legend (state 3) */
+.s2c .own-legend { display: flex; flex-wrap: wrap; justify-content: center; gap: 22px; margin-top: 14px; font-size: 11px; color: var(--text-muted); }
+.s2c .own-legend .item { display: flex; align-items: center; gap: 8px; }
+.s2c .own-legend .sw { width: 12px; height: 12px; border-radius: 3px; flex: 0 0 auto; }
+.s2c .own-legend .sw.prod { background: var(--producer-soft); border: 1.5px solid var(--producer); }
+.s2c .own-legend .sw.dom { background: var(--highlight-bg); border: 1.5px solid var(--highlight); }
+.s2c .own-legend code { font-family: "SF Mono", Menlo, monospace; font-size: 10px; background: var(--consumer-soft); color: var(--text); padding: 1px 5px; border-radius: 3px; }
+.s2c .own-legend strong { color: var(--text); font-weight: 700; }
+
+/* forward + footer */
+.s2c .next-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 44px; }
+.s2c .next-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-faint); }
+.s2c .next-link { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 6px; padding: 9px 14px; text-decoration: none; color: var(--domain-deep); font-size: 13px; font-weight: 700; transition: border-color 0.15s, box-shadow 0.15s; }
+.s2c .next-link:hover { border-color: var(--domain); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.s2c .next-link .arrow { color: var(--domain); }
+.s2c .page-footer { margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 11px; color: var(--text-faint); display: flex; justify-content: space-between; align-items: center; }
+.s2c .back-link { color: var(--text-faint); text-decoration: none; }
+.s2c .back-link:hover { color: var(--text); }
+.s2c *:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+@media (max-width: 900px) {
+  .s2c h1 { font-size: 28px; }
+  .s2c .flow { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+  .s2c .flow .conn, .s2c .flow .conn-rows, .s2c .flow .merge, .s2c .flow .fan { display: none; }
+  .s2c .stack, .s2c .consumer-list { min-height: 0; height: auto; gap: 12px; }
+  .s2c .lab { align-self: center; margin-top: 4px; }
+}
+.s2c .sources { margin-top: 22px; font-size: 12px; color: var(--text-muted); }
+.s2c .sources summary { cursor: pointer; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-faint); padding: 6px 0; list-style: none; }
+.s2c .sources summary::-webkit-details-marker { display: none; }
+.s2c .sources summary::before { content: "▸  "; color: var(--text-faint); }
+.s2c .sources[open] summary::before { content: "▾  "; }
+.s2c .sources ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 7px; max-width: 920px; }
+.s2c .sources li { line-height: 1.5; padding-left: 14px; position: relative; }
+.s2c .sources li::before { content: "·"; position: absolute; left: 4px; color: var(--text-faint); font-weight: 700; }
+.s2c .sources .src-title { font-weight: 700; color: var(--text); }
+.s2c .sources .src-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+.s2c .sources .src-note { font-style: italic; color: var(--text-faint); font-size: 11px; margin-top: 10px; display: block; }
+</style>
+</head>
+<body>
+
+<div class="s2c">
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Data &amp; AI strategy · scaling the model</div>
+    <h1>From single products to a shared domain.</h1>
+    <p class="subtitle">Each producer's data is already a <strong>governed product</strong>. When several of them need one shared concept, a <strong>cross-product domain</strong> owns the canonical definition they all follow.</p>
+  </header>
+
+  <!-- ════ STATE 1 ════ -->
+  <div class="state">
+    <div class="state-head">
+      <span class="snum">01</span>
+      <span class="stitle">A governed single product</span>
+    </div>
+    <div class="ssub">Building on the source-aligned data journey: <strong>one producer</strong> publishes its own data with a contract, schema, and owner — governed end to end.</div>
+
+    <div class="flow" style="grid-template-columns:auto 30px auto 30px auto 30px auto 34px auto; grid-template-rows:20px auto auto;">
+      <div class="lab producer" style="grid-column:1;grid-row:1;">Producer</div>
+      <div class="node" style="grid-column:1;grid-row:2;">
+        <div class="icon-row">
+          <div class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></div>
+          <div><span class="name">HPCPR</span><span class="desc">CPR training</span></div>
+        </div>
+      </div>
+
+      <div class="conn" style="grid-column:2;grid-row:2;"></div>
+
+      <div class="lab domain" style="grid-column:3;grid-row:1;">Contract</div>
+      <div class="node" style="grid-column:3;grid-row:2;">
+        <div class="contract">
+          <div class="cname">Data Contract</div>
+          <span class="cev source">schema:product-signals:v1</span>
+          <div class="csig"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>Signed <span class="who">· HPCPR</span></div>
+        </div>
+      </div>
+
+      <div class="conn" style="grid-column:4;grid-row:2;"></div>
+
+      <div class="lab domain" style="grid-column:5;grid-row:1;">Pipeline</div>
+      <div class="node" style="grid-column:5;grid-row:2;">
+        <div class="pipe-mini"><div class="checkpoint"><span class="schema-label">Schema</span><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></div><div class="pipe"></div></div>
+      </div>
+
+      <div class="conn" style="grid-column:6;grid-row:2;"></div>
+
+      <div class="lab domain" style="grid-column:7;grid-row:1;">Catalog</div>
+      <div class="node" style="grid-column:7;grid-row:2;">
+        <div class="catalog">
+          <svg viewBox="0 0 48 48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="11" rx="14" ry="4.5"/><path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/><path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/></svg>
+          <div class="cat-name">Product Signals</div>
+          <div class="cat-id">dp:product-signals:v1</div>
+        </div>
+      </div>
+
+      <div class="conn" style="grid-column:8;grid-row:2;"></div>
+
+      <div class="lab consumer" style="grid-column:9;grid-row:1;">Consumer</div>
+      <div class="node" style="grid-column:9;grid-row:2;">
+        <div class="chip">
+          <div class="mini"><svg viewBox="0 0 36 28" width="20" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="32" height="24" rx="1.5"/><line x1="2" y1="22" x2="34" y2="22"/><rect x="6" y="14" width="3" height="8" fill="currentColor"/><rect x="12" y="10" width="3" height="12" fill="currentColor"/><rect x="18" y="6" width="3" height="16" fill="currentColor"/><rect x="24" y="12" width="3" height="10" fill="currentColor"/></svg></div>
+          <div><span class="name">HPCPR team</span><span class="says">Uses its own governed product.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ STATE 2 ════ -->
+  <div class="state">
+    <div class="state-head">
+      <span class="snum">02</span>
+      <span class="stitle">Many products, separate domains</span>
+    </div>
+    <div class="ssub">Three producers, <strong>each governing its own data well</strong> — but each defines <em>session</em> its own way. The gap isn't quality, it's a <strong>shared definition</strong>: when several consumers need one view across all three, that's the case for a <strong>cross-product domain</strong>.</div>
+
+    <div class="flow" style="grid-template-columns:auto 44px auto 96px auto; grid-template-rows:20px auto;">
+      <div class="lab producer" style="grid-column:1;grid-row:1;">Producers</div>
+      <div class="node stack" style="grid-column:1;grid-row:2;">
+        <div class="icon-row"><div class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></div><div><span class="name">HPCPR</span><span class="desc">CPR training</span></div></div>
+        <div class="icon-row"><div class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="2.5"/><path d="M12 8.5v6"/><path d="M8 11l4-2 4 2"/><path d="M9 21l3-6 3 6"/></svg></div><div><span class="name">SimGo / LENS</span><span class="desc">Sim scenarios</span></div></div>
+        <div class="icon-row"><div class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M14 7h6v6"/></svg></div><div><span class="name">SimToImprove</span><span class="desc">QI training</span></div></div>
+      </div>
+
+      <div class="conn-rows" style="grid-column:2;grid-row:2;"><div class="conn"></div><div class="conn"></div><div class="conn"></div></div>
+
+      <div class="lab domain" style="grid-column:3;grid-row:1;">Data Products</div>
+      <div class="node stack" style="grid-column:3;grid-row:2;">
+        <div class="catalog"><div class="cat-name">HPCPR Signals</div><div class="cat-id">schema:product-signals:v1</div></div>
+        <div class="catalog"><div class="cat-name">SimGo Signals</div><div class="cat-id">schema:product-signals:v1</div></div>
+        <div class="catalog"><div class="cat-name">S2I Signals</div><div class="cat-id">schema:product-signals:v1</div></div>
+      </div>
+
+      <div class="merge friction" style="grid-column:4;grid-row:2;"><span class="b top"></span><span class="b mid"></span><span class="b bot"></span><span class="riser"></span></div>
+
+      <div class="lab amber" style="grid-column:5;grid-row:1;">Consumer</div>
+      <div class="node" style="grid-column:5;grid-row:2;">
+        <div class="chip want">
+          <div class="mini"><svg viewBox="0 0 36 28" width="20" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="10" r="4"/><circle cx="24" cy="10" r="4"/><path d="M4 24c0-4 4-6 8-6s8 2 8 6"/><path d="M16 24c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          <div><span class="name">Cross-product profile</span><span class="says">Needs one Session — but gets three.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════ STATE 3 ════ -->
+  <div class="state">
+    <div class="state-head">
+      <span class="snum">03</span>
+      <span class="stitle">A cross-product domain, governed</span>
+    </div>
+    <div class="ssub">A <strong>Domain Owner — Engagement &amp; Usage</strong> — owns the canonical <em>Session</em> schema. Each producer <strong>adds it to their contract</strong> alongside their own product signals, so three pipelines converge into one trusted <strong>Session</strong> product that serves every consumer, human or AI.</div>
+
+    <div class="flow s3" style="grid-template-columns:auto 30px auto 30px auto 84px auto 64px auto; grid-template-rows:20px auto;">
+      <div class="lab producer" style="grid-column:1;grid-row:1;">Producers</div>
+      <div class="node stack" style="grid-column:1;grid-row:2;">
+        <div class="icon-row"><div class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-6 4 12 2-6h6"/></svg></div><div><span class="name">HPCPR</span><span class="desc">CPR training</span></div></div>
+        <div class="icon-row"><div class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="6" r="2.5"/><path d="M12 8.5v6"/><path d="M8 11l4-2 4 2"/><path d="M9 21l3-6 3 6"/></svg></div><div><span class="name">SimGo / LENS</span><span class="desc">Sim scenarios</span></div></div>
+        <div class="icon-row"><div class="icon"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-5 4 4 8-9"/><path d="M14 7h6v6"/></svg></div><div><span class="name">SimToImprove</span><span class="desc">QI training</span></div></div>
+      </div>
+
+      <div class="conn-rows" style="grid-column:2;grid-row:2;"><div class="conn"></div><div class="conn"></div><div class="conn"></div></div>
+
+      <div class="lab domain" style="grid-column:3;grid-row:1;">Contracts · one schema</div>
+      <div class="node stack" style="grid-column:3;grid-row:2;">
+        <div class="contract"><div class="cname">Data Contract</div><span class="cev source">schema:product-signals:v1</span><span class="cev canonical">schema:session:v1</span><div class="csig"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>Signed <span class="who">· HPCPR</span></div></div>
+        <div class="contract"><div class="cname">Data Contract</div><span class="cev source">schema:product-signals:v1</span><span class="cev canonical">schema:session:v1</span><div class="csig"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>Signed <span class="who">· SimGo</span></div></div>
+        <div class="contract"><div class="cname">Data Contract</div><span class="cev source">schema:product-signals:v1</span><span class="cev canonical">schema:session:v1</span><div class="csig"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg>Signed <span class="who">· S2I</span></div></div>
+      </div>
+
+      <div class="conn-rows" style="grid-column:4;grid-row:2;"><div class="conn"></div><div class="conn"></div><div class="conn"></div></div>
+
+      <div class="lab domain" style="grid-column:5;grid-row:1;">Pipelines</div>
+      <div class="node stack" style="grid-column:5;grid-row:2;">
+        <div class="pipe-mini"><div class="checkpoint"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></div><div class="pipe"></div></div>
+        <div class="pipe-mini"><div class="checkpoint"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></div><div class="pipe"></div></div>
+        <div class="pipe-mini"><div class="checkpoint"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="5 12 10 17 19 7"/></svg></div><div class="pipe"></div></div>
+      </div>
+
+      <div class="merge" style="grid-column:6;grid-row:2;"><span class="b top"></span><span class="b mid"></span><span class="b bot"></span><span class="riser"></span></div>
+
+      <div class="lab domain" style="grid-column:7;grid-row:1;">Catalog</div>
+      <div class="node" style="grid-column:7;grid-row:2;">
+        <div class="catalog owned">
+          <span class="owner-tag">Owned by E&amp;U</span>
+          <svg viewBox="0 0 48 48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="11" rx="14" ry="4.5"/><path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/><path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/></svg>
+          <div class="cat-name">Session</div>
+          <div class="cat-id">dp:session:v1</div>
+        </div>
+      </div>
+
+      <div class="fan" style="grid-column:8;grid-row:2;"><span class="riser"></span><span class="b top"></span><span class="b bot"></span></div>
+
+      <div class="lab consumer" style="grid-column:9;grid-row:1;">Consumers</div>
+      <div class="node consumers" style="grid-column:9;grid-row:2; align-self:stretch;">
+        <div class="consumer-list">
+          <div class="chip"><div class="mini"><svg viewBox="0 0 36 28" width="20" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="32" height="24" rx="1.5"/><line x1="2" y1="22" x2="34" y2="22"/><rect x="6" y="14" width="3" height="8" fill="currentColor"/><rect x="12" y="10" width="3" height="12" fill="currentColor"/><rect x="18" y="6" width="3" height="16" fill="currentColor"/><rect x="24" y="12" width="3" height="10" fill="currentColor"/></svg></div><div><span class="name">Cross-product profile</span><span class="says">One consistent Session.</span></div></div>
+          <div class="chip"><div class="mini"><svg viewBox="0 0 36 28" width="20" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="18" height="13" rx="2"/><line x1="18" y1="4" x2="18" y2="9"/><circle cx="18" cy="3" r="1.6"/><circle cx="14" cy="15" r="1.6" fill="currentColor"/><circle cx="22" cy="15" r="1.6" fill="currentColor"/><line x1="9" y1="14" x2="6" y2="14"/><line x1="27" y1="14" x2="30" y2="14"/></svg></div><div><span class="name">AI agent</span><span class="says">Reliable, governed input.</span></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="own-legend">
+      <div class="item"><span class="sw prod"></span>Each <strong>producer</strong> owns its source signals — <code>product-signals</code></div>
+      <div class="item"><span class="sw dom"></span><strong>Engagement &amp; Usage</strong> owns the canonical <code>session</code> schema and the Session product</div>
+    </div>
+  </div>
+
+  <!-- forward -->
+  <div class="next-row">
+    <span class="next-label">Next</span>
+    <a class="next-link" href="../governance-model/data-product-definition.html">What's in the data product <span class="arrow">→</span></a>
+    <a class="next-link" href="../governance-model/domain-map.html">The domain map <span class="arrow">→</span></a>
+  </div>
+
+  <details class="sources">
+    <summary>Sources &amp; further reading</summary>
+    <ul>
+      <li><span class="src-title">Zhamak Dehghani — Data Mesh: Delivering Data-Driven Value at Scale</span> (O'Reilly, 2022). Source-aligned vs aggregated domain archetypes — the conceptual basis for the three-state transition shown here.</li>
+      <li><span class="src-title">Gartner — Reference Architecture Brief: Data Products</span> (L. Ferguson, Aug 2025) <span class="src-tag">internal</span>. Source / Master / Insights product types — the taxonomy underpinning the domain classification.</li>
+    </ul>
+    <span class="src-note">Gartner items are confidential subscription material — internal reference only.</span>
+  </details>
+
+  <footer class="page-footer">
+    <a class="back-link" href="../index.html">← Overview</a>
+    <span>Confidential · Laerdal Medical · 19.06.2026</span>
+  </footer>
+
+</div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data-journey-today</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+<style>
+.data-journey-today {
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --text: #1a1a1a;
+  --text-muted: #666666;
+  --text-faint: #767676;
+  --border: #e5e5e5;
+  --border-strong: #cccccc;
+
+  --producer: #2e7fa1;
+  --producer-soft: #e8f1f6;
+  --consumer: #666666;
+  --consumer-soft: #f0f0f0;
+  --domain: #14892f;
+  --domain-deep: #166534;
+  --domain-soft: #e3f3e6;
+  --domain-mid: #d0ecd5;
+  --highlight: #b58e45;
+  --highlight-bg: #f8e2bf;
+  --rule: #d8d8d8;
+  --rule-soft: #ececec;
+
+  --problem: #b91c1c;
+  --problem-soft: #d4453f;
+  --problem-bg: #fdeceb;
+  --problem-border: #eec4c1;
+
+  font-family: 'Lato', 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
+.data-journey-today .container { max-width: 1080px; margin: 0 auto; }
+
+/* ---- Header ---- */
+.data-journey-today .eyebrow {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--problem); margin-bottom: 10px;
+}
+.data-journey-today h1 {
+  font-size: 36px; font-weight: 900;
+  line-height: 1.08; margin: 0 0 14px;
+  letter-spacing: -0.025em;
+}
+.data-journey-today .subtitle {
+  font-size: 16px; color: var(--text-muted);
+  margin: 0 0 8px; max-width: 680px;
+  line-height: 1.55;
+}
+.data-journey-today .subtitle strong { color: var(--text); font-weight: 700; }
+
+/* ---- Section scaffolding ---- */
+.data-journey-today .section { margin-top: 44px; }
+.data-journey-today .section-label {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.18em;
+  color: var(--text-faint);
+  margin-bottom: 16px;
+}
+
+/* ---- Broken journey diagram ---- */
+.data-journey-today .journey {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 26px 24px 30px;
+}
+/* ---- Broken journey flow (mirrors the master) ---- */
+.data-journey-today .flow {
+  display: grid;
+  grid-template-columns: auto 34px auto 34px auto 34px auto 50px auto;
+  grid-template-rows: 22px auto auto;   /* labels · objects · notes */
+  align-items: center;
+  justify-items: center;
+  justify-content: center;
+  column-gap: 6px; row-gap: 10px;
+  padding: 6px 4px 4px;
+}
+
+/* stage caption labels (row 1) */
+.data-journey-today .cap {
+  font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.1em;
+  text-align: center; align-self: end;
+}
+.data-journey-today .cap.producer { color: var(--producer); }
+.data-journey-today .cap.consumer { color: var(--consumer); }
+.data-journey-today .cap.present-cap { color: var(--text-faint); }
+.data-journey-today .cap.struck {
+  color: var(--problem);
+}
+
+/* objects sit in row 2 and are vertically centred; the connector arrows point
+   at their centre. Labels (row 1) and notes (row 3) never affect that centring. */
+.data-journey-today .obj { align-self: center; }
+.data-journey-today .note {
+  align-self: start; margin-top: 6px;
+  font-size: 10px; color: var(--text-faint); font-style: italic;
+  text-align: center; max-width: 150px; line-height: 1.3;
+}
+
+/* connector arrows (row 2, between stages) */
+.data-journey-today .conn {
+  align-self: center; position: relative; height: 2px; width: 100%; min-width: 28px;
+}
+.data-journey-today .conn::before {
+  content: ""; position: absolute; top: 50%; left: 0; right: 7px; transform: translateY(-50%);
+  border-top: 2px dashed var(--problem-soft);
+}
+.data-journey-today .conn::after {
+  content: ""; position: absolute; top: 50%; right: 0; transform: translateY(-50%);
+  border-left: 7px solid var(--problem-soft);
+  border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+}
+
+/* producer (icon-row, borrowed) */
+.data-journey-today .icon-row {
+  display: grid; grid-template-columns: 38px auto; gap: 12px; align-items: center;
+}
+.data-journey-today .icon-row .icon {
+  width: 38px; height: 38px; border: 1.5px solid var(--producer); border-radius: 4px;
+  display: grid; place-items: center; background: var(--producer-soft); color: var(--producer);
+}
+.data-journey-today .icon-row .info .name { display: block; font-size: 12.5px; font-weight: 700; line-height: 1.2; }
+.data-journey-today .icon-row .info .desc { display: block; font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+/* contract — rendered missing (echoes .contract-card) */
+.data-journey-today .contract-ghost {
+  position: relative; border: 1.5px dashed var(--problem-border); border-radius: 3px;
+  background: var(--surface); padding: 9px 11px; min-width: 122px; text-align: left;
+}
+.data-journey-today .contract-ghost::before {
+  content: ""; position: absolute; top: 0; right: 0; width: 11px; height: 11px;
+  background: linear-gradient(135deg, transparent 50%, var(--problem-bg) 50%);
+  border-left: 1px solid var(--problem-border); border-bottom: 1px solid var(--problem-border);
+}
+.data-journey-today .cg-head { padding-bottom: 5px; border-bottom: 1px dashed var(--problem-border); }
+.data-journey-today .cg-name {
+  font-size: 12px; font-weight: 700; color: var(--problem);
+}
+.data-journey-today .cg-sig {
+  font-family: "SF Mono", Menlo, monospace; font-size: 9px; color: var(--problem-soft); margin-top: 6px;
+}
+
+/* pipeline — present but inert: master's checkpoint + tube, grey and empty */
+.data-journey-today .pipe-mini { display: flex; align-items: center; }
+.data-journey-today .pipe-mini .checkpoint {
+  flex: 0 0 auto; position: relative; display: grid; place-items: center;
+  width: 34px; height: 34px; border-radius: 50%;
+  border: 1.5px dashed var(--border-strong); background: var(--surface);
+  z-index: 2; margin-right: -8px;
+}
+.data-journey-today .pipe-mini .schema-label {
+  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+  margin-bottom: 6px; font-size: 9px; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--text-faint); white-space: nowrap;
+}
+.data-journey-today .pipe-mini .pipe {
+  width: 64px; height: 16px; border-radius: 8px;
+  background: linear-gradient(to bottom, #f0f0f0 0%, #dedede 30%, #bababa 70%, #a4a4a4 100%);
+  border: 1px solid #999; box-shadow: inset 0 1px 2px rgba(0,0,0,0.12);
+}
+/* catalog — present, undefined */
+.data-journey-today .catalog-ghost {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  border: 1.5px solid var(--border-strong); border-radius: 4px; background: var(--surface);
+  padding: 10px 12px; color: var(--text-faint); min-width: 92px;
+}
+.data-journey-today .catalog-ghost .cat-name { font-size: 12px; font-weight: 700; color: var(--problem); font-style: italic; }
+
+/* consumers — two clean horizontal chips, one arrow to each */
+.data-journey-today .obj.consumers { align-self: stretch; }
+.data-journey-today .consumer-list {
+  display: flex; flex-direction: column; justify-content: space-around;
+  height: 100%; min-height: 124px; align-items: flex-start;
+}
+.data-journey-today .consumer-chip {
+  display: grid; grid-template-columns: 30px auto; gap: 11px; align-items: center;
+}
+.data-journey-today .consumer-chip .mini {
+  width: 30px; height: 30px; border: 1px solid var(--consumer); border-radius: 4px;
+  background: var(--consumer-soft); display: grid; place-items: center; color: var(--consumer);
+}
+.data-journey-today .consumer-chip .name { font-size: 12.5px; font-weight: 700; line-height: 1.2; }
+.data-journey-today .consumer-chip .says {
+  display: block; font-size: 10px; color: var(--problem); font-weight: 700;
+  line-height: 1.4; margin-top: 4px; white-space: nowrap;
+}
+
+/* split arrow: catalog → both consumers (broken / dashed) */
+.data-journey-today .fan { align-self: stretch; position: relative; width: 100%; }
+.data-journey-today .fan::before {
+  content: ""; position: absolute; top: 50%; left: 0; width: 50%;
+  border-top: 2px dashed var(--problem-soft); transform: translateY(-1px);
+}
+.data-journey-today .fan .riser {
+  position: absolute; left: 50%; top: 25%; bottom: 25%;
+  border-left: 2px dashed var(--problem-soft);
+}
+.data-journey-today .fan .b {
+  position: absolute; left: 50%; right: 1px; border-top: 2px dashed var(--problem-soft);
+}
+.data-journey-today .fan .b.top { top: 25%; }
+.data-journey-today .fan .b.bot { top: 75%; }
+.data-journey-today .fan .b::after {
+  content: ""; position: absolute; right: -1px; top: 50%; transform: translateY(-50%);
+  border-left: 7px solid var(--problem-soft); border-top: 4px solid transparent; border-bottom: 4px solid transparent;
+}
+
+/* journey caption */
+.data-journey-today .journey-caption {
+  margin-top: 18px; padding-top: 14px; border-top: 1px dashed var(--problem-border);
+  font-size: 12.5px; color: var(--problem-soft); font-style: italic; text-align: center;
+  max-width: 760px; margin-left: auto; margin-right: auto; line-height: 1.5;
+}
+
+/* ---- Six absences grid ---- */
+.data-journey-today .absences {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.data-journey-today .absence {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--problem);
+  border-radius: 6px;
+  padding: 14px 16px;
+}
+.data-journey-today .absence-title {
+  font-size: 14px; font-weight: 800; color: var(--text);
+  letter-spacing: -0.01em; margin-bottom: 4px;
+}
+.data-journey-today .absence-title .x { color: var(--problem); font-weight: 900; margin-right: 4px; }
+.data-journey-today .absence-desc { font-size: 12.5px; color: var(--text-muted); line-height: 1.45; }
+
+/* ---- Two-up panels (exposure / costs) ---- */
+.data-journey-today .duo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.data-journey-today .panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--problem);
+  border-radius: 8px;
+  padding: 22px 24px;
+}
+.data-journey-today .panel-eyebrow {
+  font-size: 10.5px; font-weight: 700; color: var(--problem);
+  text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 8px;
+}
+.data-journey-today .panel h3 {
+  font-size: 18px; font-weight: 800; letter-spacing: -0.015em;
+  margin: 0 0 10px; line-height: 1.25;
+}
+.data-journey-today .panel p {
+  font-size: 13.5px; color: var(--text-muted); line-height: 1.55; margin: 0 0 10px;
+}
+.data-journey-today .panel p:last-child { margin-bottom: 0; }
+.data-journey-today .panel strong { color: var(--text); font-weight: 700; }
+/* presentation emphasis — the one essential phrase per text box */
+.data-journey-today .key {
+  color: var(--text);
+  font-weight: 700;
+}
+.data-journey-today .cite {
+  font-size: 11px; color: var(--text-faint); font-style: italic;
+  display: block; margin-top: 4px;
+}
+
+/* ---- The turn (bridge to resolution) ---- */
+.data-journey-today .turn {
+  margin-top: 44px;
+  background: var(--domain-soft);
+  border: 1px solid var(--domain-mid);
+  border-left: 4px solid var(--domain);
+  border-radius: 10px;
+  padding: 28px 30px;
+}
+.data-journey-today .turn-eyebrow {
+  font-size: 11px; font-weight: 700; color: var(--domain-deep);
+  text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 8px;
+}
+.data-journey-today .turn h2 {
+  font-size: 24px; font-weight: 900; letter-spacing: -0.02em;
+  margin: 0 0 8px; color: var(--text);
+}
+.data-journey-today .turn p {
+  font-size: 14.5px; color: var(--text-muted); line-height: 1.55;
+  margin: 0 0 18px; max-width: 640px;
+}
+.data-journey-today .turn-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.data-journey-today .turn-link {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--domain-mid);
+  border-radius: 6px; padding: 11px 16px;
+  text-decoration: none; color: var(--domain-deep);
+  font-size: 13.5px; font-weight: 800;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.05s;
+}
+.data-journey-today .turn-link:hover { border-color: var(--domain); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+.data-journey-today .turn-link:active { transform: translateY(1px); }
+.data-journey-today .turn-link .arrow { color: var(--domain); }
+
+/* ---- Footer ---- */
+.data-journey-today .page-footer {
+  margin-top: 48px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  font-size: 11px;
+  color: var(--text-faint);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.data-journey-today .back-link { color: var(--text-faint); text-decoration: none; }
+.data-journey-today .back-link:hover { color: var(--text); }
+
+.data-journey-today *:focus-visible { outline: 2px solid var(--text); outline-offset: 2px; }
+
+@media (max-width: 860px) {
+  .data-journey-today h1 { font-size: 28px; }
+  .data-journey-today .flow { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .data-journey-today .flow .conn, .data-journey-today .flow .fan { display: none; }
+  .data-journey-today .flow .cap { align-self: center; margin-top: 6px; }
+  .data-journey-today .obj.consumers { align-self: center; }
+  .data-journey-today .consumer-list { height: auto; min-height: 0; flex-direction: column; justify-content: flex-start; gap: 12px; }
+  .data-journey-today .absences { grid-template-columns: 1fr; }
+  .data-journey-today .duo { grid-template-columns: 1fr; }
+}
+.data-journey-today .sources { margin-top: 22px; font-size: 12px; color: var(--text-muted); }
+.data-journey-today .sources summary { cursor: pointer; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-faint); padding: 6px 0; list-style: none; }
+.data-journey-today .sources summary::-webkit-details-marker { display: none; }
+.data-journey-today .sources summary::before { content: "▸  "; color: var(--text-faint); }
+.data-journey-today .sources[open] summary::before { content: "▾  "; }
+.data-journey-today .sources ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 7px; max-width: 920px; }
+.data-journey-today .sources li { line-height: 1.5; padding-left: 14px; position: relative; }
+.data-journey-today .sources li::before { content: "·"; position: absolute; left: 4px; color: var(--text-faint); font-weight: 700; }
+.data-journey-today .sources .src-title { font-weight: 700; color: var(--text); }
+.data-journey-today .sources .src-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+.data-journey-today .sources .src-note { font-style: italic; color: var(--text-faint); font-size: 11px; margin-top: 10px; display: block; }
+</style>
+</head>
+<body>
+
+<div class="data-journey-today">
+<div class="container">
+
+  <header>
+    <div class="eyebrow">Data &amp; AI strategy · where we are today</div>
+    <h1>The data journey, today.</h1>
+    <p class="subtitle">Most of our data leaves product teams as a <strong>byproduct</strong> — no owner, no contract, no meaning. The moment anyone uses it — especially AI — it <strong>can't be trusted</strong>.</p>
+  </header>
+
+  <!-- ── THE BROKEN JOURNEY ── -->
+  <div class="section">
+    <div class="section-label">The journey today — the data may flow, but it's ungoverned</div>
+    <div class="journey">
+
+      <div class="flow">
+        <!-- Producer -->
+        <div class="cap producer" style="grid-column:1;grid-row:1;">Producer</div>
+        <div class="obj" style="grid-column:1;grid-row:2;">
+          <div class="icon-row">
+            <div class="icon">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="4" width="11" height="11" rx="1.5"/>
+                <rect x="9" y="9" width="11" height="11" rx="1.5"/>
+              </svg>
+            </div>
+            <div class="info">
+              <span class="name">Product</span>
+              <span class="desc">Data Producer</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="conn conn-broken" style="grid-column:2;grid-row:2;"></div>
+
+        <!-- Contract — missing -->
+        <div class="cap struck" style="grid-column:3;grid-row:1;">Contract</div>
+        <div class="obj" style="grid-column:3;grid-row:2;">
+          <div class="contract-ghost">
+            <div class="cg-head"><span class="cg-name">Data Contract</span></div>
+            <div class="cg-sig">not signed · no owner</div>
+          </div>
+        </div>
+
+        <div class="conn conn-broken" style="grid-column:4;grid-row:2;"></div>
+
+        <!-- Pipeline — present but inert -->
+        <div class="cap present-cap" style="grid-column:5;grid-row:1;">Pipeline</div>
+        <div class="obj" style="grid-column:5;grid-row:2;">
+          <div class="pipe-mini">
+            <div class="checkpoint"><span class="schema-label">Schema</span></div>
+            <div class="pipe"></div>
+          </div>
+        </div>
+
+        <div class="conn conn-broken" style="grid-column:6;grid-row:2;"></div>
+
+        <!-- Catalog — present, undefined -->
+        <div class="cap present-cap" style="grid-column:7;grid-row:1;">Catalog</div>
+        <div class="obj" style="grid-column:7;grid-row:2;">
+          <div class="catalog-ghost">
+            <svg viewBox="0 0 48 48" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+              <ellipse cx="24" cy="11" rx="14" ry="4.5"/>
+              <path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/>
+              <path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/>
+            </svg>
+            <div class="cat-name">undefined</div>
+          </div>
+        </div>
+
+        <div class="fan" style="grid-column:8;grid-row:2;">
+          <span class="riser"></span>
+          <span class="b top"></span>
+          <span class="b bot"></span>
+        </div>
+
+        <!-- Consumers -->
+        <div class="cap consumer" style="grid-column:9;grid-row:1;">Consumers</div>
+        <div class="obj consumers" style="grid-column:9;grid-row:2;">
+          <div class="consumer-list">
+            <div class="consumer-chip">
+              <div class="mini">
+                <svg viewBox="0 0 36 28" width="22" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="2" width="32" height="24" rx="1.5"/>
+                  <line x1="2" y1="22" x2="34" y2="22"/>
+                  <rect x="6" y="14" width="3" height="8" fill="currentColor"/>
+                  <rect x="12" y="10" width="3" height="12" fill="currentColor"/>
+                  <rect x="18" y="6" width="3" height="16" fill="currentColor"/>
+                  <rect x="24" y="12" width="3" height="10" fill="currentColor"/>
+                </svg>
+              </div>
+              <div>
+                <span class="name">Analyst</span>
+                <span class="says">What does it mean? No one to ask.</span>
+              </div>
+            </div>
+            <div class="consumer-chip">
+              <div class="mini">
+                <svg viewBox="0 0 36 28" width="22" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="9" y="9" width="18" height="13" rx="2"/>
+                  <line x1="18" y1="4" x2="18" y2="9"/>
+                  <circle cx="18" cy="3" r="1.6"/>
+                  <circle cx="14" cy="15" r="1.6" fill="currentColor"/>
+                  <circle cx="22" cy="15" r="1.6" fill="currentColor"/>
+                  <line x1="9" y1="14" x2="6" y2="14"/>
+                  <line x1="27" y1="14" x2="30" y2="14"/>
+                </svg>
+              </div>
+              <div>
+                <span class="name">AI agent</span>
+                <span class="says">Takes it literally, answers wrong.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="journey-caption">The pipeline may run and the data may land in the catalog — but with no contract or schema, nothing says what it means, who owns it, or whether it can be trusted. However a consumer reaches it — direct or from the catalog — they're on their own.</div>
+
+    </div>
+  </div>
+
+  <!-- ── ABSENCES ── -->
+  <div class="section">
+    <div class="section-label">What's missing today</div>
+    <div class="absences">
+      <div class="absence">
+        <div class="absence-title">No owner</div>
+        <div class="absence-desc">No one is accountable. Meaning lives in a product team's code — and walks out the door when they reorganise.</div>
+      </div>
+      <div class="absence">
+        <div class="absence-title">Undiscoverable</div>
+        <div class="absence-desc">Even when it lands in the catalog, it's not described or documented as a product — so every consumer reverse-engineers what it means.</div>
+      </div>
+      <div class="absence">
+        <div class="absence-title">No promise</div>
+        <div class="absence-desc">No contract. Nothing states what it contains, how often it updates, or what to expect — so nothing can be relied on.</div>
+      </div>
+      <div class="absence">
+        <div class="absence-title">Unverified &amp; unsecured</div>
+        <div class="absence-desc">No quality bar, no access control. PII is handled differently by every team, and no one knows how fresh or correct the data is.</div>
+      </div>
+      <div class="absence">
+        <div class="absence-title">One-off, not maintained</div>
+        <div class="absence-desc">No versioning, no support. When the producer changes anything, no one is told — and whatever depended on it breaks silently.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── EXPOSURE + AI ── -->
+  <div class="section">
+    <div class="section-label">Why "fine for now" isn't fine</div>
+    <div class="duo">
+      <div class="panel">
+        <div class="panel-eyebrow">You can't predict who reads it next</div>
+        <h3>Capture the meaning from the start.</h3>
+        <p>It's tempting to think implicit meaning is fine while a team is the only one using its own data. It isn't — because <span class="key">you never know when ingested data will be used for something else</span>: a new analyst, another product, an AI agent.</p>
+        <p>If its meaning, model, and owner were never captured, that consumer simply cannot understand it — and there's no one to ask. Following best practice from day one isn't overhead; it's what makes the data usable the moment anyone needs it.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-eyebrow">AI is the unforgiving consumer</div>
+        <h3>AI makes ungoverned exposure indefensible.</h3>
+        <p>A human can tolerate ambiguity — ask around, sanity-check a weird value. An AI cannot: it takes the values at face value, so <span class="key">missing meaning produces a confident wrong answer</span>, not a clarifying question.</p>
+        <p>AI also scales consumption: data "only exposed to one analyst" can be ingested by an agent and surfaced anywhere. You can no longer assume the next reader is human — or forgiving.<span class="cite">Gartner, Data Management Challenges of Model Context Protocol, 04.2026</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TWO COSTS ── -->
+  <div class="section">
+    <div class="section-label">What it costs us — twice</div>
+    <div class="duo">
+      <div class="panel">
+        <div class="panel-eyebrow">The visible cost</div>
+        <h3>What breaks.</h3>
+        <p>When a producer changes anything, no one is told. The dashboards and integrations that quietly depend on the data <span class="key">shatter — and the first signal is a consumer noticing it's wrong</span>.</p>
+      </div>
+      <div class="panel">
+        <div class="panel-eyebrow">The invisible cost</div>
+        <h3>What never gets built.</h3>
+        <p>The quieter, larger loss: the insights, decisions, and AI products that never happen because no one surfaced the data as a product. <span class="key">The value left on the table is the most expensive cost of all</span> — and it's invisible, because it's an absence.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── THE TURN ── -->
+  <div class="turn">
+    <div class="turn-eyebrow">The answer</div>
+    <h2>Data is a product, not a byproduct.</h2>
+    <p>Every absence above has a fix — and producers shouldn't wait to be asked. <span class="key">Identify what's valuable, tie it to real use cases, and expose it deliberately</span>: with an owner, a contract, a schema, and quality. That's a governed data product, and it's what the rest of this story is about.</p>
+    <div class="turn-links">
+      <a class="turn-link" href="../data-mesh-principles.html">The four principles <span class="arrow">→</span></a>
+      <a class="turn-link" href="data-journey-ideal.html">The data journey <span class="arrow">→</span></a>
+    </div>
+  </div>
+
+  <details class="sources">
+    <summary>Sources &amp; further reading</summary>
+    <ul>
+      <li><span class="src-title">Zhamak Dehghani — Data Mesh: Delivering Data-Driven Value at Scale</span> (O'Reilly, 2022). Defines what a governed data product is — and why data shipped without ownership, contracts, or named consumers doesn't qualify.</li>
+      <li><span class="src-title">Gartner — Reference Architecture Brief: Data Products</span> (L. Ferguson, Aug 2025) <span class="src-tag">internal</span>. Canonical four-attribute product definition; makes the gap between today's ungoverned data and a real product explicit.</li>
+    </ul>
+    <span class="src-note">Gartner items are confidential subscription material — internal reference only.</span>
+  </details>
+
+  <footer class="page-footer">
+    <a class="back-link" href="../index.html">← Overview</a>
+    <span>Confidential · Laerdal Medical · 19.06.2026</span>
+  </footer>
+
+</div>
+</div>
+
+</body>
+</html>

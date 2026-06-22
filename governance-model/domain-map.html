@@ -1,0 +1,1307 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>domain-map</title>
+<style>
+  /* ============================================================
+     SCOPED to .domain-map-draft so it never collides with the
+     master data journey when integrated.
+     ============================================================ */
+  .domain-map-draft {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #555555;
+    --text-faint: #767676;
+    --border: #e5e5e5;
+    --border-strong: #cccccc;
+    --rule-soft: #ececec;
+
+    /* Data product type accents */
+    --type-source: #2e7fa1;
+    --type-source-soft: #e8f1f6;
+    --type-master: #0f6b25;
+    --type-master-soft: #e3f3e6;
+    --type-composed: #8a6a25;
+    --type-composed-soft: #f7efd9;
+
+    /* Domain accent (left borders, eyebrows) */
+    --domain: #14892f;
+    --domain-deep: #0f6b25;
+    --highlight: #b58e45;
+
+    /* Domain type accents */
+    --dtype-source-color: #1e40af;
+    --dtype-source-soft: #dbeafe;
+    --dtype-consumer-color: #0f766e;
+    --dtype-consumer-soft: #ccfbf1;
+    --dtype-aggregated-color: #5b21b6;
+    --dtype-aggregated-soft: #ede9fe;
+    --dtype-supporting-color: #475569;
+    --dtype-supporting-soft: #f1f5f9;
+    --dtype-supporting-border: #cbd5e1;
+
+    font-family: 'Lato', 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    padding: 32px 24px 56px;
+  }
+  .domain-map-draft .container { max-width: 1260px; margin: 0 auto; }
+
+  /* ----- Page header ----- */
+  .domain-map-draft .eyebrow {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--text-muted); margin-bottom: 8px;
+  }
+  .domain-map-draft .page-footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+  .domain-map-draft .page-footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .domain-map-draft .page-footer a:hover { color: var(--text); }
+  .domain-map-draft .draft-tag {
+    display: inline-block;
+    padding: 2px 8px; border-radius: 3px;
+    background: var(--highlight); color: white;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-right: 8px;
+    vertical-align: 2px;
+  }
+  .domain-map-draft h1 {
+    font-size: 26px; font-weight: 700;
+    line-height: 1.2; margin: 0 0 8px;
+  }
+  .domain-map-draft .subtitle {
+    font-size: 14px; color: var(--text-muted);
+    margin-bottom: 18px;
+    max-width: 760px;
+  }
+
+  /* ----- Domain type chips ----- */
+  .domain-map-draft .domain-type-chip {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.12em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-bottom: 8px;
+  }
+  .domain-map-draft .domain-type-chip.dtype-source {
+    background: var(--dtype-source-soft);
+    color: var(--dtype-source-color);
+  }
+  .domain-map-draft .domain-type-chip.dtype-consumer-aligned {
+    background: var(--dtype-consumer-soft);
+    color: var(--dtype-consumer-color);
+  }
+  .domain-map-draft .domain-type-chip.dtype-cross-cutting {
+    background: var(--dtype-aggregated-soft);
+    color: var(--dtype-aggregated-color);
+  }
+  .domain-map-draft .domain-type-chip.dtype-supporting {
+    background: var(--dtype-supporting-soft);
+    color: var(--dtype-supporting-color);
+    border: 1px solid var(--dtype-supporting-border);
+  }
+
+  /* ----- Domain type legend ----- */
+  .domain-map-draft .domain-type-legend {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 900px) {
+    .domain-map-draft .domain-type-legend { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 480px) {
+    .domain-map-draft .domain-type-legend { grid-template-columns: 1fr; }
+  }
+  .domain-map-draft .dtype-block {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    padding: 10px 12px 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .domain-map-draft .dtype-block-source     { border-top: 3px solid var(--dtype-source-color); }
+  .domain-map-draft .dtype-block-consumer   { border-top: 3px solid var(--dtype-consumer-color); }
+  .domain-map-draft .dtype-block-aggregated { border-top: 3px solid var(--dtype-aggregated-color); }
+  .domain-map-draft .dtype-block-supporting { border-top: 3px solid var(--dtype-supporting-color); }
+  .domain-map-draft .dtype-own {
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.4;
+    margin-top: 5px;
+  }
+  .domain-map-draft .dtype-question {
+    font-size: 12px;
+    font-style: italic;
+    font-weight: 600;
+    color: var(--text);
+    margin-top: 2px;
+  }
+
+  /* ----- Data product type legend (detail view) ----- */
+  .domain-map-draft .type-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    align-items: center;
+    padding: 10px 14px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    margin-bottom: 24px;
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+  .domain-map-draft .type-legend-label {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--text-faint);
+    margin-right: 4px;
+  }
+  .domain-map-draft .type-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .domain-map-draft .type-swatch {
+    display: inline-block;
+    width: 22px; height: 14px;
+    border-radius: 3px;
+  }
+  .domain-map-draft .type-swatch.source  { background: var(--type-source-soft);  border: 1px solid var(--type-source); }
+  .domain-map-draft .type-swatch.master  { background: var(--type-master-soft);  border: 1px solid var(--type-master); }
+  .domain-map-draft .type-swatch.composed{ background: var(--type-composed-soft);border: 1px solid var(--type-composed); }
+  .domain-map-draft .type-legend-item b  { color: var(--text); font-weight: 700; }
+
+  /* ----- View transitions ----- */
+  .domain-map-draft .view { transition: opacity 180ms ease; }
+  .domain-map-draft .view.is-hidden { display: none; }
+
+  /* ----- Grid view ----- */
+  .domain-map-draft .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 1000px) {
+    .domain-map-draft .grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .domain-map-draft .grid { grid-template-columns: 1fr; }
+  }
+
+  .domain-map-draft .domain-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--domain);
+    border-radius: 8px;
+    padding: 18px 20px 16px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    text-align: left;
+    width: 100%;
+    font-family: inherit;
+    color: inherit;
+    transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+  }
+  .domain-map-draft .domain-card:hover {
+    border-color: var(--border-strong);
+    box-shadow: 0 6px 18px -10px rgba(0,0,0,0.18);
+    transform: translateY(-1px);
+  }
+  .domain-map-draft .domain-card:focus-visible {
+    outline: 2px solid var(--domain);
+    outline-offset: 2px;
+  }
+  .domain-map-draft .domain-card.dtype-consumer-aligned {
+    border-top-color: #0d9488;
+  }
+  .domain-map-draft .domain-card.dtype-cross-cutting {
+    border-top-color: #7c3aed;
+  }
+  .domain-map-draft .domain-card.dtype-supporting {
+    border-top-color: #94a3b8;
+    background: #fafafa;
+  }
+
+  .domain-map-draft .card-title {
+    font-size: 16px; font-weight: 700;
+    line-height: 1.25;
+    margin: 0 0 8px;
+  }
+  .domain-map-draft .card-explainer {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+    margin: 0 0 14px;
+    flex: 1;
+  }
+  .domain-map-draft .card-outcome {
+    padding-top: 10px;
+    border-top: 1px solid var(--rule-soft);
+  }
+  .domain-map-draft .card-outcome-label {
+    display: block;
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--text-faint);
+    margin-bottom: 2px;
+  }
+  .domain-map-draft .card-outcome-text {
+    font-size: 13px; font-weight: 600;
+    color: var(--domain-deep);
+    line-height: 1.35;
+  }
+  .domain-map-draft .domain-card.dtype-consumer-aligned .card-outcome-text { color: #0f766e; }
+  .domain-map-draft .domain-card.dtype-cross-cutting    .card-outcome-text { color: #5b21b6; }
+  .domain-map-draft .domain-card.dtype-supporting       .card-outcome-text { color: #475569; }
+
+
+  /* ----- Detail view ----- */
+  .domain-map-draft .back-link {
+    display: inline-flex; align-items: center;
+    gap: 6px;
+    background: none; border: none;
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 13px; font-weight: 600;
+    padding: 0; margin: 0 0 18px;
+    cursor: pointer;
+    letter-spacing: 0.02em;
+  }
+  .domain-map-draft .back-link:hover { color: var(--text); }
+  .domain-map-draft .back-link .arrow { font-size: 16px; line-height: 1; }
+
+  .domain-map-draft .detail-header {
+    border-left: 4px solid var(--domain);
+    padding: 4px 0 4px 16px;
+    margin-bottom: 18px;
+  }
+  .domain-map-draft .detail-eyebrow {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--domain-deep);
+    margin-bottom: 6px;
+  }
+  .domain-map-draft .detail-title {
+    font-size: 24px; font-weight: 700;
+    line-height: 1.2; margin: 0 0 10px;
+  }
+  .domain-map-draft .detail-explainer {
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.55;
+    max-width: 760px;
+    margin: 0;
+  }
+  .domain-map-draft .detail-outcome {
+    margin-top: 14px;
+    max-width: 760px;
+  }
+  .domain-map-draft .detail-outcome-label {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--text-faint);
+    margin-right: 8px;
+  }
+  .domain-map-draft .detail-outcome-text {
+    font-size: 13px; font-weight: 600;
+    color: var(--domain-deep);
+  }
+  .domain-map-draft .detail-note {
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: #fff8e6;
+    border-left: 3px solid var(--highlight);
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    color: #5a4818;
+    line-height: 1.5;
+    max-width: 760px;
+  }
+
+  .domain-map-draft .subdomains {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 22px;
+  }
+  .domain-map-draft .subdomain {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 20px 18px;
+  }
+  .domain-map-draft .subdomain-eyebrow {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--text-faint);
+    margin-bottom: 4px;
+  }
+  .domain-map-draft .subdomain-title {
+    font-size: 15px; font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 12px;
+  }
+  .domain-map-draft .data-products {
+    list-style: none;
+    padding: 0; margin: 0;
+    display: flex; flex-direction: column;
+    gap: 8px;
+  }
+  .domain-map-draft .data-product {
+    display: grid;
+    grid-template-columns: minmax(180px, 220px) 1fr;
+    gap: 14px;
+    align-items: baseline;
+    padding: 8px 0;
+    border-top: 1px solid var(--rule-soft);
+    font-size: 13px;
+  }
+  .domain-map-draft .data-product:first-child {
+    border-top: none;
+    padding-top: 2px;
+  }
+  @media (max-width: 640px) {
+    .domain-map-draft .data-product {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+  .domain-map-draft .dp-name {
+    font-family: 'SF Mono', 'Menlo', 'Consolas', 'Roboto Mono', monospace;
+    font-size: 12.5px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    justify-self: start;
+    word-break: break-word;
+  }
+  .domain-map-draft .dp-name.dp-type-source   { color: var(--type-source);   background: var(--type-source-soft); }
+  .domain-map-draft .dp-name.dp-type-master   { color: var(--type-master);   background: var(--type-master-soft); }
+  .domain-map-draft .dp-name.dp-type-composed { color: var(--type-composed); background: var(--type-composed-soft); }
+  .domain-map-draft .dp-text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+  }
+  .domain-map-draft .dp-description {
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .domain-map-draft .dp-note {
+    font-size: 11.5px;
+    font-style: italic;
+    color: var(--text-faint);
+    line-height: 1.4;
+  }
+  .domain-map-draft .dp-note code {
+    font-family: 'SF Mono', 'Menlo', 'Consolas', 'Roboto Mono', monospace;
+    font-size: 11px;
+    font-style: normal;
+    background: #f3f3f3;
+    color: var(--text-muted);
+    padding: 1px 5px;
+    border-radius: 3px;
+  }
+
+  /* ----- Footer hint ----- */
+  .domain-map-draft .hint {
+    margin-top: 28px;
+    font-size: 12px;
+    color: var(--text-faint);
+  }
+  .domain-map-draft .sources { margin-top: 22px; font-size: 12px; color: var(--text-muted); }
+  .domain-map-draft .sources summary { cursor: pointer; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-faint); padding: 6px 0; list-style: none; }
+  .domain-map-draft .sources summary::-webkit-details-marker { display: none; }
+  .domain-map-draft .sources summary::before { content: "▸  "; color: var(--text-faint); }
+  .domain-map-draft .sources[open] summary::before { content: "▾  "; }
+  .domain-map-draft .sources ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 7px; max-width: 920px; }
+  .domain-map-draft .sources li { line-height: 1.5; padding-left: 14px; position: relative; }
+  .domain-map-draft .sources li::before { content: "·"; position: absolute; left: 4px; color: var(--text-faint); font-weight: 700; }
+  .domain-map-draft .sources .src-title { font-weight: 700; color: var(--text); }
+  .domain-map-draft .sources .src-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+  .domain-map-draft .sources .src-note { font-style: italic; color: var(--text-faint); font-size: 11px; margin-top: 10px; display: block; }
+</style>
+</head>
+<body>
+<div class="domain-map-draft">
+  <div class="container">
+
+    <div class="eyebrow">
+      <span class="draft-tag">Draft</span>Data &amp; AI strategy · 05.06.2026
+    </div>
+    <h1>Data domains</h1>
+    <p class="subtitle">
+      Each domain is a bounded context where accountability and authority over data meaning reside. All data products — including KPIs — are owned by exactly one domain. Domain types are defined in the legend below; all types follow the same governance model.
+    </p>
+
+    <!-- Grid view -->
+    <div id="grid-view" class="view">
+
+      <!-- Domain type legend -->
+      <div class="domain-type-legend" aria-label="Domain types">
+        <div class="dtype-block dtype-block-source">
+          <span class="domain-type-chip dtype-source">Source-aligned</span>
+          <span class="dtype-own">Own production of data</span>
+          <span class="dtype-question">"What happened?"</span>
+        </div>
+        <div class="dtype-block dtype-block-consumer">
+          <span class="domain-type-chip dtype-consumer-aligned">Consumer-aligned</span>
+          <span class="dtype-own">Own interpretation for a use case</span>
+          <span class="dtype-question">"What does it mean?"</span>
+        </div>
+        <div class="dtype-block dtype-block-aggregated">
+          <span class="domain-type-chip dtype-cross-cutting">Aggregated</span>
+          <span class="dtype-own">Own standardized cross-portfolio view</span>
+          <span class="dtype-question">"What do we decide on?"</span>
+        </div>
+        <div class="dtype-block dtype-block-supporting">
+          <span class="domain-type-chip dtype-supporting">Supporting</span>
+          <span class="dtype-own">Shared infrastructure capability</span>
+          <span class="dtype-question">Not a spoke domain</span>
+        </div>
+      </div>
+
+      <div class="grid" id="grid"></div>
+
+      <p class="hint" id="hint"></p>
+    </div>
+
+    <!-- Detail view -->
+    <div id="detail-view" class="view is-hidden">
+      <button type="button" class="back-link" id="back-link">
+        <span class="arrow">&larr;</span> All domains
+      </button>
+      <div class="detail-header" id="detail-header">
+        <div class="detail-eyebrow" id="detail-eyebrow">Domain</div>
+        <h2 class="detail-title" id="detail-title"></h2>
+        <p class="detail-explainer" id="detail-explainer"></p>
+        <div class="detail-outcome" id="detail-outcome">
+          <span class="detail-outcome-label">Enables</span>
+          <span class="detail-outcome-text" id="detail-outcome-text"></span>
+        </div>
+        <div class="detail-note" id="detail-note" style="display:none;"></div>
+      </div>
+
+      <!-- Data product type legend (only visible in detail view) -->
+      <div class="type-legend" aria-label="Data product types">
+        <span class="type-legend-label">Data product type</span>
+        <span class="type-legend-item">
+          <span class="type-swatch master"></span>
+          <span><b>Master</b> — golden record of a business entity</span>
+        </span>
+        <span class="type-legend-item">
+          <span class="type-swatch source"></span>
+          <span><b>Source</b> — captured from an operational system</span>
+        </span>
+        <span class="type-legend-item">
+          <span class="type-swatch composed"></span>
+          <span><b>Composed</b> — derived from other data products</span>
+        </span>
+      </div>
+
+      <div class="subdomains" id="subdomains"></div>
+    </div>
+
+    <details class="sources">
+      <summary>Sources &amp; further reading</summary>
+      <ul>
+        <li><span class="src-title">Zhamak Dehghani — Data Mesh: Delivering Data-Driven Value at Scale</span> (O'Reilly, 2022). Domain taxonomy, bounded context, and the principle that domains should match how the organisation thinks about the data — not how systems happen to store it.</li>
+        <li><span class="src-title">Gartner — Reference Architecture Brief: Data Products</span> (L. Ferguson, Aug 2025) <span class="src-tag">internal</span>. Source / Master / Insights product archetypes — the basis for the Source-aligned / Aggregated / Supporting classification used here.</li>
+        <li><span class="src-title">Gartner — How Data Architects Can Effectively Govern Data Products</span> (S. Das, Oct 2025) <span class="src-tag">internal</span>. Governance operating model for data domains — ownership, stewardship, and the federated decision model.</li>
+      </ul>
+      <span class="src-note">Gartner items are confidential subscription material — internal reference only.</span>
+    </details>
+
+    <footer class="page-footer">
+      Confidential · Laerdal Medical · <a href="../index.html">← Overview</a>
+    </footer>
+
+  </div>
+</div>
+
+<script>
+  // domainType: 'source' (source-aligned) | 'cross-cutting' (aggregate) | 'supporting' (platform)
+  // type (data product): 'source' | 'master' | 'composed'
+  const DOMAINS = [
+
+    // ── SOURCE-ALIGNED DOMAINS ───────────────────────────────────────────────
+
+    {
+      id: 'customer',
+      name: 'Customer',
+      domainType: 'source',
+      explainer: 'Who our customers are: institutions and their structure, the sites where solutions are used, the contacts behind the accounts, and the individual users who interact with our products. Includes consent preferences and customer satisfaction signals.',
+      outcome: 'Single view of who we serve',
+      subdomains: [
+        {
+          name: 'Account / Institution Master',
+          dataProducts: [
+            { name: 'customer_master', type: 'master', description: 'Customer institutions and accounts with stable IDs and key attributes (name, type, country, segment).' }
+          ]
+        },
+        {
+          name: 'Hierarchy & Segmentation',
+          dataProducts: [
+            { name: 'org_hierarchy', type: 'master', description: 'Parent/child structure (group → region → account) for rollups and reporting.' },
+            { name: 'customer_segmentation', type: 'master', description: 'Agreed segments (hospital, EMS, education), size tiers, strategic flags.' }
+          ]
+        },
+        {
+          name: 'Sites & Locations',
+          dataProducts: [
+            { name: 'site_registry', type: 'master', description: 'Sites and locations where solutions or devices are used — hospital sites, departments, campuses.' }
+          ]
+        },
+        {
+          name: 'Contacts & Roles',
+          dataProducts: [
+            { name: 'customer_contacts', type: 'master', description: 'Customer-side persons and their commercial roles (buyer, account admin, site manager) tied to accounts and sites. The institutional relationship layer.' }
+          ]
+        },
+        {
+          name: 'User',
+          dataProducts: [
+            { name: 'user_profile', type: 'master', description: 'Individuals who use Laerdal products — professional role (nurse, instructor, student), account affiliation, and stable cross-product identity. Distinct from the commercial contact and from authentication.', note: '<b>Open question:</b> Does User fully belong under Customer, or does it warrant its own domain? Customer domain owns the business meaning (who a user is as a person). Authentication and access enforcement sit in Identity &amp; Access (Supporting). What the user does in products sits in Engagement &amp; Usage. What they achieve sits in Performance &amp; Competency.' }
+          ]
+        },
+        {
+          name: 'Consent & Preferences',
+          dataProducts: [
+            { name: 'consent_preferences', type: 'master', description: 'Privacy and marketing communication preferences, plus the lawful basis under GDPR (consent, contract, legitimate interest, etc.).', note: 'Consumed by Identity &amp; Access for runtime enforcement.' }
+          ]
+        },
+        {
+          name: 'Customer Insights',
+          dataProducts: [
+            { name: 'nps_survey', type: 'source', description: 'Net Promoter Score survey responses — likelihood-to-recommend scores with verbatim comments, segmented by customer cohort and time. Customer domain owns the NPS definition and governance.' },
+            { name: 'csat_survey', type: 'source', description: 'Customer Satisfaction survey responses — interaction-level satisfaction scores, segmented by touchpoint (support case, onboarding, training). Customer domain owns the CSAT definition and governance.' },
+            { name: 'customer_health_score', type: 'composed', description: 'Composite health indicator from usage, support, and commercial signals. Customer domain owns the definition and KPI governance.', note: 'Cross-domain composed product. Inputs from <code>usage_sessions</code> (Engagement &amp; Usage), <code>support_cases</code> (Service &amp; Support), and <code>renewal_events</code> (Commercial).' },
+            { name: 'voice_of_customer', type: 'composed', description: 'Categorised feedback themes and sentiment from surveys and support cases.' },
+            { name: 'churn_risk', type: 'composed', description: 'Churn risk indicators tied to renewal likelihood, with explainable drivers.' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'product-offering',
+      name: 'Product & Offering',
+      domainType: 'source',
+      explainer: 'What Laerdal sells: products, configurations and variants, bundled offerings across physical, digital, service and content, what a license actually grants, and the full lifecycle from launch to end-of-life.',
+      outcome: 'What we sell, defined once',
+      subdomains: [
+        {
+          name: 'Product Catalog',
+          dataProducts: [
+            { name: 'product_catalog', type: 'master', description: 'SKUs and products with attributes, categories, and identifiers — physical, digital, service, and content.' }
+          ]
+        },
+        {
+          name: 'Configuration & Variants',
+          dataProducts: [
+            { name: 'configuration_model', type: 'master', description: 'Options and variants plus compatibility rules — what works with what.' }
+          ]
+        },
+        {
+          name: 'Bundles & Offerings',
+          dataProducts: [
+            { name: 'offering_bundles', type: 'master', description: 'Packaged offerings combining physical, digital, services, and content.' }
+          ]
+        },
+        {
+          name: 'Entitlement Definitions',
+          dataProducts: [
+            { name: 'entitlement_definitions', type: 'master', description: 'What a license or subscription grants access to — features, content, limits.', note: 'See also: <code>commercial_entitlements</code> (Commercial) — the per-customer runtime instance of these definitions.' }
+          ]
+        },
+        {
+          name: 'Lifecycle',
+          dataProducts: [
+            { name: 'product_lifecycle', type: 'master', description: 'Launch, version, EOL, and replacement mapping for products and offerings.' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'commercial',
+      name: 'Commercial (Quote-to-Cash)',
+      domainType: 'source',
+      explainer: 'The buying side: pricing and quotes, orders, subscriptions and renewals, invoices, and the entitlements those purchases unlock. Boundary with Finance: Commercial defines what was sold and under what terms; Finance defines how it is accounted for.',
+      outcome: 'Revenue and renewals operations',
+      subdomains: [
+        {
+          name: 'Pricing & Quotes',
+          dataProducts: [
+            { name: 'pricing_conditions', type: 'master', description: 'Price lists, discounts, negotiated terms, and regional pricing.' },
+            { name: 'quotes', type: 'source', description: 'Quote headers and lines, plus their status.' }
+          ]
+        },
+        {
+          name: 'Orders',
+          dataProducts: [
+            { name: 'orders', type: 'source', description: 'Orders and order lines, including status, cancellation, and returns linkage.' }
+          ]
+        },
+        {
+          name: 'Subscriptions & Renewals',
+          dataProducts: [
+            { name: 'subscriptions', type: 'source', description: 'Active subscriptions: plan, seats, start and end dates, status.' },
+            { name: 'renewal_events', type: 'source', description: 'Renewals, churn, upgrades and downgrades, and renewal pipeline facts.' }
+          ]
+        },
+        {
+          name: 'Invoicing',
+          dataProducts: [
+            { name: 'invoices', type: 'source', description: 'Invoicing status, payment events, ageing, and tax handling.' }
+          ]
+        },
+        {
+          name: 'Commercial Entitlements',
+          dataProducts: [
+            { name: 'commercial_entitlements', type: 'composed', description: 'What a customer is allowed to use until a given date — derived from orders and subscriptions. Commercial owns the right to access; provisioning activates it.', note: 'See also: <code>entitlement_definitions</code> (Product &amp; Offering) — what each entitlement can grant.' }
+          ]
+        },
+        {
+          name: 'Channel Partners',
+          dataProducts: [
+            { name: 'partner_registry', type: 'master', description: 'Distributors and resellers — partner identity, territory, agreement status, and tier.' },
+            { name: 'partner_transactions', type: 'source', description: 'Partner-mediated orders and sell-through — distinct from direct orders because the partner sits between Laerdal and the end customer.' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'marketing-leads',
+      name: 'Marketing & Lead Generation',
+      domainType: 'source',
+      explainer: 'The pre-purchase side: campaigns and channels, leads and MQLs, web and brand engagement, and the attribution view that links marketing activity to commercial outcomes.',
+      outcome: 'Pipeline generation and pre-purchase engagement',
+      note: '<b>Enabler domain</b> — owns the pre-purchase journey. Kept separate from Commercial because ownership, source systems (marketing automation vs. CRM/ERP), and governance questions are genuinely different. Boundary: this domain owns what happened before a quote; Commercial owns from quote to cash. Marketing attribution KPIs compose from both — owned here, with Commercial as an input.',
+      subdomains: [
+        {
+          name: 'Campaigns & Channels',
+          dataProducts: [
+            { name: 'campaigns', type: 'source', description: 'Marketing campaigns with channel, audience, spend, start/end dates, and primary objective. The activity ledger for marketing.' }
+          ]
+        },
+        {
+          name: 'Leads & MQLs',
+          dataProducts: [
+            { name: 'leads', type: 'source', description: 'Lead records with source, qualification stage (MQL, SQL), and lifecycle events through to opportunity creation.', note: 'Linked to <code>customer_master</code> (Customer) on conversion to an account.' }
+          ]
+        },
+        {
+          name: 'Web & Brand Engagement',
+          dataProducts: [
+            { name: 'web_engagement', type: 'source', description: 'Pre-purchase web activity — page views, content downloads, demo requests, event sign-ups. Audience-level, not product-user behaviour.', note: 'Distinct from <code>feature_adoption</code> and <code>content_consumption</code> (Engagement &amp; Usage), which cover in-product behaviour after activation.' }
+          ]
+        },
+        {
+          name: 'Marketing Attribution',
+          dataProducts: [
+            { name: 'marketing_attribution', type: 'composed', description: 'Multi-touch attribution linking marketing touchpoints to opportunities, orders, and revenue — which channels and campaigns actually generate pipeline.', note: 'Composes from <code>campaigns</code>, <code>leads</code>, <code>web_engagement</code>, and <code>orders</code> / <code>subscriptions</code> (Commercial).' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'supplier',
+      name: 'Supplier',
+      domainType: 'source',
+      explainer: 'The suppliers Laerdal depends on: supplier identity and classification, contracts and terms, and performance signals. Distinct from Supply Chain & Manufacturing, which covers production operations and logistics.',
+      outcome: 'Supplier master and performance visibility',
+      subdomains: [
+        {
+          name: 'Supplier Master',
+          dataProducts: [
+            { name: 'supplier_master', type: 'master', description: 'Supplier identity, classification, country, and status — the canonical record of who our suppliers are.' }
+          ]
+        },
+        {
+          name: 'Contracts & Terms',
+          dataProducts: [
+            { name: 'supplier_contracts', type: 'source', description: 'Supplier agreements, pricing terms, SLA commitments, and renewal dates.' }
+          ]
+        },
+        {
+          name: 'Supplier Performance',
+          dataProducts: [
+            { name: 'supplier_performance', type: 'composed', description: 'Quality, lead-time, and reliability signals — tracked where the supplier matters to product risk or lead time.', note: 'Draws on quality signals from <code>quality_checks</code> (Supply Chain &amp; Manufacturing) and <code>complaints</code> (Quality &amp; Regulatory).' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'supply-chain',
+      name: 'Supply Chain & Manufacturing',
+      domainType: 'source',
+      explainer: 'How products get made and shipped: bill of materials, production batches, quality checks, shipment milestones. Supplier master and performance data live in the Supplier domain.',
+      outcome: 'Make and deliver products',
+      subdomains: [
+        {
+          name: 'Bill of Materials',
+          dataProducts: [
+            { name: 'bill_of_materials', type: 'master', description: 'Product structure, components, and revisions.' }
+          ]
+        },
+        {
+          name: 'Manufacturing Batches',
+          dataProducts: [
+            { name: 'manufacturing_batches', type: 'source', description: 'Production runs with yield and defect summaries.' }
+          ]
+        },
+        {
+          name: 'Manufacturing Quality Checks',
+          dataProducts: [
+            { name: 'quality_checks', type: 'source', description: 'Inspection results and failure codes.' }
+          ]
+        },
+        {
+          name: 'Logistics & Shipment Events',
+          dataProducts: [
+            { name: 'shipment_events', type: 'source', description: 'Shipping milestones, lead times, and carrier events.' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'installed-base',
+      name: 'Installed Base & Device Fleet',
+      domainType: 'source',
+      explainer: 'Hardware in the field: device identity, where each unit is deployed, activation and pairing, firmware and configuration state, and warranty coverage.',
+      outcome: 'Where every device is and how it is doing',
+      note: '<b>Open question — potential split:</b> Can one domain owner cover physical devices (SC&amp;M or SMS), digital entitlements (CTO), and service products (SMS)? Jan Reidar proposes splitting into <b>Physical Installed Base</b> and <b>Digital Entitlements &amp; Provisioning</b> — Service &amp; Support is already separate. Conceptually one domain is cleaner; organisationally it may be unworkable. Decision deferred to steering committee — test when nominating the domain owner.',
+      subdomains: [
+        {
+          name: 'Device Registry',
+          dataProducts: [
+            { name: 'device_registry', type: 'master', description: 'Device identity — serial, model, batch, device ID.' }
+          ]
+        },
+        {
+          name: 'Installation & Assignment',
+          dataProducts: [
+            { name: 'installed_base', type: 'master', description: 'Device ↔ customer/site/team assignment — what is deployed where.' }
+          ]
+        },
+        {
+          name: 'Activation & Registration',
+          dataProducts: [
+            { name: 'device_activation', type: 'source', description: 'Activation, pairing, and registration events.' }
+          ]
+        },
+        {
+          name: 'Firmware & Configuration State',
+          dataProducts: [
+            { name: 'firmware_state', type: 'master', description: 'Firmware versions, config state, and last-seen timestamps.' }
+          ]
+        },
+        {
+          name: 'Warranty & Service Entitlements',
+          dataProducts: [
+            { name: 'warranty_entitlements', type: 'master', description: 'Warranty and service coverage per device and customer.' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'service-support',
+      name: 'Service & Support',
+      domainType: 'source',
+      explainer: 'When something needs help: support cases, returns (RMA), repair visits and parts used, and self-service knowledge base usage. Boundary: Service captures operational issues; Quality & Regulatory owns formal complaints, CAPA, and regulated records.',
+      outcome: 'Customer issue resolution',
+      subdomains: [
+        {
+          name: 'Case Management',
+          dataProducts: [
+            { name: 'support_cases', type: 'source', description: 'Issues raised, categorisation, SLA, and resolution metrics.' }
+          ]
+        },
+        {
+          name: 'Returns (RMA)',
+          dataProducts: [
+            { name: 'rma_returns', type: 'source', description: 'Returns with reason codes and disposition (scrap, refurbish, return to stock).' }
+          ]
+        },
+        {
+          name: 'Repair & Field Service',
+          dataProducts: [
+            { name: 'repair_events', type: 'source', description: 'Repair and service visit logs and outcomes.' },
+            { name: 'parts_consumption', type: 'source', description: 'Parts used per repair or service event.' }
+          ]
+        },
+        {
+          name: 'Knowledge Base',
+          dataProducts: [
+            { name: 'kb_usage', type: 'source', description: 'Self-service article usage, plus deflection signals (whether the article prevented a support case).' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'quality-regulatory',
+      name: 'Quality & Regulatory',
+      domainType: 'source',
+      explainer: 'The compliance side: complaints and incidents, corrective and preventive actions, audit findings, the risk register, and requirement traceability. Owns formal quality records; Service & Support handles operational issues.',
+      outcome: 'Medical device compliance',
+      note: 'v1 scope — to be expanded with RA/QA to cover ISO 13485 / EU MDR / FDA QSR areas (design history files, post-market surveillance, vigilance, FSCAs).',
+      subdomains: [
+        {
+          name: 'Complaints & Incidents',
+          dataProducts: [
+            { name: 'complaints', type: 'source', description: 'Complaint records with severity and classification.' }
+          ]
+        },
+        {
+          name: 'CAPA',
+          dataProducts: [
+            { name: 'capa_actions', type: 'source', description: 'Corrective and preventive actions, plus their status.' }
+          ]
+        },
+        {
+          name: 'Audits',
+          dataProducts: [
+            { name: 'audit_findings', type: 'source', description: 'Audit outcomes and remediation tracking — internal, customer, and external/notified-body audits.' }
+          ]
+        },
+        {
+          name: 'Risk Register',
+          dataProducts: [
+            { name: 'risk_register', type: 'master', description: 'Risks, mitigations, owners, and status.' }
+          ]
+        },
+        {
+          name: 'Traceability',
+          dataProducts: [
+            { name: 'traceability_links', type: 'master', description: 'Links between requirements, tests, and releases — tracked where regulatory or product risk requires it.' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'finance',
+      name: 'Finance',
+      domainType: 'source',
+      explainer: 'The financial backbone: chart of accounts, ledger postings, cost centers, budgets and forecasts, profitability rollups, and statutory and tax reporting. Boundary with Commercial: Finance defines how what was sold is accounted for and reported.',
+      outcome: 'Financial accuracy, compliance, and profitability',
+      note: '<b>Utility domain</b> — table-stakes for compliance and enterprise reporting. Same governance discipline; lower portfolio ambition. Naturally Sponsored by the CFO.',
+      subdomains: [
+        {
+          name: 'Chart of Accounts',
+          dataProducts: [
+            { name: 'chart_of_accounts', type: 'master', description: 'The financial ontology — account hierarchy, account types, and currency rules used across legal entities.' }
+          ]
+        },
+        {
+          name: 'General Ledger',
+          dataProducts: [
+            { name: 'gl_postings', type: 'source', description: 'All financial movements posted to the ledger — revenue, costs, accruals, FX — with date, account, cost center, and currency.', note: 'Consumes posted billing events from <code>invoices</code> (Commercial), payroll postings from <code>compensation</code> (People), and supplier payments from Supply Chain &amp; Manufacturing.' }
+          ]
+        },
+        {
+          name: 'Cost Centers',
+          dataProducts: [
+            { name: 'cost_centers', type: 'master', description: 'Cost-center hierarchy and ownership — the org-aligned dimension used to attribute spend and report financial performance.', note: 'Links to <code>org_structure</code> (People).' }
+          ]
+        },
+        {
+          name: 'Planning (Budget & Forecast)',
+          dataProducts: [
+            { name: 'budget_forecast', type: 'source', description: 'Budgeted and forecast figures by account, cost center, region, and period.' }
+          ]
+        },
+        {
+          name: 'Profitability',
+          dataProducts: [
+            { name: 'profitability', type: 'composed', description: 'Margin and contribution analysis by product line, region, customer segment, or strategic area — composed from GL postings and cost allocations.' }
+          ]
+        },
+        {
+          name: 'Statutory & Tax Reporting',
+          dataProducts: [
+            { name: 'tax_reporting', type: 'source', description: 'VAT, transfer pricing, and statutory filings by legal entity — the audit trail for tax compliance.' }
+          ]
+        },
+        {
+          name: 'Fixed Assets',
+          dataProducts: [
+            { name: 'fixed_assets', type: 'master', description: 'Capital assets, depreciation schedules, and asset lifecycle — including R&D and manufacturing equipment.' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'people',
+      name: 'People',
+      domainType: 'source',
+      explainer: 'Our own workforce: employees, the organisational structure they sit in, what they earn, when they work, and how they grow inside the company. The internal counterpart to Customer.',
+      outcome: 'Workforce management and compliance',
+      note: '<b>Utility domain</b> — table-stakes for HR compliance and internal reporting. Same governance discipline; lower portfolio ambition. Naturally Sponsored by the CHRO.',
+      subdomains: [
+        {
+          name: 'Employee Master',
+          dataProducts: [
+            { name: 'employee_master', type: 'master', description: 'Employees with stable IDs, employment dates, work location, and manager link.', note: 'Linked to <code>identity_directory</code> (Identity &amp; Access) for system access provisioning.' }
+          ]
+        },
+        {
+          name: 'Organizational Structure',
+          dataProducts: [
+            { name: 'org_structure', type: 'master', description: 'Departments, reporting lines, and the org hierarchy — used for approvals, cost-center attribution, and internal reporting.' },
+            { name: 'positions', type: 'master', description: 'Job catalog and position-to-employee mapping — headcount, role definitions, and vacancy.' }
+          ]
+        },
+        {
+          name: 'Compensation & Payroll',
+          dataProducts: [
+            { name: 'compensation', type: 'source', description: 'Salaries, bonuses, and payroll events. Sensitive — restricted access; subject to GDPR and local employment law.', note: 'Feeds <code>gl_postings</code> (Finance) via payroll.' }
+          ]
+        },
+        {
+          name: 'Time, Absence & Capacity',
+          dataProducts: [
+            { name: 'time_absence', type: 'source', description: 'Hours worked, leave, and absence — capacity inputs for FP&A and project costing.' }
+          ]
+        },
+        {
+          name: 'Internal Learning & Development',
+          dataProducts: [
+            { name: 'learning_development', type: 'source', description: 'Internal training, certifications, and development plans for Laerdal employees.', note: 'Distinct from Performance &amp; Competency, which covers customers and learners.' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'engagement-usage',
+      name: 'Engagement & Usage',
+      domainType: 'source',
+      explainer: 'How customers actually use the solutions: sessions, feature adoption, content viewing, learning activity, and journey funnels. Behaviour, not outcomes.',
+      outcome: 'Adoption, retention, behaviour signals',
+      note: '<b>Source-aligned domain (deliberate)</b> — governs the standardised cross-product event layer: session contracts, activity events, feature usage, and journeys. Technically cross-product in nature, but classified as source-aligned because it produces raw behavioural data that other domains reference. Depends on Customer (who) and Product &amp; Offering (what) being established first.',
+      subdomains: [
+        {
+          name: 'Sessions (cross-product contract)',
+          dataProducts: [
+            { name: 'usage_sessions', type: 'source', description: 'Standardised sessions across products — start, end, app, tenant, team context.' }
+          ]
+        },
+        {
+          name: 'Feature Usage',
+          dataProducts: [
+            { name: 'feature_adoption', type: 'composed', description: 'Which features are used — adoption and retention by cohort.' }
+          ]
+        },
+        {
+          name: 'Content Consumption',
+          dataProducts: [
+            { name: 'content_consumption', type: 'source', description: 'Views, completions, time-on-module — behaviour, not scores.' }
+          ]
+        },
+        {
+          name: 'Learning Activity Events',
+          dataProducts: [
+            { name: 'learning_activity_events', type: 'source', description: 'Scenario started, attempt created, practice events — not assessment results.' }
+          ]
+        },
+        {
+          name: 'Journeys & Funnels',
+          dataProducts: [
+            { name: 'journey_funnel', type: 'composed', description: 'Where each customer or user sits in the activation → engagement → retention journey (e.g. signed up not activated, active 30d, lapsed).' }
+          ]
+        }
+      ]
+    },
+
+    // ── AGGREGATE DOMAINS ────────────────────────────────────────────────────
+
+    {
+      id: 'performance-competency',
+      name: 'Performance & Competency',
+      domainType: 'cross-cutting',
+      explainer: 'Core to CPR, HQI, and CBE: skills frameworks, assessments and scoring, content and curriculum, individual and team performance, and certifications. Cross-cutting because competency spans products, customer types, and care settings.',
+      outcome: 'CPR / HQI / CBE outcomes and certification',
+      note: '<b>Aggregated domain</b> — owns the semantic layer for learning, competency, and performance. References Customer (who the learner is), Engagement &amp; Usage (what they did), and Installed Base (which device they used). Should not be introduced until those source-aligned domains are running.',
+      subdomains: [
+        {
+          name: 'Competency Framework',
+          dataProducts: [
+            { name: 'competency_framework', type: 'master', description: 'Skills, levels, and rubrics (versioned) defining what good looks like.' }
+          ]
+        },
+        {
+          name: 'Assessment (definitions & scoring)',
+          dataProducts: [
+            { name: 'assessment_definitions', type: 'master', description: 'The definition of an assessment — what skill or behaviour is measured, how it is structured, and how a score is computed.' },
+            { name: 'scoring_rules', type: 'master', description: 'Scoring logic and thresholds — pass/fail, proficiency bands.' }
+          ]
+        },
+        {
+          name: 'Assessment Results',
+          dataProducts: [
+            { name: 'assessment_results', type: 'source', description: 'Scores and outcomes per attempt — who, when, what.' }
+          ]
+        },
+        {
+          name: 'Content & Curriculum',
+          dataProducts: [
+            { name: 'content_catalog', type: 'master', description: 'Training modules, scenarios, and assets with metadata and tags.' },
+            { name: 'content_versioning', type: 'master', description: 'Which content version was used when (auditability).' },
+            { name: 'curriculum_map', type: 'master', description: 'Content ↔ competencies ↔ learning objectives mapping.' },
+            { name: 'standards_alignment', type: 'master', description: 'Mapping to external CPR/HQI/CBE standards — e.g. AHA guidelines.' }
+          ]
+        },
+        {
+          name: 'Performance Outcomes',
+          dataProducts: [
+            { name: 'learner_progression', type: 'composed', description: 'Competency development over time — improvement and gaps.' },
+            { name: 'team_performance', type: 'composed', description: 'Performance of teams across scenarios and assessments.' },
+            { name: 'team_readiness', type: 'composed', description: 'Readiness and coverage view — who can do what, where the gaps are.' },
+            { name: 'performance_benchmarks', type: 'composed', description: 'Norms and baselines by persona, segment, or cohort.' }
+          ]
+        },
+        {
+          name: 'Certification & Validity',
+          dataProducts: [
+            { name: 'certifications', type: 'master', description: 'Certifications achieved and their status.' },
+            { name: 'certification_validity', type: 'composed', description: 'Expiry and renewal windows, plus compliance status.' }
+          ]
+        }
+      ]
+    },
+
+    {
+      id: 'clinical-patient-outcomes',
+      name: 'Clinical & Patient Outcomes',
+      domainType: 'cross-cutting',
+      explainer: 'Real-world clinical results: cardiac arrest survival, ROSC, neurological outcomes, and registry-sourced quality measures. The data needed to answer whether Laerdal training and equipment actually improved patient outcomes — central to the "One Million Lives" ambition.',
+      outcome: 'Patient outcomes linked to Laerdal solutions',
+      note: '<b>Driver domain</b> — central to HQI. Distinct from Performance &amp; Competency (learner capability inside simulation) — this domain covers real patient outcomes in real hospitals. PHI and externally sourced under data-use agreements — restricted access, GDPR / HIPAA / local regulation.',
+      subdomains: [
+        {
+          name: 'Clinical Registries',
+          dataProducts: [
+            { name: 'clinical_outcomes', type: 'source', description: 'Outcome events from external registries (e.g. AHA Get With The Guidelines, ERC cardiac arrest registries) — survival to discharge, ROSC, complications. Captured under data-use agreements.' }
+          ]
+        },
+        {
+          name: 'Patient & Encounter Reference',
+          dataProducts: [
+            { name: 'patient_encounters', type: 'source', description: 'De-identified patient encounters — the unit of clinical analysis. Demographics, encounter type, site, date, intervention context.', note: 'PHI: heavily de-identified before ingestion; access tightly controlled.' }
+          ]
+        },
+        {
+          name: 'Outcome Measures',
+          dataProducts: [
+            { name: 'outcome_measure_definitions', type: 'master', description: 'Standardised definitions for clinical outcome measures — ROSC, survival to discharge, Cerebral Performance Category — including thresholds and adjudication rules.', note: 'Aligned with external standards (Utstein, AHA, ERC) captured in <code>standards_alignment</code> (Performance &amp; Competency).' }
+          ]
+        },
+        {
+          name: 'Improvement Effectiveness',
+          dataProducts: [
+            { name: 'improvement_effectiveness', type: 'composed', description: 'Composed view linking exposure to Laerdal solutions to subsequent clinical outcomes. The central HQI evidence layer.', note: 'Composes from <code>clinical_outcomes</code>, <code>learner_progression</code> + <code>team_performance</code> (Performance &amp; Competency), and <code>installed_base</code> (Installed Base &amp; Device Fleet).' }
+          ]
+        },
+        {
+          name: 'Outcome Benchmarks',
+          dataProducts: [
+            { name: 'outcome_benchmarks', type: 'composed', description: 'Comparative benchmarks across sites, regions, and time — used to contextualise individual customer outcomes and demonstrate population-level impact.' }
+          ]
+        }
+      ]
+    },
+
+    // ── PLATFORM CAPABILITY ──────────────────────────────────────────────────
+
+    {
+      id: 'identity-access',
+      name: 'Identity & Access',
+      domainType: 'supporting',
+      explainer: 'Platform capability for authentication and access enforcement: technical identity directory, login events, role and permission policies, and tenant registry. Sits in the hub — not a spoke domain.',
+      outcome: 'Secure access across products',
+      note: '<b>Platform capability</b> — not a business domain. Business domains (Customer, People, Commercial) own the meaning of the identities and access rights they govern; Identity &amp; Access provides the technical enforcement layer.<br><br><b>Redistribution needed before chartering:</b> role and permission definitions (<code>role_permissions</code>) encode business decisions and need explicit ownership in a business domain. Tenant registry (<code>tenant_registry</code>) links to commercial entitlements and may belong under Commercial or Installed Base. These questions should be resolved at chartering.',
+      subdomains: [
+        {
+          name: 'Identity Directory',
+          dataProducts: [
+            { name: 'identity_directory', type: 'master', description: 'Technical identities (users, services, devices) and their mappings to external IDs (SSO providers, customer-side identity systems).' }
+          ]
+        },
+        {
+          name: 'Authentication',
+          dataProducts: [
+            { name: 'auth_events', type: 'source', description: 'Login, token, and MFA events used for security monitoring and troubleshooting.' }
+          ]
+        },
+        {
+          name: 'Authorization (roles & permissions)',
+          dataProducts: [
+            { name: 'role_permissions', type: 'master', description: 'Who can do what — scopes, permissions, and policies (e.g. instructor can publish scenarios, admin can manage seats).', note: 'These are business rules. Ownership should be assigned to the relevant business domain before chartering I&amp;A.' }
+          ]
+        },
+        {
+          name: 'Tenancy',
+          dataProducts: [
+            { name: 'tenant_registry', type: 'master', description: 'Tenants and environments linked to customer accounts — admins, seat counts, provisioned products, environment type.', note: 'Links to <code>customer_master</code> (Customer) and <code>commercial_entitlements</code> (Commercial). Ownership to be confirmed.' }
+          ]
+        }
+      ]
+    }
+
+  ];
+
+  // ---------- Config ----------
+  const DTYPE_CHIP_LABELS  = { source: 'Source-aligned', 'consumer-aligned': 'Consumer-aligned', 'cross-cutting': 'Aggregated', supporting: 'Supporting' };
+  const DTYPE_EYEBROW_LABELS = { source: 'Source-aligned Domain', 'consumer-aligned': 'Consumer-aligned Domain', 'cross-cutting': 'Aggregated Domain', supporting: 'Supporting Capability' };
+  const DTYPE_COLORS = {
+    source:              { eyebrow: 'var(--domain-deep)', border: 'var(--domain)' },
+    'consumer-aligned':  { eyebrow: '#0f766e',            border: '#0d9488'       },
+    'cross-cutting':     { eyebrow: '#5b21b6',            border: '#7c3aed'       },
+    supporting:          { eyebrow: '#475569',            border: '#94a3b8'       }
+  };
+
+  // ---------- Elements ----------
+  const gridEl       = document.getElementById('grid');
+  const hintEl       = document.getElementById('hint');
+  const gridView     = document.getElementById('grid-view');
+  const detailView   = document.getElementById('detail-view');
+  const detailHeader = document.getElementById('detail-header');
+  const detailEyebrow= document.getElementById('detail-eyebrow');
+  const detailTitle  = document.getElementById('detail-title');
+  const detailExplainer = document.getElementById('detail-explainer');
+  const detailOutcomeText = document.getElementById('detail-outcome-text');
+  const detailNote   = document.getElementById('detail-note');
+  const subdomainsEl = document.getElementById('subdomains');
+  const backLink     = document.getElementById('back-link');
+
+  // ---------- Render grid ----------
+  function renderGrid() {
+    gridEl.innerHTML = '';
+    DOMAINS.forEach(d => {
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = `domain-card dtype-${d.domainType}`;
+      card.setAttribute('aria-label', `Open ${d.name}`);
+      card.innerHTML = `
+        <span class="domain-type-chip dtype-${d.domainType}">${DTYPE_CHIP_LABELS[d.domainType]}</span>
+        <h2 class="card-title">${d.name}</h2>
+        <p class="card-explainer">${d.explainer}</p>
+        <div class="card-outcome">
+          <span class="card-outcome-label">Enables</span>
+          <span class="card-outcome-text">${d.outcome}</span>
+        </div>
+      `;
+      card.addEventListener('click', () => openDomain(d.id));
+      gridEl.appendChild(card);
+    });
+
+    const counts = { source: 0, 'consumer-aligned': 0, 'cross-cutting': 0, supporting: 0 };
+    DOMAINS.forEach(d => { if (counts[d.domainType] !== undefined) counts[d.domainType]++; });
+    const parts = [`${counts.source} source-aligned`];
+    if (counts['consumer-aligned']) parts.push(`${counts['consumer-aligned']} consumer-aligned`);
+    parts.push(`${counts['cross-cutting']} aggregated`, `${counts.supporting} supporting`);
+    hintEl.textContent = `${DOMAINS.length} domains — ${parts.join(' · ')}. Click a card to open it.`;
+  }
+
+  // ---------- Render detail ----------
+  function renderDetail(domain) {
+    const dc = DTYPE_COLORS[domain.domainType] || DTYPE_COLORS.source;
+
+    detailTitle.textContent    = domain.name;
+    detailExplainer.textContent= domain.explainer;
+    detailOutcomeText.textContent = domain.outcome;
+
+    detailEyebrow.textContent  = DTYPE_EYEBROW_LABELS[domain.domainType] || 'Domain';
+    detailEyebrow.style.color  = dc.eyebrow;
+    detailHeader.style.borderLeftColor = dc.border;
+
+    if (domain.note) {
+      detailNote.innerHTML = domain.note;
+      detailNote.style.display = '';
+    } else {
+      detailNote.style.display = 'none';
+    }
+
+    subdomainsEl.innerHTML = '';
+    domain.subdomains.forEach(sub => {
+      const wrap = document.createElement('section');
+      wrap.className = 'subdomain';
+      const productsHtml = sub.dataProducts.map(p => `
+        <li class="data-product">
+          <span class="dp-name dp-type-${p.type}">${p.name}</span>
+          <div class="dp-text">
+            <span class="dp-description">${p.description}</span>
+            ${p.note ? `<span class="dp-note">${p.note}</span>` : ''}
+          </div>
+        </li>
+      `).join('');
+      wrap.innerHTML = `
+        <div class="subdomain-eyebrow">Subdomain</div>
+        <h3 class="subdomain-title">${sub.name}</h3>
+        <ul class="data-products">${productsHtml}</ul>
+      `;
+      subdomainsEl.appendChild(wrap);
+    });
+  }
+
+  // ---------- Navigation ----------
+  function openDomain(id) {
+    const domain = DOMAINS.find(d => d.id === id);
+    if (!domain) return;
+    renderDetail(domain);
+    gridView.classList.add('is-hidden');
+    detailView.classList.remove('is-hidden');
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    history.replaceState(null, '', '#' + id);
+  }
+
+  function closeDomain() {
+    detailView.classList.add('is-hidden');
+    gridView.classList.remove('is-hidden');
+    window.scrollTo({ top: 0, behavior: 'instant' in window ? 'instant' : 'auto' });
+    history.replaceState(null, '', window.location.pathname);
+  }
+
+  backLink.addEventListener('click', closeDomain);
+  renderGrid();
+
+  // Deep-link support
+  const initial = window.location.hash.replace('#', '');
+  if (initial && DOMAINS.some(d => d.id === initial)) openDomain(initial);
+</script>
+</body>
+</html>

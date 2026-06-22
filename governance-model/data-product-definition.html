@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>data-product-definition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans&display=swap" rel="stylesheet">
+<style>
+  .data-product-definition {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --text: #1a1a1a;
+    --text-muted: #666666;
+    --text-faint: #767676;
+    --border: #e5e5e5;
+    --border-strong: #cccccc;
+
+    --producer: #2e7fa1;
+    --producer-bg: #d4e9f2;
+    --domain: #14892f;
+    --domain-bg: #cceed2;
+    --domain-soft: #ecf6ee;
+
+    --highlight: #b58e45;
+
+    --link: #276d8b;
+    --link-hover: #215369;
+    --link-active: #163746;
+
+    /* State framing (mirrors data-contract-definition.html) */
+    --today:        #b45309;
+    --today-bg:     #fef6ec;
+    --template:     #14892f;
+    --template-bg:  #ecf6ee;
+    --example:      #166534;
+    --example-bg:   #e3f3e6;
+
+    font-family: 'Lato', 'Noto Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body { margin: 0; background: var(--bg); padding: 32px 24px 56px; }
+  .data-product-definition .container { max-width: 1260px; margin: 0 auto; }
+
+  /* Header */
+  .data-product-definition .eyebrow {
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--text-muted); margin-bottom: 8px;
+  }
+  .data-product-definition .draft-tag {
+    display: inline-block;
+    padding: 2px 8px; border-radius: 3px;
+    background: var(--highlight); color: white;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    margin-right: 8px; vertical-align: 2px;
+  }
+  .data-product-definition h1 {
+    font-size: 28px; font-weight: 700;
+    line-height: 1.15; margin: 0 0 8px;
+    letter-spacing: -0.02em;
+  }
+  .data-product-definition .subtitle {
+    font-size: 15px; color: var(--text-muted);
+    margin: 0 0 32px;
+    max-width: 760px;
+  }
+
+  /* Data product card */
+  .data-product-definition .dp-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--domain);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .data-product-definition .dp-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 12px 18px 12px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .data-product-definition .dp-card-header-content { flex: 1; min-width: 0; }
+  .data-product-definition .dp-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.005em;
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+  }
+  .data-product-definition .dp-card-subtitle {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 5px;
+    line-height: 1.45;
+    max-width: 75ch;
+  }
+  .data-product-definition .dp-card-tag {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--text-faint);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .data-product-definition .dp-card-body {
+    column-count: 2;
+    column-gap: 32px;
+    padding: 14px 18px 16px;
+  }
+  .data-product-definition .dp-card-section {
+    break-inside: avoid;
+    margin-bottom: 14px;
+  }
+  .data-product-definition .dp-card-section:last-of-type { margin-bottom: 0; }
+  .data-product-definition .dp-card-section-name {
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--domain);
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .data-product-definition .dp-card-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.5;
+    padding: 4px 0;
+    align-items: baseline;
+  }
+  .data-product-definition .dp-card-label {
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+  .data-product-definition .dp-card-value { color: var(--text); }
+  .data-product-definition .dp-card-value.placeholder {
+    color: var(--text-faint);
+    font-style: italic;
+  }
+  .data-product-definition .dp-card-value ul {
+    margin: 0; padding: 0; list-style: none;
+  }
+  .data-product-definition .dp-card-value li {
+    padding-left: 12px; position: relative; line-height: 1.5;
+  }
+  .data-product-definition .dp-card-value li::before {
+    content: "·";
+    position: absolute;
+    left: 3px; top: -2px;
+    color: var(--text-faint);
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .data-product-definition .dp-card-value li strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .data-product-definition .dp-card-value .note {
+    display: block;
+    margin-top: 5px;
+    font-size: 11px;
+    color: var(--text-faint);
+    font-style: italic;
+  }
+  .data-product-definition .dp-chip {
+    display: inline-block;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    padding: 1px 7px;
+    border-radius: 4px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .data-product-definition .dp-action-link {
+    display: inline-block;
+    color: var(--link);
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 11px;
+    margin-top: 8px;
+    padding: 4px 10px;
+    background: var(--producer-bg);
+    border-radius: 4px;
+    transition: background 0.15s, color 0.15s;
+  }
+  .data-product-definition .dp-action-link:hover {
+    background: #a9d3e5;
+    color: var(--link-active);
+  }
+  .data-product-definition .dp-action-link::after { content: " →"; margin-left: 2px; }
+  .data-product-definition .dp-card-value > .dp-action-link:only-child { margin-top: 0; }
+  .data-product-definition .dp-type-link {
+    color: var(--link);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 700;
+  }
+  .data-product-definition .dp-type-link:hover { color: var(--link-hover); }
+  .data-product-definition .dp-type-link::after {
+    content: " ⓘ";
+    font-size: 10px;
+    color: var(--text-faint);
+    margin-left: 2px;
+  }
+
+  /* Modal */
+  .data-product-definition .dp-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .data-product-definition .dp-modal[hidden] { display: none; }
+  .data-product-definition .dp-modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(26, 26, 26, 0.5);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+  .data-product-definition .dp-modal-content {
+    position: relative;
+    background: var(--surface);
+    border-radius: 8px;
+    padding: 28px 32px 24px;
+    max-width: 860px;
+    width: 92%;
+    max-height: 85vh;
+    overflow: auto;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  }
+  .data-product-definition .dp-modal-close {
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 4px 10px;
+    line-height: 1;
+    font-family: inherit;
+  }
+  .data-product-definition .dp-modal-close:hover { color: var(--text); }
+  .data-product-definition .dp-modal-title {
+    font-size: 18px; font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+  }
+  .data-product-definition .dp-modal-intro {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+  .data-product-definition .dp-modal-intro strong { color: var(--text); }
+  .data-product-definition .dp-modal-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  .data-product-definition .dp-modal-table th {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border-strong);
+    padding: 10px 12px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+  .data-product-definition .dp-modal-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  .data-product-definition .dp-modal-table tr:last-child td { border-bottom: none; }
+  .data-product-definition .dp-modal-table .dp-modal-type-name {
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .data-product-definition .dp-modal-row--highlight { background: var(--domain-bg); }
+  .data-product-definition .dp-modal-row--highlight td { border-bottom-color: var(--domain); }
+  .data-product-definition .dp-modal-row--highlight .dp-modal-type-name { color: var(--domain); }
+
+  @media (max-width: 900px) {
+    .data-product-definition .dp-card-body { column-count: 1; }
+    .data-product-definition .dp-card-row {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+  }
+
+  /* Context boxes — references + referenced-by, side by side */
+  .data-product-definition .context-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+  @media (max-width: 880px) {
+    .data-product-definition .context-section { grid-template-columns: 1fr; }
+  }
+  .data-product-definition .context-box {
+    padding: 14px 18px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--domain);
+    border-radius: 0 6px 6px 0;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.55;
+  }
+  .data-product-definition .context-box.refs-out { border-left-color: var(--highlight); }
+  .data-product-definition .context-box-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    margin-bottom: 6px;
+  }
+  .data-product-definition .context-box ul {
+    margin: 0; padding-left: 16px;
+  }
+  .data-product-definition .context-box li { margin-bottom: 3px; }
+  .data-product-definition .context-box li:last-child { margin-bottom: 0; }
+  .data-product-definition .context-box strong { color: var(--text); font-weight: 700; }
+  .data-product-definition .context-box a {
+    color: var(--domain);
+    text-decoration: none;
+    font-weight: 700;
+  }
+  .data-product-definition .context-box a:hover { text-decoration: underline; }
+
+  /* Footer */
+  .data-product-definition .page-footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--text-faint);
+  }
+  .data-product-definition .page-footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+  .data-product-definition .page-footer a:hover { color: var(--text); }
+
+  .data-product-definition *:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+  }
+
+  /* ============================================================
+     ITERATION-2 ADDITIONS — see definition iteration 1 feedback
+     ============================================================ */
+
+  /* Inline reference link (e.g. "→ overview") next to a value */
+  .data-product-definition .dp-inline-link {
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--domain);
+    text-decoration: none;
+    margin-left: 6px;
+    letter-spacing: 0.02em;
+  }
+  .data-product-definition .dp-inline-link:hover { text-decoration: underline; }
+
+  /* Schema reference list (in Composition · Required schemas) */
+  .data-product-definition .dp-schema-list {
+    list-style: none;
+    margin: 0; padding: 0;
+    display: flex; flex-direction: column;
+    gap: 6px;
+  }
+  .data-product-definition .dp-schema-list li {
+    padding-left: 0; line-height: 1.45;
+    position: relative;
+  }
+  .data-product-definition .dp-schema-list li::before { content: none; }
+  .data-product-definition .dp-schema-list code {
+    font-family: "SF Mono", Menlo, Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--domain);
+    background: rgba(20, 137, 47, 0.08);
+    padding: 1px 5px;
+    border-radius: 2px;
+  }
+  .data-product-definition .dp-schema-list .schema-from {
+    display: block;
+    margin-top: 2px;
+    font-size: 10.5px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* Data-model visualization (in Composition · Data model) */
+  .data-product-definition .dp-data-model {
+    margin-top: 4px;
+    padding: 12px 10px;
+    background: var(--domain-soft);
+    border: 1px dashed var(--domain);
+    border-radius: 4px;
+  }
+  .data-product-definition .dp-model-entities {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .data-product-definition .dp-entity {
+    display: inline-block;
+    padding: 4px 9px;
+    background: var(--surface);
+    border: 1px solid var(--domain);
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+  .data-product-definition .dp-entity.dp-entity-central {
+    background: var(--domain);
+    color: white;
+    box-shadow: 1px 1px 0 rgba(0,0,0,0.06);
+  }
+  .data-product-definition .dp-model-arrow {
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 700;
+    user-select: none;
+  }
+  .data-product-definition .dp-model-secondary {
+    margin-top: 6px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+  .data-product-definition .dp-model-secondary strong { color: var(--text); }
+
+  /* Region / legal tag grid */
+  .data-product-definition .dp-tag-grid {
+    display: flex; flex-wrap: wrap;
+    gap: 5px;
+    margin-bottom: 5px;
+  }
+  .data-product-definition .dp-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 10.5px;
+    font-weight: 700;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .data-product-definition .dp-tag.legal {
+    background: rgba(20, 137, 47, 0.08);
+    border: 1px solid var(--domain);
+    color: var(--domain);
+  }
+  .data-product-definition .dp-tag.legal.na {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: var(--border-strong);
+    color: var(--text-muted);
+  }
+
+  /* Quality table (in Quality & support · Data quality) */
+  .data-product-definition .dp-quality-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+  .data-product-definition .dp-quality-table th {
+    text-align: left;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border-strong);
+    padding: 6px 7px;
+    font-size: 9.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+  .data-product-definition .dp-quality-table td {
+    padding: 6px 7px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .data-product-definition .dp-quality-table tr:last-child td { border-bottom: none; }
+  .data-product-definition .dp-quality-table td:first-child {
+    font-weight: 700;
+  }
+
+  /* ============================================================
+     STATE ROWS — mirrors the data-contract-definition pattern.
+     Today template / Today example (placeholders, amber)
+     Target template / Target example (the spec, green shades)
+     ============================================================ */
+  .data-product-definition .state-rows {
+    display: flex; flex-direction: column; gap: 18px;
+    margin-top: 8px;
+  }
+  .data-product-definition .state-row {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: 4px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px 18px;
+    align-items: start;
+  }
+  .data-product-definition .state-row.state-today    { border-top-color: var(--today);    background: var(--today-bg); }
+  .data-product-definition .state-row.state-template { border-top-color: var(--template); background: var(--template-bg); }
+  .data-product-definition .state-row.state-example  { border-top-color: var(--example);  background: var(--example-bg); }
+
+  .data-product-definition .state-row-text { padding-top: 4px; }
+  .data-product-definition .state-eyebrow {
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.16em;
+    color: var(--text-muted); margin-bottom: 6px;
+  }
+  .data-product-definition .state-card-title {
+    font-size: 17px; font-weight: 700; line-height: 1.22;
+    margin-bottom: 8px; letter-spacing: -0.01em;
+  }
+  .data-product-definition .state-summary { font-size: 13px; line-height: 1.55; }
+  .data-product-definition .state-summary strong { font-weight: 700; }
+  .data-product-definition .state-why {
+    margin-top: 12px; padding-top: 10px;
+    border-top: 1px dashed rgba(0,0,0,0.14);
+    font-size: 12px; color: var(--text-muted);
+    font-style: italic; line-height: 1.5;
+  }
+  .data-product-definition .illust {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px;
+  }
+  /* Inside a state-row, the dp-card no longer needs its own outer border/shadow */
+  .data-product-definition .state-row .dp-card {
+    border: 1px solid var(--border);
+  }
+
+  @media (max-width: 980px) {
+    .data-product-definition .state-row { grid-template-columns: 1fr; }
+  }
+
+  /* Today / future placeholder state — empty visual hint */
+  .data-product-definition .state-placeholder {
+    background: var(--surface);
+    border: 1px dashed var(--border-strong);
+    border-radius: 6px;
+    padding: 32px;
+    text-align: center;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--text-faint);
+    line-height: 1.5;
+  }
+  .data-product-definition .next-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 44px; }
+  .data-product-definition .next-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.16em; color: var(--text-faint); }
+  .data-product-definition .next-link { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); border: 1px solid var(--border-strong); border-radius: 6px; padding: 9px 14px; text-decoration: none; color: var(--domain-deep); font-size: 13px; font-weight: 700; transition: border-color 0.15s, box-shadow 0.15s; }
+  .data-product-definition .next-link:hover { border-color: var(--domain); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .data-product-definition .next-link .arrow { color: var(--domain); }
+  .data-product-definition .sources { margin-top: 22px; font-size: 12px; color: var(--text-muted); }
+  .data-product-definition .sources summary { cursor: pointer; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-faint); padding: 6px 0; list-style: none; }
+  .data-product-definition .sources summary::-webkit-details-marker { display: none; }
+  .data-product-definition .sources summary::before { content: "▸  "; color: var(--text-faint); }
+  .data-product-definition .sources[open] summary::before { content: "▾  "; }
+  .data-product-definition .sources ul { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 7px; max-width: 920px; }
+  .data-product-definition .sources li { line-height: 1.5; padding-left: 14px; position: relative; }
+  .data-product-definition .sources li::before { content: "·"; position: absolute; left: 4px; color: var(--text-faint); font-weight: 700; }
+  .data-product-definition .sources .src-title { font-weight: 700; color: var(--text); }
+  .data-product-definition .sources .src-tag { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-faint); border: 1px solid var(--border); border-radius: 3px; padding: 0 5px; margin-left: 4px; white-space: nowrap; }
+  .data-product-definition .sources .src-note { font-style: italic; color: var(--text-faint); font-size: 11px; margin-top: 10px; display: block; }
+</style>
+</head>
+<body>
+
+<div class="data-product-definition">
+<div class="container">
+
+  <header>
+    <div class="eyebrow"><span class="draft-tag">Draft</span>Data &amp; AI strategy · 29.05.2026</div>
+    <h1>What a data product contains</h1>
+    <p class="subtitle">What a governed data product contains. Shown as <strong>target template</strong> and concrete <strong>Session example</strong>. Same shape every data product carries: identity, composition, value, access, compliance, life cycle, quality. Today's examples coming once we have them.</p>
+  </header>
+
+  <section class="state-rows">
+
+    <!-- ============================================================
+         STATE 3 — TARGET TEMPLATE (abstract)
+         ============================================================ -->
+    <div class="state-row state-template">
+      <div class="state-row-text">
+        <div class="state-eyebrow">State 3 · Target template</div>
+        <div class="state-card-title">Full data product — template</div>
+        <div class="state-summary">The 7-clause shape every data product carries. <strong>Owned by the Domain</strong>, consumed by named groups. Identity (what it is), Composition (how it's built), Value (what it enables), Access &amp; governance, Compliance, Life cycle, Quality &amp; support.</div>
+        <div class="state-why">Same template whether the data product feeds dashboards, AI agents, or analytical workflows.</div>
+      </div>
+      <div class="illust">
+        <div class="dp-card">
+          <div class="dp-card-header">
+            <div class="dp-card-header-content">
+              <div class="dp-card-title">dp:&lt;name&gt;:v&lt;n&gt;</div>
+              <div class="dp-card-subtitle">Plain-language summary of what this data product provides and who relies on it.</div>
+            </div>
+            <span class="dp-card-tag">Template</span>
+          </div>
+          <div class="dp-card-body">
+
+            <div class="dp-card-section" data-area="identity">
+              <div class="dp-card-section-name">Identity</div>
+              <div class="dp-card-row"><div class="dp-card-label">Domain</div><div class="dp-card-value">&lt;domain name&gt;<a href="domain-map.html" class="dp-inline-link">→ overview</a></div></div>
+              <div class="dp-card-row"><div class="dp-card-label">Sub-domain</div><div class="dp-card-value">&lt;sub-domain name&gt;</div></div>
+              <div class="dp-card-row"><div class="dp-card-label">Type</div><div class="dp-card-value">Driver · Enabler · Utility</div></div>
+              <div class="dp-card-row"><div class="dp-card-label">Status</div><div class="dp-card-value">Test · Prototype · Production</div></div>
+              <div class="dp-card-row"><div class="dp-card-label">Description</div><div class="dp-card-value">Plain-language summary of what the data product provides.</div></div>
+            </div>
+
+            <div class="dp-card-section" data-area="composition">
+              <div class="dp-card-section-name">Composition</div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Required schemas</div>
+                <div class="dp-card-value">
+                  <ul class="dp-schema-list">
+                    <li><code>schema:&lt;name&gt;:v&lt;n&gt;</code><span class="schema-from">[Source · Master · Composed] ← &lt;producer&gt;_datacontract:v&lt;n&gt; (one or many)</span></li>
+                  </ul>
+                  <a class="dp-action-link" href="#">View in model builder</a>
+                </div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Data model</div>
+                <div class="dp-card-value">
+                  <div class="dp-data-model">
+                    <div class="dp-model-entities">
+                      <span class="dp-entity">Entity</span>
+                      <span class="dp-model-arrow">↔</span>
+                      <span class="dp-entity dp-entity-central">Central entity</span>
+                      <span class="dp-model-arrow">↔</span>
+                      <span class="dp-entity">Entity</span>
+                    </div>
+                    <div class="dp-model-secondary">relates to <strong>secondary entity</strong></div>
+                  </div>
+                  <span class="note">Conceptual entities composed from the required schemas above.</span>
+                </div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Glossary</div>
+                <div class="dp-card-value">
+                  <a class="dp-action-link" href="#">Laerdal glossary v&lt;n&gt;</a>
+                  <span class="note">Reference a specific version to lock the meaning of common terms.</span>
+                </div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Pairs with</div>
+                <div class="dp-card-value">Related data products this one is commonly used alongside.</div>
+              </div>
+            </div>
+
+            <div class="dp-card-section" data-area="value">
+              <div class="dp-card-section-name">Value</div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Use cases</div>
+                <div class="dp-card-value">What this data product enables — concrete examples.</div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Consumers</div>
+                <div class="dp-card-value">Roles / teams that rely on this data product.</div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Outputs</div>
+                <div class="dp-card-value">Dashboards · AI inputs · materials · …</div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Required output metrics</div>
+                <div class="dp-card-value">Concrete, testable metrics the data product must expose so the use cases are deliverable.</div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Usage</div>
+                <div class="dp-card-value"><a class="dp-action-link" href="#">View live dashboard</a></div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Pricing</div>
+                <div class="dp-card-value">Internal · commercial · indirect (e.g. via better decisions).</div>
+              </div>
+            </div>
+
+            <div class="dp-card-section" data-area="access">
+              <div class="dp-card-section-name">Access &amp; governance</div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Access policy</div>
+                <div class="dp-card-value">
+                  <ul>
+                    <li><strong>&lt;bundle-name&gt;-consumers</strong> — read access for &lt;purpose&gt;</li>
+                  </ul>
+                  <span class="note">Named consumer-bundles, each with declared purpose. Domain governs membership.</span>
+                </div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Legal &amp; geographic</div>
+                <div class="dp-card-value">
+                  <div class="dp-tag-grid">
+                    <span class="dp-tag legal">EU / GDPR</span>
+                    <span class="dp-tag legal">US / HIPAA</span>
+                    <span class="dp-tag legal">APAC / data residency</span>
+                  </div>
+                  <span class="note">Per-framework / per-region tag (✓ · ✗ · n/a) locks coverage.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="dp-card-section" data-area="compliance">
+              <div class="dp-card-section-name">Compliance</div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Privacy</div>
+                <div class="dp-card-value">PII handling · residency · consent basis.</div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Ethics</div>
+                <div class="dp-card-value">Allowed and disallowed uses · AI purpose declaration.</div>
+              </div>
+            </div>
+
+            <div class="dp-card-section" data-area="lifecycle">
+              <div class="dp-card-section-name">Life cycle</div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Storage tiers</div>
+                <div class="dp-card-value">
+                  <ul>
+                    <li><strong>Hot</strong> — sub-second query latency</li>
+                    <li><strong>Warm</strong> — seconds query latency</li>
+                    <li><strong>Cold</strong> — seconds-to-minutes latency</li>
+                    <li><strong>Frozen</strong> — compliance archive · on-demand restore</li>
+                  </ul>
+                  <span class="note">Durations + cost tier set per data product. Auto-transitions based on access patterns.</span>
+                </div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Versioning</div>
+                <div class="dp-card-value">Backward-compat policy and breaking-change rules.</div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Deprecation &amp; retirement</div>
+                <div class="dp-card-value">Consumer notice + sign-off process.</div>
+              </div>
+            </div>
+
+            <div class="dp-card-section" data-area="quality">
+              <div class="dp-card-section-name">Quality &amp; support</div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Data quality</div>
+                <div class="dp-card-value">
+                  <table class="dp-quality-table">
+                    <thead>
+                      <tr><th>Source</th><th>Freshness</th><th>Completeness</th><th>Region</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td>&lt;source&gt;</td><td>&lt;target&gt;</td><td>&lt;%&gt;</td><td>&lt;region&gt;</td></tr>
+                    </tbody>
+                  </table>
+                  <span class="note">Quality SLOs differ per source — consumers should account for the lowest tier when relying on cross-product joins.</span>
+                </div>
+              </div>
+              <div class="dp-card-row">
+                <div class="dp-card-label">Support &amp; feedback</div>
+                <div class="dp-card-value"><a class="dp-action-link" href="#">Submit a feature request or support ticket</a></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         STATE 4 — TARGET EXAMPLE (Session)
+         ============================================================ -->
+    <div class="state-row state-example">
+      <div class="state-row-text">
+        <div class="state-eyebrow">State 4 · Target example</div>
+        <div class="state-card-title">Session — target example</div>
+        <div class="state-summary">A cross-product view of sessions composed from three producer contracts. Owned by the <strong>Engagement &amp; Usage</strong> domain, used by product / analytics / executive / AI consumers.</div>
+        <div class="state-why">What a production data product looks like once the contracts upstream are signed and the model is built.</div>
+      </div>
+      <div class="illust">
+  <div class="dp-card">
+    <div class="dp-card-header">
+      <div class="dp-card-header-content">
+        <div class="dp-card-title">Session · v1</div>
+        <div class="dp-card-subtitle">A standardized, cross-product view of sessions used to track adoption and support portfolio decision-making.</div>
+      </div>
+      <span class="dp-card-tag">Target example</span>
+    </div>
+    <div class="dp-card-body">
+
+      <div class="dp-card-section" data-area="identity">
+        <div class="dp-card-section-name">Identity</div>
+        <div class="dp-card-row"><div class="dp-card-label">Domain</div><div class="dp-card-value">Engagement &amp; Usage<a href="domain-map.html" class="dp-inline-link">→ overview</a></div></div>
+        <div class="dp-card-row"><div class="dp-card-label">Sub-domain</div><div class="dp-card-value">Session</div></div>
+        <div class="dp-card-row"><div class="dp-card-label">Type</div><div class="dp-card-value"><a href="#type-explanation" class="dp-type-link" id="type-link">Enabler</a></div></div>
+        <div class="dp-card-row"><div class="dp-card-label">Status</div><div class="dp-card-value"><span class="dp-chip">Prototype</span></div></div>
+        <div class="dp-card-row"><div class="dp-card-label">Description</div><div class="dp-card-value">A standardized, cross-product view of sessions representing when and how often Laerdal products are used, based on a shared and simple definition of a "session".</div></div>
+      </div>
+
+      <div class="dp-card-section" data-area="composition">
+        <div class="dp-card-section-name">Composition</div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Required schemas</div>
+          <div class="dp-card-value">
+            <ul class="dp-schema-list">
+              <li><code>schema:session:v1</code><span class="schema-from">← hpcpr_datacontract:v1.2.0 · simgo_datacontract:v1.0.0 · simtoimprove_datacontract:v0.4.0</span></li>
+              <li><code>schema:user:v1</code><span class="schema-from">← identity_team_datacontract:v2.1.0</span></li>
+              <li><code>schema:product:v1</code><span class="schema-from">← product_registry_datacontract:v1.0.0</span></li>
+            </ul>
+            <a class="dp-action-link" href="#">View in model builder</a>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Data model</div>
+          <div class="dp-card-value">
+            <div class="dp-data-model">
+              <div class="dp-model-entities">
+                <span class="dp-entity">User</span>
+                <span class="dp-model-arrow">↔</span>
+                <span class="dp-entity dp-entity-central">Session</span>
+                <span class="dp-model-arrow">↔</span>
+                <span class="dp-entity">Attempt</span>
+              </div>
+              <div class="dp-model-secondary">runs in a <strong>Product</strong></div>
+            </div>
+            <span class="note">Conceptual entities composed from the required schemas above.</span>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Glossary</div>
+          <div class="dp-card-value">
+            <a class="dp-action-link" href="#">Laerdal glossary v1.2</a>
+            <span class="note">Common definitions for Session · User · Product · Usage timestamp. Reference a specific version to lock the meaning.</span>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Pairs with</div>
+          <div class="dp-card-value">Future data products such as:
+            <ul>
+              <li>Performance metrics</li>
+              <li>Outcome / quality metrics</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-card-section" data-area="value">
+        <div class="dp-card-section-name">Value</div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Use cases</div>
+          <div class="dp-card-value">
+            <ul>
+              <li>Track product adoption across the portfolio</li>
+              <li>Identify products that are used vs. underutilised</li>
+              <li>Support portfolio investment decisions</li>
+              <li>Establish baseline for future analytics</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Consumers</div>
+          <div class="dp-card-value">
+            <ul>
+              <li>Product teams</li>
+              <li>Portfolio / strategy</li>
+              <li>Commercial leadership</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Outputs</div>
+          <div class="dp-card-value">
+            <ul>
+              <li>Adoption dashboards</li>
+              <li>Portfolio review materials</li>
+              <li>Input for future analytics / AI use cases</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Required output metrics</div>
+          <div class="dp-card-value">
+            <ul>
+              <li>Sessions per product per week (rolling)</li>
+              <li>Sessions per user — distribution across products</li>
+              <li>Underused products list — sessions/day below threshold</li>
+              <li>Adoption trend by product family — 90-day window</li>
+            </ul>
+            <span class="note">Concrete metrics the data product must expose so the use cases above are testable.</span>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Usage</div>
+          <div class="dp-card-value">
+            <a class="dp-action-link" href="#usage-dashboard">View live dashboard</a>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Pricing</div>
+          <div class="dp-card-value">
+            <ul>
+              <li>Internal data product — no direct pricing</li>
+              <li>Value realised via better portfolio investment decisions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-card-section" data-area="access">
+        <div class="dp-card-section-name">Access &amp; governance</div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Access policy</div>
+          <div class="dp-card-value">
+            <ul>
+              <li><strong>product-analytics-consumers</strong> — read access for product + analytics teams</li>
+              <li><strong>executive-consumers</strong> — read access for portfolio + commercial leadership</li>
+              <li><strong>ai-consumers</strong> — read access for AI / agent use cases (declared purpose required)</li>
+            </ul>
+            <span class="note">Domain governs role membership · alignment required across contributing products.</span>
+            <a class="dp-action-link" href="#request-access">Request access to this data product</a>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Legal &amp; geographic</div>
+          <div class="dp-card-value">
+            <div class="dp-tag-grid">
+              <span class="dp-tag legal">EU / GDPR ✓</span>
+              <span class="dp-tag legal na">US / HIPAA — n/a (no PHI)</span>
+              <span class="dp-tag legal">APAC / data residency ✓</span>
+            </div>
+            <span class="note">No strict dependency on personal data (aggregable / anonymisable). Coverage follows product availability.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-card-section" data-area="compliance">
+        <div class="dp-card-section-name">Compliance</div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Privacy</div>
+          <div class="dp-card-value">
+            <ul>
+              <li>No strict dependency on personal data (aggregable / anonymisable)</li>
+              <li>If identifiable data is included, GDPR-style consent and lawful basis required</li>
+              <li>Data residency policy: TBD with Domain Owner</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Ethics</div>
+          <div class="dp-card-value">
+            <ul>
+              <li>Used for portfolio and adoption insights — not for individual performance judgement</li>
+              <li>AI consumers must declare purpose; audit trail TBD</li>
+              <li>Sensitive use cases (assessment, certification) reviewed by Domain Owner</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-card-section" data-area="lifecycle">
+        <div class="dp-card-section-name">Life cycle</div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Storage tiers</div>
+          <div class="dp-card-value">
+            <ul>
+              <li><strong>Hot</strong> — 90 days · sub-second query latency</li>
+              <li><strong>Warm</strong> — 1 year · seconds query latency</li>
+              <li><strong>Cold</strong> — 5 years · seconds-to-minutes latency</li>
+              <li><strong>Frozen</strong> — 7 years compliance archive · on-demand restore</li>
+            </ul>
+            <span class="note">Tier transitions automatic based on access patterns. Cost drops by ~10× per tier.</span>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Versioning</div>
+          <div class="dp-card-value">
+            <ul>
+              <li>Backward-compatible by default; breaking changes get a new major version</li>
+              <li>Previous major version supported for an overlap period (length TBD)</li>
+            </ul>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Deprecation &amp; retirement</div>
+          <div class="dp-card-value">
+            <ul>
+              <li>Consumers notified ahead of deprecation (timeline TBD)</li>
+              <li>Retirement requires Domain sign-off and confirmation no active consumers remain</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="dp-card-section" data-area="quality">
+        <div class="dp-card-section-name">Quality &amp; support</div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Data quality</div>
+          <div class="dp-card-value">
+            <table class="dp-quality-table">
+              <thead>
+                <tr><th>Source</th><th>Freshness</th><th>Completeness</th><th>Region</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>HPCPR</td><td>&lt;5min</td><td>99.5%</td><td>Global</td></tr>
+                <tr><td>SimGo / LENS</td><td>Daily</td><td>95%</td><td>EU + US</td></tr>
+                <tr><td>SimToImprove</td><td>Daily</td><td>90% (early)</td><td>EU pilot</td></tr>
+              </tbody>
+            </table>
+            <span class="note">Quality SLOs differ per source — consumers should account for the lowest tier when relying on cross-product joins.</span>
+          </div>
+        </div>
+        <div class="dp-card-row">
+          <div class="dp-card-label">Support &amp; feedback</div>
+          <div class="dp-card-value">
+            <a class="dp-action-link" href="#support-request">Submit a feature request or support ticket</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="context-section">
+    <div class="context-box refs-out">
+      <div class="context-box-title">This data product references</div>
+      <ul>
+        <li><strong>Laerdal glossary</strong> — common definitions (Session, User, Product, Usage timestamp) referenced from §2 Composition <em>(planned)</em></li>
+        <li><strong>Producer data contracts</strong> — schema-publishing commitments upstream, referenced from §2 Composition</li>
+        <li><strong>Model builder</strong> — where schemas live and can be inspected, referenced from §2 Composition <em>(planned)</em></li>
+        <li><strong>Domain overview</strong> — the domain map showing all domains and their data products, referenced from §1 Identity</li>
+        <li><strong>Data classification standard</strong> — PII levels + Laerdal classification, referenced from §5 Compliance <em>(planned)</em></li>
+        <li><strong>Secure Data Vault levels</strong> — security-tier taxonomy, referenced from §5 Compliance <em>(planned)</em></li>
+      </ul>
+    </div>
+    <div class="context-box">
+      <div class="context-box-title">Referenced by</div>
+      <ul>
+        <li><a href="../data-journey/data-journey-ideal.html">The data journey</a> — Session ends up in the catalog after ingestion</li>
+        <li><a href="domain-map.html">The domain map</a> — every data product on the map carries this shape</li>
+        <li><a href="mcp-data-paths.html">MCP data paths</a> — data products served via MCP carry the same definition</li>
+      </ul>
+    </div>
+  </section>
+
+</div>
+</div>
+
+<!-- Type explanation modal -->
+<div class="data-product-definition">
+  <div class="dp-modal" id="type-modal" hidden>
+    <div class="dp-modal-overlay" data-modal-close></div>
+    <div class="dp-modal-content" role="dialog" aria-modal="true" aria-labelledby="type-modal-title">
+      <button class="dp-modal-close" data-modal-close aria-label="Close">×</button>
+      <div class="dp-modal-title" id="type-modal-title">Data product types</div>
+      <p class="dp-modal-intro">Every data product is one of three types, depending on how consumers expect to use it. The <strong>Session</strong> data product is an <strong>Enabler</strong>.</p>
+      <table class="dp-modal-table">
+        <thead>
+          <tr>
+            <th>Type</th>
+            <th>Use case</th>
+            <th>Market</th>
+            <th>Success measures</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="dp-modal-type-name">Utility</td>
+            <td>When a consumer expects a product to be instantly available, for all purposes</td>
+            <td>Internal or external</td>
+            <td>Product awareness, availability and time to access</td>
+          </tr>
+          <tr class="dp-modal-row--highlight">
+            <td class="dp-modal-type-name">Enabler</td>
+            <td>When a consumer expects a product to enable decision making for specific business outcomes</td>
+            <td>Internal or external</td>
+            <td>Time or money saved in the process of achieving a specific business outcome</td>
+          </tr>
+          <tr>
+            <td class="dp-modal-type-name">Driver</td>
+            <td>When the product is expected to drive the business</td>
+            <td>Typically focused on external monetisation by selling for economic value</td>
+            <td>Revenue generated</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="data-product-definition">
+<div class="container">
+
+  <div class="next-row">
+    <span class="next-label">Next</span>
+    <a class="next-link" href="data-contract-definition.html">What's in the contract <span class="arrow">→</span></a>
+    <a class="next-link" href="domain-map.html">Domain map <span class="arrow">→</span></a>
+  </div>
+
+  <details class="sources">
+    <summary>Sources &amp; further reading</summary>
+    <ul>
+      <li><span class="src-title">Zhamak Dehghani — Data Mesh: Delivering Data-Driven Value at Scale</span> (O'Reilly, 2022). Product ownership, the interface contract, and quality requirements — the framework behind the seven clauses used here.</li>
+      <li><span class="src-title">Gartner — Reference Architecture Brief: Data Products</span> (L. Ferguson, Aug 2025) <span class="src-tag">internal</span>. Canonical four-attribute definition of a data product, and the Source / Master / Insights type taxonomy.</li>
+      <li><span class="src-title">Gartner — How Data Architects Can Effectively Govern Data Products</span> (S. Das, Oct 2025) <span class="src-tag">internal</span>. The six data-product policy types that the spec's access, compliance, and quality clauses map to.</li>
+    </ul>
+    <span class="src-note">Gartner items are confidential subscription material — internal reference only.</span>
+  </details>
+
+  <footer class="page-footer">
+    <a href="../index.html">← Overview</a>
+    <span>Confidential · Laerdal Medical · 19.06.2026</span>
+  </footer>
+</div>
+</div>
+
+<script>
+  const typeLink = document.getElementById("type-link");
+  const typeModal = document.getElementById("type-modal");
+
+  function openTypeModal() {
+    typeModal.hidden = false;
+    document.body.style.overflow = "hidden";
+  }
+  function closeTypeModal() {
+    typeModal.hidden = true;
+    document.body.style.overflow = "";
+  }
+  if (typeLink && typeModal) {
+    typeLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      openTypeModal();
+    });
+    typeModal.querySelectorAll("[data-modal-close]").forEach(el => {
+      el.addEventListener("click", closeTypeModal);
+    });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !typeModal.hidden) closeTypeModal();
+    });
+  }
+</script>
+
+</body>
+</html>
