@@ -63,13 +63,26 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
 }
 .data-journey-today .subtitle strong { color: var(--text); font-weight: 700; }
 
+/* root-problem lead line — plain lead sentence, matches the subtitle scale */
+.data-journey-today .root-problem {
+  font-size: 16px; color: var(--text); line-height: 1.55;
+  max-width: 760px; margin: 0 0 16px;
+}
+.data-journey-today .root-problem strong { font-weight: 700; }
+
 /* ---- Section scaffolding ---- */
 .data-journey-today .section { margin-top: 44px; }
 .data-journey-today .section-label {
+  display: flex; align-items: center; gap: 9px;
   font-size: 11px; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.18em;
   color: var(--text-faint);
   margin-bottom: 16px;
+}
+.data-journey-today .section-label::before {
+  content: ""; flex: 0 0 auto;
+  width: 3px; height: 12px; border-radius: 1px;
+  background: var(--problem);
 }
 
 /* ---- Broken journey diagram ---- */
@@ -161,7 +174,7 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
 .data-journey-today .pipe-mini .checkpoint {
   flex: 0 0 auto; position: relative; display: grid; place-items: center;
   width: 34px; height: 34px; border-radius: 50%;
-  border: 1.5px dashed var(--border-strong); background: var(--surface);
+  border: 1.5px dashed var(--problem); background: var(--surface);
   z-index: 2; margin-right: -8px;
 }
 .data-journey-today .pipe-mini .schema-label {
@@ -237,7 +250,6 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
 .data-journey-today .absence {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--problem);
   border-radius: 6px;
   padding: 14px 16px;
 }
@@ -257,7 +269,6 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
 .data-journey-today .panel {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-top: 3px solid var(--problem);
   border-radius: 8px;
   padding: 22px 24px;
 }
@@ -289,13 +300,18 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
   margin-top: 44px;
   background: var(--domain-soft);
   border: 1px solid var(--domain-mid);
-  border-left: 4px solid var(--domain);
   border-radius: 10px;
-  padding: 28px 30px;
+  padding: 24px 28px;
 }
 .data-journey-today .turn-eyebrow {
+  display: flex; align-items: center; gap: 9px;
   font-size: 11px; font-weight: 700; color: var(--domain-deep);
-  text-transform: uppercase; letter-spacing: 0.16em; margin-bottom: 8px;
+  text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 8px;
+}
+.data-journey-today .turn-eyebrow::before {
+  content: ""; flex: 0 0 auto;
+  width: 3px; height: 12px; border-radius: 1px;
+  background: var(--domain);
 }
 .data-journey-today .turn h2 {
   font-size: 24px; font-weight: 900; letter-spacing: -0.02em;
@@ -366,12 +382,12 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
   <header>
     <div class="eyebrow">Data &amp; AI strategy · where we are today</div>
     <h1>The data journey, today.</h1>
-    <p class="subtitle">Most of our data leaves product teams as a <strong>byproduct</strong> — no owner, no contract, no meaning. The moment anyone uses it — especially AI — it <strong>can't be trusted</strong>.</p>
+    <p class="subtitle">Data exists — but <strong>finding it, understanding it, and trusting it</strong> takes far longer than it should. Most data leaves product teams without clear ownership, defined schemas, or documented meaning.</p>
   </header>
 
   <!-- ── THE BROKEN JOURNEY ── -->
   <div class="section">
-    <div class="section-label">The journey today — the data may flow, but it's ungoverned</div>
+    <div class="section-label">How data flows today</div>
     <div class="journey">
 
       <div class="flow">
@@ -409,7 +425,10 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
         <div class="cap present-cap" style="grid-column:5;grid-row:1;">Pipeline</div>
         <div class="obj" style="grid-column:5;grid-row:2;">
           <div class="pipe-mini">
-            <div class="checkpoint"><span class="schema-label">Schema</span></div>
+            <div class="checkpoint">
+              <span class="schema-label">Schema</span>
+              <svg viewBox="0 0 12 12" width="13" height="13" aria-hidden="true"><line x1="2.5" y1="2.5" x2="9.5" y2="9.5" stroke="var(--problem)" stroke-width="1.8" stroke-linecap="round"/><line x1="9.5" y1="2.5" x2="2.5" y2="9.5" stroke="var(--problem)" stroke-width="1.8" stroke-linecap="round"/></svg>
+            </div>
             <div class="pipe"></div>
           </div>
         </div>
@@ -476,7 +495,7 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
         </div>
       </div>
 
-      <div class="journey-caption">The pipeline may run and the data may land in the catalog — but with no contract or schema, nothing says what it means, who owns it, or whether it can be trusted. However a consumer reaches it — direct or from the catalog — they're on their own.</div>
+      <div class="journey-caption">The pipeline may run and the data may land in the catalog. But without a contract, a schema, or a named owner, no consumer can know what the data means — or whether to trust it.</div>
 
     </div>
   </div>
@@ -484,71 +503,66 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
   <!-- ── ABSENCES ── -->
   <div class="section">
     <div class="section-label">What's missing today</div>
+    <p class="root-problem">Start with the root problem: <strong>most data is never really shared</strong> — it stays inside the product that created it. Everything below makes that harder to fix.</p>
     <div class="absences">
       <div class="absence">
-        <div class="absence-title">No owner</div>
-        <div class="absence-desc">No one is accountable. Meaning lives in a product team's code — and walks out the door when they reorganise.</div>
+        <div class="absence-title">No clear owner</div>
+        <div class="absence-desc">No one is accountable. When consumers have questions, there is no one to ask.</div>
       </div>
       <div class="absence">
-        <div class="absence-title">Undiscoverable</div>
-        <div class="absence-desc">Even when it lands in the catalog, it's not described or documented as a product — so every consumer reverse-engineers what it means.</div>
+        <div class="absence-title">Hard to find</div>
+        <div class="absence-desc">Data exists but isn't described or documented as a product. Every consumer figures out what it means from scratch.</div>
       </div>
       <div class="absence">
-        <div class="absence-title">No promise</div>
-        <div class="absence-desc">No contract. Nothing states what it contains, how often it updates, or what to expect — so nothing can be relied on.</div>
+        <div class="absence-title">No contract</div>
+        <div class="absence-desc">Nothing states what the data contains, how often it updates, or what to expect. Consumers cannot rely on it.</div>
       </div>
       <div class="absence">
-        <div class="absence-title">Unverified &amp; unsecured</div>
-        <div class="absence-desc">No quality bar, no access control. PII is handled differently by every team, and no one knows how fresh or correct the data is.</div>
+        <div class="absence-title">Access by request</div>
+        <div class="absence-desc">Data access is tightly controlled. Getting it requires manual requests and approvals — before analysis can even begin.</div>
       </div>
       <div class="absence">
-        <div class="absence-title">One-off, not maintained</div>
-        <div class="absence-desc">No versioning, no support. When the producer changes anything, no one is told — and whatever depended on it breaks silently.</div>
+        <div class="absence-title">No schema</div>
+        <div class="absence-desc">Field names, types, and meanings are not formally defined. Consumers reverse-engineer what they can from code.</div>
       </div>
     </div>
   </div>
 
-  <!-- ── EXPOSURE + AI ── -->
+  <!-- ── WHY IT MATTERS ── -->
   <div class="section">
-    <div class="section-label">Why "fine for now" isn't fine</div>
+    <div class="section-label">Why it matters</div>
     <div class="duo">
       <div class="panel">
-        <div class="panel-eyebrow">You can't predict who reads it next</div>
-        <h3>Capture the meaning from the start.</h3>
-        <p>It's tempting to think implicit meaning is fine while a team is the only one using its own data. It isn't — because <span class="key">you never know when ingested data will be used for something else</span>: a new analyst, another product, an AI agent.</p>
-        <p>If its meaning, model, and owner were never captured, that consumer simply cannot understand it — and there's no one to ask. Following best practice from day one isn't overhead; it's what makes the data usable the moment anyone needs it.</p>
+        <h3>Data always gets reused.</h3>
+        <p>Today's data will be picked up by a new analyst, another product, or an AI agent. If its meaning and owner were never captured, <span class="key">they can't understand it — and there's no one to ask</span>.</p>
       </div>
       <div class="panel">
-        <div class="panel-eyebrow">AI is the unforgiving consumer</div>
-        <h3>AI makes ungoverned exposure indefensible.</h3>
-        <p>A human can tolerate ambiguity — ask around, sanity-check a weird value. An AI cannot: it takes the values at face value, so <span class="key">missing meaning produces a confident wrong answer</span>, not a clarifying question.</p>
-        <p>AI also scales consumption: data "only exposed to one analyst" can be ingested by an agent and surfaced anywhere. You can no longer assume the next reader is human — or forgiving.<span class="cite">Gartner, Data Management Challenges of Model Context Protocol, 04.2026</span></p>
+        <h3>AI needs clear data.</h3>
+        <p>People can work around ambiguity. AI can't — it takes data at face value, so <span class="key">missing meaning becomes a confident wrong answer</span>, at scale.<span class="cite">Gartner, Data Management Challenges of Model Context Protocol, 04.2026</span></p>
       </div>
     </div>
   </div>
 
   <!-- ── TWO COSTS ── -->
   <div class="section">
-    <div class="section-label">What it costs us — twice</div>
+    <div class="section-label">What it costs us</div>
     <div class="duo">
       <div class="panel">
-        <div class="panel-eyebrow">The visible cost</div>
-        <h3>What breaks.</h3>
-        <p>When a producer changes anything, no one is told. The dashboards and integrations that quietly depend on the data <span class="key">shatter — and the first signal is a consumer noticing it's wrong</span>.</p>
+        <h3>Things break quietly.</h3>
+        <p>When a producer changes something, no one is told. Dashboards break, and <span class="key">the first sign is someone noticing the numbers are wrong</span>. When those numbers are customer-facing, trust goes with them.</p>
       </div>
       <div class="panel">
-        <div class="panel-eyebrow">The invisible cost</div>
-        <h3>What never gets built.</h3>
-        <p>The quieter, larger loss: the insights, decisions, and AI products that never happen because no one surfaced the data as a product. <span class="key">The value left on the table is the most expensive cost of all</span> — and it's invisible, because it's an absence.</p>
+        <h3>Things never get built.</h3>
+        <p>The bigger loss is quieter: <span class="key">the insights and AI products that never happen</span> because no one offered the data as a product.</p>
       </div>
     </div>
   </div>
 
   <!-- ── THE TURN ── -->
   <div class="turn">
-    <div class="turn-eyebrow">The answer</div>
+    <div class="turn-eyebrow">The shift</div>
     <h2>Data is a product, not a byproduct.</h2>
-    <p>Every absence above has a fix — and producers shouldn't wait to be asked. <span class="key">Identify what's valuable, tie it to real use cases, and expose it deliberately</span>: with an owner, a contract, a schema, and quality. That's a governed data product, and it's what the rest of this story is about.</p>
+    <p>Every gap above has the same fix: data with <span class="key">an owner, a contract, a schema, and a quality bar</span> — offered on purpose.</p>
     <div class="turn-links">
       <a class="turn-link" href="../data-mesh-principles.html">The four principles <span class="arrow">→</span></a>
       <a class="turn-link" href="data-journey-ideal.html">The data journey <span class="arrow">→</span></a>
@@ -560,13 +574,14 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
     <ul>
       <li><span class="src-title">Zhamak Dehghani — Data Mesh: Delivering Data-Driven Value at Scale</span> (O'Reilly, 2022). Defines what a governed data product is — and why data shipped without ownership, contracts, or named consumers doesn't qualify.</li>
       <li><span class="src-title">Gartner — Reference Architecture Brief: Data Products</span> (L. Ferguson, Aug 2025) <span class="src-tag">internal</span>. Canonical four-attribute product definition; makes the gap between today's ungoverned data and a real product explicit.</li>
+      <li><span class="src-title">Gartner — Data Management Challenges of Model Context Protocol</span> (04.2026) <span class="src-tag">internal</span>. Documents how AI systems inherit data quality and governance gaps at scale.</li>
     </ul>
     <span class="src-note">Gartner items are confidential subscription material — internal reference only.</span>
   </details>
 
   <footer class="page-footer">
     <a class="back-link" href="../index.html">← Overview</a>
-    <span>Confidential · Laerdal Medical · 19.06.2026</span>
+    <span>Confidential · Laerdal Medical · 29.06.2026</span>
   </footer>
 
 </div>

@@ -55,10 +55,16 @@ body { margin: 0; background: var(--bg); padding: 32px 24px 64px; }
 
 /* ---- Section label ---- */
 .data-mesh-principles .section-label {
+  display: flex; align-items: center; gap: 9px;
   font-size: 11px; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.18em;
   color: var(--text-faint);
   margin-bottom: 14px;
+}
+.data-mesh-principles .section-label::before {
+  content: ""; flex: 0 0 auto;
+  width: 3px; height: 12px; border-radius: 1px;
+  background: var(--domain);
 }
 
 /* ---- Principles grid ---- */
@@ -78,10 +84,7 @@ body { margin: 0; background: var(--bg); padding: 32px 24px 64px; }
   flex-direction: column;
 }
 
-.data-mesh-principles .principle.p-ownership { border-top: 3px solid var(--producer); }
-.data-mesh-principles .principle.p-product   { border-top: 3px solid var(--domain); background: var(--domain-soft); border-color: var(--domain-mid); }
-.data-mesh-principles .principle.p-platform  { border-top: 3px solid var(--neutral); }
-.data-mesh-principles .principle.p-governance { border-top: 3px solid var(--highlight); }
+.data-mesh-principles .principle.p-product { background: var(--domain-soft); border-color: var(--domain-mid); }
 
 .data-mesh-principles .principle-header {
   display: flex;
@@ -206,8 +209,7 @@ body { margin: 0; background: var(--bg); padding: 32px 24px 64px; }
 }
 .data-mesh-principles .dap-card {
   background: var(--surface);
-  border: 1px solid var(--domain-mid);
-  border-left: 3px solid var(--domain);
+  border: 1px solid var(--border);
   border-radius: 6px;
   padding: 16px 18px;
 }
