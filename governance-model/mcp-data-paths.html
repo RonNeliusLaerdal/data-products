@@ -75,25 +75,28 @@
   }
   .mcp-paths-v2-draft .subtitle strong { color: var(--text); font-weight: 700; }
 
-  /* ----- Policy panel ----- */
-  .mcp-paths-v2-draft .policy {
-    margin: 18px 0 22px;
-    padding: 18px 24px 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-  }
-  .mcp-paths-v2-draft .policy-head {
+  /* ----- Section scaffolding (matches the data-journey masters) ----- */
+  .mcp-paths-v2-draft .section { margin-top: 44px; }
+  .mcp-paths-v2-draft .section-label {
     display: flex; align-items: center; gap: 9px;
     font-size: 11px; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.16em;
-    color: var(--text-muted);
-    margin-bottom: 14px;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--text-faint);
+    margin-bottom: 16px;
   }
-  .mcp-paths-v2-draft .policy-head::before {
+  .mcp-paths-v2-draft .section-label::before {
     content: ""; flex: 0 0 auto;
     width: 3px; height: 12px; border-radius: 1px;
     background: var(--case-1);
+  }
+
+  /* ----- Policy panel ----- */
+  .mcp-paths-v2-draft .policy {
+    margin: 0;
+    padding: 22px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
   }
   .mcp-paths-v2-draft .policy-grid {
     display: grid;
@@ -148,10 +151,10 @@
 
   /* ----- Diagram wrap ----- */
   .mcp-paths-v2-draft .diagram-wrap {
-    margin: 0 0 18px;
+    margin: 0;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 22px 24px 18px;
   }
   .mcp-paths-v2-draft .diagram-svg {
@@ -244,7 +247,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 12px;
-    margin: 0 0 24px;
+    margin: 0;
   }
   .mcp-paths-v2-draft .case-panel {
     background: var(--surface);
@@ -370,9 +373,10 @@
     <p class="subtitle">How AI agents read Laerdal's data and act on it — <strong>two read paths and one action loop</strong>. The default runs through the governed data journey; prototyping gets a transparent exception.</p>
   </header>
 
-  <!-- Policy panel -->
-  <div class="policy">
-    <div class="policy-head">Laerdal's MCP policy · 28.05.2026</div>
+  <!-- Policy -->
+  <div class="section">
+    <div class="section-label">Laerdal's MCP policy</div>
+    <div class="policy">
     <div class="policy-grid">
       <div class="policy-row">
         <div><span class="policy-tag policy-tag-read">Read</span></div>
@@ -387,10 +391,13 @@
         <div class="policy-rule">Every MCP registers in an <strong>MCP Registry</strong> <span class="muted">(e.g. Azure API Center, TBD)</span> and passes the <strong>standard MCP review</strong>.</div>
       </div>
     </div>
+    </div>
   </div>
 
-  <!-- Diagram: two isolated cases, each in U-shape (read row above, act+return row below) -->
-  <div class="diagram-wrap">
+  <!-- The two paths -->
+  <div class="section">
+    <div class="section-label">How it works · the two cases</div>
+    <div class="diagram-wrap">
     <svg viewBox="0 0 910 600" xmlns="http://www.w3.org/2000/svg" class="diagram-svg" role="img" aria-labelledby="diagram-title diagram-desc">
       <title id="diagram-title">Two cases — each shown as a closed loop: read above, act and write-back below</title>
       <desc id="diagram-desc">Two cases shown independently. For each case, a U-shape: Product on the left and AI Agent on the right span both rows. The top row is the read flow, left to right; the bottom row is the act-and-return flow, right to left. Case 1, the governed default: Product, Data Contract, Pipeline (Validate, Transform, Enrich), Unity Catalog, Read MCP (platform-managed), MCP Registry, Agent on the top row; Agent, MCP Registry, Action MCP (product-team-owned), then a gold dashed write-back arrow to Product on the bottom row. The action re-enters the data journey through normal ingestion. Case 2, Direct MCP: Product, Data Contract, a long dashed arrow skipping pipeline and catalog, then a single team-managed MCP that handles both read and act, MCP Registry, Agent on the top row; Agent, MCP Registry, the same team MCP, write-back arrow to Product on the bottom row. The data journey does not see the action; the team observes outcomes themselves.</desc>
@@ -542,10 +549,13 @@
 
       <text class="return-label" x="455" y="566" text-anchor="middle">→ data journey doesn't see it · team observes outcomes themselves</text>
     </svg>
+    </div>
   </div>
 
-  <!-- Per-case panels, visually tied to the diagram rows -->
-  <div class="case-panels">
+  <!-- How each case works -->
+  <div class="section">
+    <div class="section-label">Case by case</div>
+    <div class="case-panels">
     <div class="case-panel case-1-panel">
       <div class="case-panel-head"><span class="case-chip case-1-chip">Case 1</span>Governed read · default</div>
       <p class="case-panel-body"><strong>Read.</strong> The platform reads your contract and delivers governance — data quality, policy-as-code for sensitive data, access controls — as part of the self-serviced data platform.</p>
@@ -559,12 +569,12 @@
       <p class="case-panel-body"><strong>Act.</strong> The same team-managed MCP also handles actions — read and act behind one surface. The team owns the application-side controls (authentication, authorisation, audit, approval flow) on top of the data-side controls.</p>
       <p class="case-panel-body"><strong>Loop closes inside the product.</strong> The team must observe outcomes themselves; the data journey doesn't see what the agent did. Another reason to migrate to Case 1 once the product reaches production.</p>
     </div>
+    </div>
   </div>
 
   <!-- FAQ -->
-  <section class="faq">
-    <h2 class="faq-head">Frequently asked</h2>
-    <p class="faq-intro">Questions that come up most often from product and engineering teams.</p>
+  <section class="section">
+    <div class="section-label">Frequently asked</div>
 
     <div class="faq-item">
       <h3 class="faq-q">Can I use third-party MCP servers (GitHub, Atlassian, Playwright, Datadog, Azure, DB MCPs, …) for PoCs and tool/agent development?</h3>
