@@ -83,10 +83,16 @@
     border-radius: 6px;
   }
   .mcp-paths-v2-draft .policy-head {
+    display: flex; align-items: center; gap: 9px;
     font-size: 11px; font-weight: 700;
     text-transform: uppercase; letter-spacing: 0.16em;
     color: var(--text-muted);
     margin-bottom: 14px;
+  }
+  .mcp-paths-v2-draft .policy-head::before {
+    content: ""; flex: 0 0 auto;
+    width: 3px; height: 12px; border-radius: 1px;
+    background: var(--case-1);
   }
   .mcp-paths-v2-draft .policy-grid {
     display: grid;
