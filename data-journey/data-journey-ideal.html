@@ -249,6 +249,32 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
 .data-journey-ideal .panel p { font-size: 13.5px; color: var(--text-muted); line-height: 1.55; margin: 0; }
 .data-journey-ideal .key { color: var(--text); font-weight: 700; }
 
+/* ---- The bigger picture (green closing block, mirrors the problem page's turn) ---- */
+.data-journey-ideal .bigpicture {
+  margin-top: 44px;
+  background: var(--domain-soft);
+  border: 1px solid var(--domain-mid);
+  border-radius: 10px;
+  padding: 24px 28px;
+}
+.data-journey-ideal .bigpicture-eyebrow {
+  display: flex; align-items: center; gap: 9px;
+  font-size: 11px; font-weight: 700; color: var(--domain-deep);
+  text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 8px;
+}
+.data-journey-ideal .bigpicture-eyebrow::before {
+  content: ""; flex: 0 0 auto;
+  width: 3px; height: 12px; border-radius: 1px; background: var(--domain);
+}
+.data-journey-ideal .bigpicture h2 {
+  font-size: 24px; font-weight: 900; letter-spacing: -0.02em;
+  margin: 0 0 8px; color: var(--text); line-height: 1.15;
+}
+.data-journey-ideal .bigpicture p {
+  font-size: 14.5px; color: var(--text-muted); line-height: 1.55; margin: 0; max-width: 680px;
+}
+.data-journey-ideal .bigpicture p .key { color: var(--text); font-weight: 700; }
+
 /* ---- Forward bridge ---- */
 .data-journey-ideal .next-row { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 44px; }
 .data-journey-ideal .next-label {
@@ -428,21 +454,34 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
     </div>
   </div>
 
-  <!-- ── THE PAYOFF ── -->
+  <!-- ── WHAT IT UNLEASHES ── -->
   <div class="section">
-    <div class="section-label">What that gets us</div>
+    <div class="section-label">What it unleashes</div>
     <div class="duo">
       <div class="panel">
-        <div class="panel-eyebrow">It holds</div>
-        <h3>Nothing breaks silently.</h3>
-        <p>When the producer changes something, the contract catches it — consumers are warned, and <span class="key">what depends on the data keeps working</span> instead of shattering unnoticed.</p>
+        <h3>Usable the moment it's needed.</h3>
+        <p>No days lost finding the data, chasing the owner, and checking which numbers are right. <span class="key">Teams can start using it straight away.</span></p>
       </div>
       <div class="panel">
-        <div class="panel-eyebrow">It creates value</div>
-        <h3>The data becomes reusable.</h3>
-        <p>Because it's found, trusted, and reusable, <span class="key">the insights, decisions, and AI products that were out of reach become routine</span> — the value stops being left on the table.</p>
+        <h3>One number everyone trusts.</h3>
+        <p>One definition at the source — so dashboards, leadership, and customers see the same truth. And when the producer changes something, <span class="key">the contract catches it before anything breaks</span>.</p>
+      </div>
+      <div class="panel">
+        <h3>Built once, used everywhere.</h3>
+        <p>One governed product serves every consumer — analyst, dashboard, another product, an AI agent — <span class="key">instead of each team rebuilding the same data</span>.</p>
+      </div>
+      <div class="panel">
+        <h3>AI you can actually build on.</h3>
+        <p>Clear meaning, an owner, and a schema are exactly what AI needs. <span class="key">The data becomes a foundation AI can use</span> — not a source of confident, wrong answers.</p>
       </div>
     </div>
+  </div>
+
+  <!-- ── THE BIGGER PICTURE ── -->
+  <div class="bigpicture">
+    <div class="bigpicture-eyebrow">The bigger picture</div>
+    <h2>The real value shows when every product does this.</h2>
+    <p>One governed product already pays off. Done across every product, it builds <span class="key">the foundation that cross-product insight and AI need</span> — and can't get today.</p>
   </div>
 
   <!-- ── FORWARD ── -->
@@ -465,7 +504,7 @@ body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
 
   <footer class="page-footer">
     <a class="back-link" href="../index.html">← Overview</a>
-    <span>Confidential · Laerdal Medical · 19.06.2026</span>
+    <span>Confidential · Laerdal Medical · 29.06.2026</span>
   </footer>
 
 </div>
