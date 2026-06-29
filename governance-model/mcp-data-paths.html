@@ -18,7 +18,7 @@
   body {
     margin: 0;
     background: #fafafa;
-    padding: 32px 24px 48px;
+    padding: 40px 24px 64px;
   }
 
   .mcp-paths-v2-draft {
@@ -47,7 +47,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  .mcp-paths-v2-draft .container { max-width: 1060px; margin: 0 auto; }
+  .mcp-paths-v2-draft .container { max-width: 1080px; margin: 0 auto; }
 
   /* ----- Header ----- */
   .mcp-paths-v2-draft .eyebrow {
@@ -64,15 +64,16 @@
     margin-right: 8px; vertical-align: 2px;
   }
   .mcp-paths-v2-draft h1 {
-    font-size: 26px; font-weight: 700;
-    line-height: 1.2; margin: 0 0 8px;
-    letter-spacing: -0.01em;
+    font-size: 36px; font-weight: 900;
+    line-height: 1.08; margin: 0 0 14px;
+    letter-spacing: -0.025em;
   }
   .mcp-paths-v2-draft .subtitle {
-    font-size: 14px; color: var(--text-muted);
+    font-size: 16px; color: var(--text-muted);
     margin: 0;
-    max-width: 880px; line-height: 1.55;
+    max-width: 700px; line-height: 1.55;
   }
+  .mcp-paths-v2-draft .subtitle strong { color: var(--text); font-weight: 700; }
 
   /* ----- Policy panel ----- */
   .mcp-paths-v2-draft .policy {
@@ -281,8 +282,8 @@
   }
   .mcp-paths-v2-draft .faq-head {
     font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-weight: 800;
+    letter-spacing: -0.015em;
     margin: 0 0 4px;
   }
   .mcp-paths-v2-draft .faq-intro {
@@ -331,14 +332,16 @@
 
   /* ----- Footer ----- */
   .mcp-paths-v2-draft .footer {
-    margin-top: 24px;
+    margin-top: 48px;
     padding-top: 16px;
     border-top: 1px solid var(--border);
     font-size: 11px;
     color: var(--text-faint);
-    letter-spacing: 0.02em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-  .mcp-paths-v2-draft .footer a { color: var(--text-muted); text-decoration: none; }
+  .mcp-paths-v2-draft .footer a { color: var(--text-faint); text-decoration: none; }
   .mcp-paths-v2-draft .footer a:hover { color: var(--text); }
 
   /* Focus */
@@ -363,9 +366,9 @@
 <div class="container">
 
   <header>
-    <div class="eyebrow"><span class="draft-tag">Draft</span>Data &amp; AI strategy · 28.05.2026</div>
+    <div class="eyebrow">Data &amp; AI strategy · AI access, governed</div>
     <h1>How data flows to and from AI agents</h1>
-    <p class="subtitle">Two read paths, one action loop. Laerdal's MCP policy and FAQ.</p>
+    <p class="subtitle">How AI agents read Laerdal's data and act on it — <strong>two read paths and one action loop</strong>. The default runs through the governed data journey; prototyping gets a transparent exception.</p>
   </header>
 
   <!-- Policy panel -->
@@ -590,7 +593,8 @@
   </section>
 
   <div class="footer">
-    Confidential · Laerdal Medical · <a href="../index.html">← Overview</a>
+    <a href="../index.html">← Overview</a>
+    <span>Confidential · Laerdal Medical · 28.05.2026</span>
   </div>
 
 </div>
