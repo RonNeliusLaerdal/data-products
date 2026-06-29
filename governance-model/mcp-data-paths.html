@@ -239,36 +239,35 @@
     text-underline-offset: 3px;
   }
 
-  /* ----- Per-case panels (side by side) ----- */
+  /* ----- Per-case panels (side by side) — neutral cards, à la data-journey-today ----- */
   .mcp-paths-v2-draft .case-panels {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 32px;
+    gap: 12px;
     margin: 0 0 24px;
   }
   .mcp-paths-v2-draft .case-panel {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 14px 18px 16px;
+    border-radius: 8px;
+    padding: 22px 24px;
   }
-  .mcp-paths-v2-draft .case-1-panel { border-left: 4px solid var(--case-1); }
-  .mcp-paths-v2-draft .case-2-panel { border-left: 4px solid var(--case-2); }
   .mcp-paths-v2-draft .case-panel-head {
-    font-size: 13px;
-    font-weight: 700;
-    margin-bottom: 10px;
+    font-size: 18px;
+    font-weight: 800;
+    margin: 0 0 10px;
     color: var(--text);
-    letter-spacing: -0.005em;
+    letter-spacing: -0.015em;
+    line-height: 1.25;
   }
   .mcp-paths-v2-draft .case-panel-body {
-    font-size: 13px;
+    font-size: 13.5px;
     line-height: 1.55;
-    margin: 0 0 8px;
-    color: var(--text);
+    margin: 0 0 10px;
+    color: var(--text-muted);
   }
   .mcp-paths-v2-draft .case-panel-body:last-child { margin-bottom: 0; }
-  .mcp-paths-v2-draft .case-panel-body strong { font-weight: 700; }
+  .mcp-paths-v2-draft .case-panel-body strong { color: var(--text); font-weight: 700; }
 
   @media (max-width: 900px) {
     .mcp-paths-v2-draft .case-panels { grid-template-columns: 1fr; }
