@@ -257,13 +257,13 @@
     display: grid;
     grid-template-columns:
       minmax(90px, 0.75fr)
-      minmax(40px, 0.3fr)
-      minmax(260px, 2.2fr)
-      minmax(40px, 0.3fr)
-      minmax(110px, 0.75fr)
       minmax(80px, 0.6fr)
       minmax(150px, 0.9fr)
       minmax(80px, 0.6fr)
+      minmax(110px, 0.75fr)
+      minmax(40px, 0.3fr)
+      minmax(260px, 2.2fr)
+      minmax(40px, 0.3fr)
       minmax(90px, 0.75fr);
     grid-template-rows: 32px 1fr;
     align-items: center;
@@ -663,6 +663,9 @@
   /* ── Producer column: icon on left, text on right ── */
   .icon-row-left { grid-template-columns: 34px auto; align-self: center; }
   .icon-row-left .info { text-align: left; }
+  /* ── Mirrored producer column: text on left, icon on right (icon faces the flow) ── */
+  .icon-row-right { grid-template-columns: auto 34px; align-self: center; }
+  .icon-row-right .info { text-align: right; }
 
   /* ── RTL pipe-row: pipe on left, checkpoint on RIGHT (normal row order, no reversal needed) ── */
   .pipe-row-rtl .checkpoint {
@@ -847,8 +850,8 @@
 
   <!-- DUAL-DIRECTION ANNOTATION -->
   <div class="flow-directions">
-    <span class="dir dir-design">How we design → <span class="dir-sub">from the consumer need back</span></span>
-    <span class="dir dir-flow">← How data flows <span class="dir-sub">producer to consumer</span></span>
+    <span class="dir dir-flow">How data flows → <span class="dir-sub">producer to consumer</span></span>
+    <span class="dir dir-design">← How we design <span class="dir-sub">from the consumer need back</span></span>
   </div>
 
   <!-- DIAGRAM -->
@@ -870,15 +873,15 @@
       </defs>
     </svg>
 
-    <div class="stage-label consumer" style="grid-column:1;">Consumer</div>
-    <div class="stage-label domain" style="grid-column:3;">Data Products</div>
+    <div class="stage-label producer" style="grid-column:1;">Producer</div>
+    <div class="stage-label domain" id="stage-contract" style="grid-column:3;">Contract</div>
     <div class="stage-label domain" id="stage-schema" style="grid-column:5;">Schema</div>
-    <div class="stage-label domain" id="stage-contract" style="grid-column:7;">Contract</div>
-    <div class="stage-label domain ingestion-stage-label" style="grid-column:5/8;grid-row:1;">Ingestion &amp; Pipeline</div>
-    <div class="stage-label producer" style="grid-column:9;">Producer</div>
+    <div class="stage-label domain" style="grid-column:7;">Data Products</div>
+    <div class="stage-label domain ingestion-stage-label" style="grid-column:3/6;grid-row:1;">Ingestion &amp; Pipeline</div>
+    <div class="stage-label consumer" style="grid-column:9;">Consumer</div>
 
-    <!-- ── Col 1: Consumer ── -->
-    <div class="content" style="grid-column:1;">
+    <!-- ── Consumer (now right) ── -->
+    <div class="content" style="grid-column:9;">
       <div class="consumer-list">
 
         <div class="consumer-tile" data-active-from="0">
@@ -936,21 +939,11 @@
       </div>
     </div>
 
-    <!-- ── Col 3: Data Products (horizontal: joint left, sources right) ── -->
-    <div class="content" style="grid-column:3;">
+    <!-- ── Data Products (now right): sources left (face schema), aggregate right (faces consumer) ── -->
+    <div class="content" style="grid-column:7;">
       <div class="dp-products-col">
 
-        <!-- LEFT: Simulation Intelligence (the aggregate — owned product) -->
-        <div class="dp-joint-side">
-          <div class="joint-product owned" data-active-from="1" id="joint-product">
-            <span class="owner-tag">Owned by P&amp;C</span>
-            <svg viewBox="0 0 48 48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="11" rx="14" ry="4.5"/><path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/><path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/></svg>
-            <div class="cat-name">Simulation Intelligence</div>
-            <div class="cat-id">dp:sim-intelligence:v1</div>
-          </div>
-        </div>
-
-        <!-- RIGHT: Scenario Catalog + Session Data (source-aligned products) -->
+        <!-- LEFT: Scenario Catalog + Session Data (source-aligned products, face the schema) -->
         <div class="dp-source-side">
           <div class="sub-product" data-active-from="1" id="dp-scenario">
             <svg viewBox="0 0 48 48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="11" rx="14" ry="4.5"/><path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/><path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/></svg>
@@ -961,6 +954,16 @@
             <svg viewBox="0 0 48 48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="11" rx="14" ry="4.5"/><path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/><path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/></svg>
             <div class="cat-name">Session Data</div>
             <div class="cat-id">dp:session-data:v1</div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Simulation Intelligence (the aggregate — owned product, faces the consumer) -->
+        <div class="dp-joint-side">
+          <div class="joint-product owned" data-active-from="1" id="joint-product">
+            <span class="owner-tag">Owned by P&amp;C</span>
+            <svg viewBox="0 0 48 48" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="24" cy="11" rx="14" ry="4.5"/><path d="M10 11v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V11"/><path d="M10 23v12c0 2.5 6.3 4.5 14 4.5s14-2 14-4.5V23"/></svg>
+            <div class="cat-name">Simulation Intelligence</div>
+            <div class="cat-id">dp:sim-intelligence:v1</div>
           </div>
         </div>
 
@@ -1011,8 +1014,8 @@
       </div>
     </div>
 
-    <!-- ── Col 7: Contract ── -->
-    <div class="content" id="contract-content" style="grid-column:7;">
+    <!-- ── Contract (now left of schema) ── -->
+    <div class="content" id="contract-content" style="grid-column:3;">
       <div class="contract-list" id="contract-list">
 
         <div class="contract contract-card" data-active-from="3" id="contract-scenario">
@@ -1030,11 +1033,15 @@
       </div>
     </div>
 
-    <!-- ── Col 9: Ingestion ── -->
-    <div class="content" style="grid-column:9;">
+    <!-- ── Producer (now left) ── -->
+    <div class="content" style="grid-column:1;">
       <div class="producer-list">
 
-        <div class="icon-row icon-row-left" data-active-from="4" id="producer-scenario">
+        <div class="icon-row icon-row-right" data-active-from="4" id="producer-scenario">
+          <div class="info">
+            <span class="name">Scenario Editor</span>
+            <span class="desc">Data Producer</span>
+          </div>
           <div class="icon">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <rect x="3" y="3" width="18" height="18" rx="2"/>
@@ -1043,13 +1050,13 @@
               <path d="M3 15h6"/>
             </svg>
           </div>
-          <div class="info">
-            <span class="name">Scenario Editor</span>
-            <span class="desc">Data Producer</span>
-          </div>
         </div>
 
-        <div class="icon-row icon-row-left" data-active-from="4" id="producer-simgo">
+        <div class="icon-row icon-row-right" data-active-from="4" id="producer-simgo">
+          <div class="info">
+            <span class="name">SimGo</span>
+            <span class="desc">Data Producer</span>
+          </div>
           <div class="icon">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="6" r="2.5"/>
@@ -1058,24 +1065,19 @@
               <path d="M9 21l3-6 3 6"/>
             </svg>
           </div>
-          <div class="info">
-            <span class="name">SimGo</span>
-            <span class="desc">Data Producer</span>
-          </div>
         </div>
 
       </div>
     </div>
 
     <!-- ── Ingestion pipeline: spans cols 5–7, replaces schema/contract at Step 5 ── -->
-    <div class="content ingestion-pipeline" id="ingestion-pipeline" style="grid-column: 5 / 8; grid-row: 2;">
+    <div class="content ingestion-pipeline" id="ingestion-pipeline" style="grid-column: 3 / 6; grid-row: 2;">
       <div class="pipe-col pipe-col-multi">
         <div class="pipe-list">
 
           <!-- Lane 1: Scenario Editor -->
           <div class="pipe-row-labeled">
-            <div class="pipe-row pipe-row-rtl">
-              <div class="pipe" data-active-from="4"></div>
+            <div class="pipe-row">
               <div class="checkpoint" data-active-from="4">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="5 12 10 17 19 7"/>
@@ -1086,14 +1088,14 @@
                   </svg>
                 </div>
               </div>
+              <div class="pipe" data-active-from="4"></div>
             </div>
             <div class="pipe-row-cap">Validate <span class="sep">·</span> Structure <span class="sep">·</span> Govern</div>
           </div>
 
           <!-- Lane 2: SimGo -->
           <div class="pipe-row-labeled">
-            <div class="pipe-row pipe-row-rtl">
-              <div class="pipe" data-active-from="4"></div>
+            <div class="pipe-row">
               <div class="checkpoint" data-active-from="4">
                 <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
                   <polyline points="5 12 10 17 19 7"/>
@@ -1104,6 +1106,7 @@
                   </svg>
                 </div>
               </div>
+              <div class="pipe" data-active-from="4"></div>
             </div>
             <div class="pipe-row-cap">Validate <span class="sep">·</span> Structure <span class="sep">·</span> Govern</div>
           </div>
@@ -1173,7 +1176,7 @@
 
   <footer>
     <a href="../index.html">← Overview</a>
-    <span>Confidential · Laerdal Medical · 19.06.2026</span>
+    <span>Confidential · Laerdal Medical · 29.06.2026</span>
   </footer>
 
 </div>
@@ -1345,7 +1348,7 @@
     if (r.width === 0 || r.height === 0) return;
     flowOverlay.setAttribute("viewBox", `0 0 ${r.width} ${r.height}`);
 
-    // ── Design-direction journey lines (steps 1–4): left→right, solid static, hidden at step 5 ──
+    // ── Design-direction journey lines (steps 1–4): right→left (consumer → producer), solid static, hidden at step 5 ──
     const dConsEl  = flowEl.querySelector(".consumer-list");
     const dJpEl    = document.getElementById("joint-product");
     const dDpScEl  = document.getElementById("dp-scenario");
@@ -1364,13 +1367,13 @@
       const ctrScR = flowRectIn(dCtrScEl, flowEl);
       const ctrSsR = flowRectIn(dCtrSsEl, flowEl);
       // Consumer → the aggregate data product (perfectly horizontal at the joint card's centre)
-      flowAddPath(flowOverlay, hSeg(consR.right + 2, jpR.left - 6, jpR.cy), "design", 1);
+      flowAddPath(flowOverlay, hSeg(consR.left - 2, jpR.right + 6, jpR.cy), "design", 1);
       // Data products → Schema — one perfectly horizontal line per lane (source → its schema)
-      flowAddPath(flowOverlay, hSeg(dpScR.right + 2, schScR.left - 6, dpScR.cy), "design", 2);
-      flowAddPath(flowOverlay, hSeg(dpSsR.right + 2, schSsR.left - 6, dpSsR.cy), "design", 2);
+      flowAddPath(flowOverlay, hSeg(dpScR.left - 2, schScR.right + 6, dpScR.cy), "design", 2);
+      flowAddPath(flowOverlay, hSeg(dpSsR.left - 2, schSsR.right + 6, dpSsR.cy), "design", 2);
       // Schema → Contract — one perfectly horizontal line per lane (schema → its contract)
-      flowAddPath(flowOverlay, hSeg(schScR.right + 2, ctrScR.left - 6, schScR.cy), "design", 3);
-      flowAddPath(flowOverlay, hSeg(schSsR.right + 2, ctrSsR.left - 6, schSsR.cy), "design", 3);
+      flowAddPath(flowOverlay, hSeg(schScR.left - 2, ctrScR.right + 6, schScR.cy), "design", 3);
+      flowAddPath(flowOverlay, hSeg(schSsR.left - 2, ctrSsR.right + 6, schSsR.cy), "design", 3);
     }
 
     const jointEl      = document.getElementById("joint-product");
@@ -1402,28 +1405,28 @@
     const ck1 = flowRectIn(checkpoints[0], flowEl);
     const ck2 = flowRectIn(checkpoints[1], flowEl);
 
-    // ── Step 5: right→left data flow, producer → pipeline → products → joint → consumers.
+    // ── Step 5: left→right data flow, producer → pipeline → products → joint → consumers.
     // Every visible arrow segment is perfectly horizontal; merge/fan use a clean
     // orthogonal jog (horizontal-vertical-horizontal), never a diagonal or curve.
 
     // Producer → pipeline checkpoint (same lane → horizontal)
-    flowAddPath(flowOverlay, hSeg(psc.left - 2, ck1.right + 4, psc.cy), "producer", 4);
-    flowAddPath(flowOverlay, hSeg(pss.left - 2, ck2.right + 4, pss.cy), "producer", 4);
+    flowAddPath(flowOverlay, hSeg(psc.right + 2, ck1.left - 4, psc.cy), "producer", 4);
+    flowAddPath(flowOverlay, hSeg(pss.right + 2, ck2.left - 4, pss.cy), "producer", 4);
 
     // Pipeline → source data product (same lane → horizontal)
-    flowAddPath(flowOverlay, hSeg(pipe1.left - 2, dpsc.right + 4, dpsc.cy), "domain", 4);
-    flowAddPath(flowOverlay, hSeg(pipe2.left - 2, dpss.right + 4, dpss.cy), "domain", 4);
+    flowAddPath(flowOverlay, hSeg(pipe1.right + 2, dpsc.left - 4, dpsc.cy), "domain", 4);
+    flowAddPath(flowOverlay, hSeg(pipe2.right + 2, dpss.left - 4, dpss.cy), "domain", 4);
 
     // Source products → Simulation Intelligence (merge → orthogonal, horizontal into the card)
-    flowAddPath(flowOverlay, ortho(dpsc.left - 2, dpsc.cy, jp.right + 4, jp.cy), "domain", 4);
-    flowAddPath(flowOverlay, ortho(dpss.left - 2, dpss.cy, jp.right + 4, jp.cy), "domain", 4);
+    flowAddPath(flowOverlay, ortho(dpsc.right + 2, dpsc.cy, jp.left - 4, jp.cy), "domain", 4);
+    flowAddPath(flowOverlay, ortho(dpss.right + 2, dpss.cy, jp.left - 4, jp.cy), "domain", 4);
 
     // Simulation Intelligence → consumers (fan-out → orthogonal, horizontal into each tile)
     consumerMinis.forEach(mini => {
       const tile = mini.closest(".consumer-tile");
       const mr   = flowRectIn(mini, flowEl);
       const tr   = tile ? flowRectIn(tile, flowEl) : mr;
-      flowAddPath(flowOverlay, ortho(jp.left - 2, jp.cy, mr.right + 4, tr.cy), "consumer", 4);
+      flowAddPath(flowOverlay, ortho(jp.right + 2, jp.cy, mr.left - 4, tr.cy), "consumer", 4);
     });
   }
 
