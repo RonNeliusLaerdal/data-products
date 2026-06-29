@@ -21,6 +21,7 @@
     --producer: #2e7fa1;
     --producer-bg: #d4e9f2;
     --domain: #14892f;
+    --domain-deep: #166534;
     --domain-bg: #cceed2;
     --domain-soft: #ecf6ee;
 
@@ -30,7 +31,7 @@
     --link-hover: #215369;
     --link-active: #163746;
 
-    /* State framing (mirrors data-contract-definition.html) */
+    /* State framing */
     --today:        #b45309;
     --today-bg:     #fef6ec;
     --template:     #14892f;
@@ -44,7 +45,7 @@
     -webkit-font-smoothing: antialiased;
   }
 
-  body { margin: 0; background: var(--bg); padding: 32px 24px 56px; }
+  body { margin: 0; background: var(--bg); padding: 40px 24px 64px; }
   .data-product-definition .container { max-width: 1260px; margin: 0 auto; }
 
   /* Header */
@@ -53,23 +54,33 @@
     text-transform: uppercase; letter-spacing: 0.18em;
     color: var(--text-muted); margin-bottom: 8px;
   }
-  .data-product-definition .draft-tag {
-    display: inline-block;
-    padding: 2px 8px; border-radius: 3px;
-    background: var(--highlight); color: white;
-    font-size: 10px; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    margin-right: 8px; vertical-align: 2px;
-  }
   .data-product-definition h1 {
-    font-size: 28px; font-weight: 700;
-    line-height: 1.15; margin: 0 0 8px;
-    letter-spacing: -0.02em;
+    font-size: 36px; font-weight: 900;
+    line-height: 1.08; margin: 0 0 14px;
+    letter-spacing: -0.025em;
   }
   .data-product-definition .subtitle {
-    font-size: 15px; color: var(--text-muted);
-    margin: 0 0 32px;
-    max-width: 760px;
+    font-size: 16px; color: var(--text-muted);
+    margin: 0 0 8px;
+    max-width: 760px; line-height: 1.55;
+  }
+  .data-product-definition .subtitle strong { color: var(--text); font-weight: 700; }
+  .data-product-definition .subtitle a { color: var(--link); font-weight: 700; text-decoration: none; }
+  .data-product-definition .subtitle a:hover { text-decoration: underline; }
+
+  /* Section scaffolding (matches other masters) */
+  .data-product-definition .section { margin-top: 44px; }
+  .data-product-definition .section-label {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.18em;
+    color: var(--text-faint);
+    margin-bottom: 16px;
+  }
+  .data-product-definition .section-label::before {
+    content: ""; flex: 0 0 auto;
+    width: 3px; height: 12px; border-radius: 1px;
+    background: var(--domain);
   }
 
   /* Data product card */
@@ -124,11 +135,11 @@
   }
   .data-product-definition .dp-card-section {
     break-inside: avoid;
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
   .data-product-definition .dp-card-section:last-of-type { margin-bottom: 0; }
   .data-product-definition .dp-card-section-name {
-    font-size: 9.5px;
+    font-size: 11px;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.14em;
@@ -323,7 +334,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 16px;
-    margin-top: 28px;
+    margin-top: 0;
   }
   @media (max-width: 880px) {
     .data-product-definition .context-section { grid-template-columns: 1fr; }
@@ -332,13 +343,11 @@
     padding: 14px 18px;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-left: 3px solid var(--domain);
-    border-radius: 0 6px 6px 0;
+    border-radius: 6px;
     font-size: 12px;
     color: var(--text-muted);
     line-height: 1.55;
   }
-  .data-product-definition .context-box.refs-out { border-left-color: var(--highlight); }
   .data-product-definition .context-box-title {
     font-size: 11px;
     font-weight: 700;
@@ -362,14 +371,17 @@
 
   /* Footer */
   .data-product-definition .page-footer {
-    margin-top: 40px;
+    margin-top: 48px;
     padding-top: 16px;
     border-top: 1px solid var(--border);
     font-size: 11px;
     color: var(--text-faint);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   .data-product-definition .page-footer a {
-    color: var(--text-muted);
+    color: var(--text-faint);
     text-decoration: none;
   }
   .data-product-definition .page-footer a:hover { color: var(--text); }
@@ -379,11 +391,7 @@
     outline-offset: 2px;
   }
 
-  /* ============================================================
-     ITERATION-2 ADDITIONS — see definition iteration 1 feedback
-     ============================================================ */
-
-  /* Inline reference link (e.g. "→ overview") next to a value */
+  /* Inline reference link */
   .data-product-definition .dp-inline-link {
     font-size: 10.5px;
     font-weight: 700;
@@ -394,7 +402,7 @@
   }
   .data-product-definition .dp-inline-link:hover { text-decoration: underline; }
 
-  /* Schema reference list (in Composition · Required schemas) */
+  /* Schema / port reference list */
   .data-product-definition .dp-schema-list {
     list-style: none;
     margin: 0; padding: 0;
@@ -423,7 +431,7 @@
     line-height: 1.4;
   }
 
-  /* Data-model visualization (in Composition · Data model) */
+  /* Data-model visualization */
   .data-product-definition .dp-data-model {
     margin-top: 4px;
     padding: 12px 10px;
@@ -494,7 +502,7 @@
     color: var(--text-muted);
   }
 
-  /* Quality table (in Quality & support · Data quality) */
+  /* Quality table */
   .data-product-definition .dp-quality-table {
     width: 100%;
     border-collapse: collapse;
@@ -519,18 +527,12 @@
     line-height: 1.4;
   }
   .data-product-definition .dp-quality-table tr:last-child td { border-bottom: none; }
-  .data-product-definition .dp-quality-table td:first-child {
-    font-weight: 700;
-  }
+  .data-product-definition .dp-quality-table td:first-child { font-weight: 700; }
 
-  /* ============================================================
-     STATE ROWS — mirrors the data-contract-definition pattern.
-     Today template / Today example (placeholders, amber)
-     Target template / Target example (the spec, green shades)
-     ============================================================ */
+  /* State rows */
   .data-product-definition .state-rows {
     display: flex; flex-direction: column; gap: 18px;
-    margin-top: 8px;
+    margin-top: 0;
   }
   .data-product-definition .state-row {
     display: grid;
@@ -571,7 +573,6 @@
     border-radius: 6px;
     padding: 14px;
   }
-  /* Inside a state-row, the dp-card no longer needs its own outer border/shadow */
   .data-product-definition .state-row .dp-card {
     border: 1px solid var(--border);
   }
@@ -580,7 +581,7 @@
     .data-product-definition .state-row { grid-template-columns: 1fr; }
   }
 
-  /* Today / future placeholder state — empty visual hint */
+  /* Placeholder state */
   .data-product-definition .state-placeholder {
     background: var(--surface);
     border: 1px dashed var(--border-strong);
@@ -616,492 +617,538 @@
 <div class="container">
 
   <header>
-    <div class="eyebrow"><span class="draft-tag">Draft</span>Data &amp; AI strategy · 29.05.2026</div>
+    <div class="eyebrow">Data &amp; AI strategy · governance model</div>
     <h1>What a data product contains</h1>
-    <p class="subtitle">What a governed data product contains. Shown as <strong>target template</strong> and concrete <strong>Session example</strong>. Same shape every data product carries: identity, composition, value, access, compliance, life cycle, quality. Today's examples coming once we have them.</p>
+    <p class="subtitle">Seven clauses, one shape — every governed data product carries this template. Shown in four states: today's informal baseline, a target template, and a concrete <strong>Session</strong> example. Aligned with the <a href="https://bitol-io.github.io/open-data-product-standard/v1.0.0/" target="_blank" rel="noopener">Open Data Product Standard v1.0.0 ↗</a>.</p>
   </header>
 
-  <section class="state-rows">
+  <!-- ── FOUR STATES ── -->
+  <div class="section">
+    <div class="section-label">What a data product contains — four states</div>
+    <section class="state-rows">
 
-    <!-- ============================================================
-         STATE 3 — TARGET TEMPLATE (abstract)
-         ============================================================ -->
-    <div class="state-row state-template">
-      <div class="state-row-text">
-        <div class="state-eyebrow">State 3 · Target template</div>
-        <div class="state-card-title">Full data product — template</div>
-        <div class="state-summary">The 7-clause shape every data product carries. <strong>Owned by the Domain</strong>, consumed by named groups. Identity (what it is), Composition (how it's built), Value (what it enables), Access &amp; governance, Compliance, Life cycle, Quality &amp; support.</div>
-        <div class="state-why">Same template whether the data product feeds dashboards, AI agents, or analytical workflows.</div>
+      <!-- STATE 1 — TODAY TEMPLATE -->
+      <div class="state-row state-today">
+        <div class="state-row-text">
+          <div class="state-eyebrow">State 1 · Today template</div>
+          <div class="state-card-title">Informal data — today's baseline</div>
+          <div class="state-summary">No formal spec. Data exists as a byproduct: a table, an export, owned implicitly by whoever built it. Schema, contracts, quality, and governance live in tribal knowledge — if at all. Most Laerdal data starts here.</div>
+          <div class="state-why">The baseline before the governed model is applied. Documenting it makes the gap to the target visible.</div>
+        </div>
+        <div class="illust">
+          <div class="state-placeholder">Today template pending — what "no governance" looks like in practice will be captured once we have a representative real-world asset to map from.</div>
+        </div>
       </div>
-      <div class="illust">
-        <div class="dp-card">
-          <div class="dp-card-header">
-            <div class="dp-card-header-content">
-              <div class="dp-card-title">dp:&lt;name&gt;:v&lt;n&gt;</div>
-              <div class="dp-card-subtitle">Plain-language summary of what this data product provides and who relies on it.</div>
-            </div>
-            <span class="dp-card-tag">Template</span>
-          </div>
-          <div class="dp-card-body">
 
-            <div class="dp-card-section" data-area="identity">
-              <div class="dp-card-section-name">Identity</div>
-              <div class="dp-card-row"><div class="dp-card-label">Domain</div><div class="dp-card-value">&lt;domain name&gt;<a href="domain-map.html" class="dp-inline-link">→ overview</a></div></div>
-              <div class="dp-card-row"><div class="dp-card-label">Sub-domain</div><div class="dp-card-value">&lt;sub-domain name&gt;</div></div>
-              <div class="dp-card-row"><div class="dp-card-label">Type</div><div class="dp-card-value">Driver · Enabler · Utility</div></div>
-              <div class="dp-card-row"><div class="dp-card-label">Status</div><div class="dp-card-value">Test · Prototype · Production</div></div>
-              <div class="dp-card-row"><div class="dp-card-label">Description</div><div class="dp-card-value">Plain-language summary of what the data product provides.</div></div>
-            </div>
+      <!-- STATE 2 — TODAY EXAMPLE -->
+      <div class="state-row state-today">
+        <div class="state-row-text">
+          <div class="state-eyebrow">State 2 · Today example</div>
+          <div class="state-card-title">Today example — to be added</div>
+          <div class="state-summary">A real Laerdal data asset mapped against this template — showing today's governance gap in concrete terms. Being identified.</div>
+          <div class="state-why">Will show exactly how far current reality is from the target, and where the engagement work starts.</div>
+        </div>
+        <div class="illust">
+          <div class="state-placeholder">A real "today" example is being identified — most likely an existing product data asset. This state will make the gap between today and the target concrete and discussable.</div>
+        </div>
+      </div>
 
-            <div class="dp-card-section" data-area="composition">
-              <div class="dp-card-section-name">Composition</div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Required schemas</div>
-                <div class="dp-card-value">
-                  <ul class="dp-schema-list">
-                    <li><code>schema:&lt;name&gt;:v&lt;n&gt;</code><span class="schema-from">[Source · Master · Composed] ← &lt;producer&gt;_datacontract:v&lt;n&gt; (one or many)</span></li>
-                  </ul>
-                  <a class="dp-action-link" href="#">View in model builder</a>
-                </div>
+      <!-- STATE 3 — TARGET TEMPLATE -->
+      <div class="state-row state-template">
+        <div class="state-row-text">
+          <div class="state-eyebrow">State 3 · Target template</div>
+          <div class="state-card-title">Full data product — template</div>
+          <div class="state-summary">The 7-clause shape every governed data product carries. <strong>Owned by the Domain</strong>, consumed by named groups. The same template applies to both <strong>source-aligned</strong> products (one producer, one pipeline) and <strong>aggregated</strong> products (multiple producers joined on a shared key) — the Composition section is where they diverge.</div>
+          <div class="state-why">Same template whether the data product feeds dashboards, AI agents, or analytical workflows.</div>
+        </div>
+        <div class="illust">
+          <div class="dp-card">
+            <div class="dp-card-header">
+              <div class="dp-card-header-content">
+                <div class="dp-card-title">dp:&lt;name&gt;:v&lt;n&gt;</div>
+                <div class="dp-card-subtitle">Plain-language summary of what this data product provides and who relies on it.</div>
               </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Data model</div>
-                <div class="dp-card-value">
-                  <div class="dp-data-model">
-                    <div class="dp-model-entities">
-                      <span class="dp-entity">Entity</span>
-                      <span class="dp-model-arrow">↔</span>
-                      <span class="dp-entity dp-entity-central">Central entity</span>
-                      <span class="dp-model-arrow">↔</span>
-                      <span class="dp-entity">Entity</span>
+              <span class="dp-card-tag">Template</span>
+            </div>
+            <div class="dp-card-body">
+
+              <div class="dp-card-section" data-area="identity">
+                <div class="dp-card-section-name">§1 · Identity</div>
+                <div class="dp-card-row"><div class="dp-card-label">Domain</div><div class="dp-card-value">&lt;domain name&gt;<a href="domain-map.html" class="dp-inline-link">→ overview</a></div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Sub-domain</div><div class="dp-card-value">&lt;sub-domain name&gt;</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Owner</div><div class="dp-card-value">Domain Owner · Sub-domain Responsible</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Product type</div><div class="dp-card-value">Source-aligned · Consumer-aligned · Aggregated · Supporting</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Classification</div><div class="dp-card-value">Driver · Enabler · Utility</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Status</div><div class="dp-card-value">Proposed · Draft · Active · Deprecated · Retired</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Tags</div><div class="dp-card-value">[domain] · [topic] · [ai-ready · n/a]</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Description</div><div class="dp-card-value">Plain-language summary of what the data product provides.</div></div>
+              </div>
+
+              <div class="dp-card-section" data-area="composition">
+                <div class="dp-card-section-name">§2 · Composition</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Input ports</div>
+                  <div class="dp-card-value">
+                    <ul class="dp-schema-list">
+                      <li><code>schema:&lt;name&gt;:v&lt;n&gt;</code><span class="schema-from">[Source · Master · Composed] ← contractId: &lt;producer&gt;_dc:v&lt;n&gt;</span></li>
+                    </ul>
+                    <span class="note">Source-aligned: one producer, one contract. Aggregated: multiple producers joined on a shared key.</span>
+                    <a class="dp-action-link" href="#">View in model builder</a>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Output ports</div>
+                  <div class="dp-card-value">
+                    <ul class="dp-schema-list">
+                      <li><code>output:&lt;type&gt;:&lt;name&gt;:v&lt;n&gt;</code><span class="schema-from">type: table · api · topic · file · contractId: &lt;dp-name&gt;_dc:v&lt;n&gt;</span></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Data model</div>
+                  <div class="dp-card-value">
+                    <div class="dp-data-model">
+                      <div class="dp-model-entities">
+                        <span class="dp-entity">Entity</span>
+                        <span class="dp-model-arrow">↔</span>
+                        <span class="dp-entity dp-entity-central">Central entity</span>
+                        <span class="dp-model-arrow">↔</span>
+                        <span class="dp-entity">Entity</span>
+                      </div>
+                      <div class="dp-model-secondary">relates to <strong>secondary entity</strong></div>
                     </div>
-                    <div class="dp-model-secondary">relates to <strong>secondary entity</strong></div>
+                    <span class="note">Conceptual entities composed from the input ports above.</span>
                   </div>
-                  <span class="note">Conceptual entities composed from the required schemas above.</span>
                 </div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Glossary</div>
-                <div class="dp-card-value">
-                  <a class="dp-action-link" href="#">Laerdal glossary v&lt;n&gt;</a>
-                  <span class="note">Reference a specific version to lock the meaning of common terms.</span>
-                </div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Pairs with</div>
-                <div class="dp-card-value">Related data products this one is commonly used alongside.</div>
-              </div>
-            </div>
-
-            <div class="dp-card-section" data-area="value">
-              <div class="dp-card-section-name">Value</div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Use cases</div>
-                <div class="dp-card-value">What this data product enables — concrete examples.</div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Consumers</div>
-                <div class="dp-card-value">Roles / teams that rely on this data product.</div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Outputs</div>
-                <div class="dp-card-value">Dashboards · AI inputs · materials · …</div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Required output metrics</div>
-                <div class="dp-card-value">Concrete, testable metrics the data product must expose so the use cases are deliverable.</div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Usage</div>
-                <div class="dp-card-value"><a class="dp-action-link" href="#">View live dashboard</a></div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Pricing</div>
-                <div class="dp-card-value">Internal · commercial · indirect (e.g. via better decisions).</div>
-              </div>
-            </div>
-
-            <div class="dp-card-section" data-area="access">
-              <div class="dp-card-section-name">Access &amp; governance</div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Access policy</div>
-                <div class="dp-card-value">
-                  <ul>
-                    <li><strong>&lt;bundle-name&gt;-consumers</strong> — read access for &lt;purpose&gt;</li>
-                  </ul>
-                  <span class="note">Named consumer-bundles, each with declared purpose. Domain governs membership.</span>
-                </div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Legal &amp; geographic</div>
-                <div class="dp-card-value">
-                  <div class="dp-tag-grid">
-                    <span class="dp-tag legal">EU / GDPR</span>
-                    <span class="dp-tag legal">US / HIPAA</span>
-                    <span class="dp-tag legal">APAC / data residency</span>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Glossary</div>
+                  <div class="dp-card-value">
+                    <a class="dp-action-link" href="#">Laerdal glossary v&lt;n&gt;</a>
+                    <span class="note">Reference a specific version to lock the meaning of common terms.</span>
                   </div>
-                  <span class="note">Per-framework / per-region tag (✓ · ✗ · n/a) locks coverage.</span>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Pairs with</div>
+                  <div class="dp-card-value">Related data products this one is commonly used alongside.</div>
                 </div>
               </div>
-            </div>
 
-            <div class="dp-card-section" data-area="compliance">
-              <div class="dp-card-section-name">Compliance</div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Privacy</div>
-                <div class="dp-card-value">PII handling · residency · consent basis.</div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Ethics</div>
-                <div class="dp-card-value">Allowed and disallowed uses · AI purpose declaration.</div>
-              </div>
-            </div>
-
-            <div class="dp-card-section" data-area="lifecycle">
-              <div class="dp-card-section-name">Life cycle</div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Storage tiers</div>
-                <div class="dp-card-value">
-                  <ul>
-                    <li><strong>Hot</strong> — sub-second query latency</li>
-                    <li><strong>Warm</strong> — seconds query latency</li>
-                    <li><strong>Cold</strong> — seconds-to-minutes latency</li>
-                    <li><strong>Frozen</strong> — compliance archive · on-demand restore</li>
-                  </ul>
-                  <span class="note">Durations + cost tier set per data product. Auto-transitions based on access patterns.</span>
+              <div class="dp-card-section" data-area="value">
+                <div class="dp-card-section-name">§3 · Value</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Use cases</div>
+                  <div class="dp-card-value">What this data product enables — concrete examples.</div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Consumers</div>
+                  <div class="dp-card-value">Roles / teams that rely on this data product.</div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Outputs</div>
+                  <div class="dp-card-value">Dashboards · AI inputs · materials · …</div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Required metrics</div>
+                  <div class="dp-card-value">Concrete, testable metrics the data product must expose so the use cases are deliverable.</div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Usage</div>
+                  <div class="dp-card-value"><a class="dp-action-link" href="#">View live dashboard</a></div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Pricing</div>
+                  <div class="dp-card-value">Internal · commercial · indirect (e.g. via better decisions).</div>
                 </div>
               </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Versioning</div>
-                <div class="dp-card-value">Backward-compat policy and breaking-change rules.</div>
-              </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Deprecation &amp; retirement</div>
-                <div class="dp-card-value">Consumer notice + sign-off process.</div>
-              </div>
-            </div>
 
-            <div class="dp-card-section" data-area="quality">
-              <div class="dp-card-section-name">Quality &amp; support</div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Data quality</div>
-                <div class="dp-card-value">
-                  <table class="dp-quality-table">
-                    <thead>
-                      <tr><th>Source</th><th>Freshness</th><th>Completeness</th><th>Region</th></tr>
-                    </thead>
-                    <tbody>
-                      <tr><td>&lt;source&gt;</td><td>&lt;target&gt;</td><td>&lt;%&gt;</td><td>&lt;region&gt;</td></tr>
-                    </tbody>
-                  </table>
-                  <span class="note">Quality SLOs differ per source — consumers should account for the lowest tier when relying on cross-product joins.</span>
+              <div class="dp-card-section" data-area="access">
+                <div class="dp-card-section-name">§4 · Access &amp; governance</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Access policy</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li><strong>&lt;bundle-name&gt;-consumers</strong> — read access for &lt;purpose&gt;</li>
+                    </ul>
+                    <span class="note">Named consumer-bundles, each with declared purpose. Domain governs membership.</span>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Legal &amp; geographic</div>
+                  <div class="dp-card-value">
+                    <div class="dp-tag-grid">
+                      <span class="dp-tag legal">EU / GDPR</span>
+                      <span class="dp-tag legal">US / HIPAA</span>
+                      <span class="dp-tag legal">APAC / data residency</span>
+                    </div>
+                    <span class="note">Per-framework / per-region tag (✓ · ✗ · n/a) locks coverage.</span>
+                  </div>
                 </div>
               </div>
-              <div class="dp-card-row">
-                <div class="dp-card-label">Support &amp; feedback</div>
-                <div class="dp-card-value"><a class="dp-action-link" href="#">Submit a feature request or support ticket</a></div>
+
+              <div class="dp-card-section" data-area="compliance">
+                <div class="dp-card-section-name">§5 · Compliance</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Privacy</div>
+                  <div class="dp-card-value">PII handling · residency · consent basis.</div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Ethics</div>
+                  <div class="dp-card-value">Allowed and disallowed uses · AI purpose declaration.</div>
+                </div>
               </div>
-            </div>
 
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ============================================================
-         STATE 4 — TARGET EXAMPLE (Session)
-         ============================================================ -->
-    <div class="state-row state-example">
-      <div class="state-row-text">
-        <div class="state-eyebrow">State 4 · Target example</div>
-        <div class="state-card-title">Session — target example</div>
-        <div class="state-summary">A cross-product view of sessions composed from three producer contracts. Owned by the <strong>Engagement &amp; Usage</strong> domain, used by product / analytics / executive / AI consumers.</div>
-        <div class="state-why">What a production data product looks like once the contracts upstream are signed and the model is built.</div>
-      </div>
-      <div class="illust">
-  <div class="dp-card">
-    <div class="dp-card-header">
-      <div class="dp-card-header-content">
-        <div class="dp-card-title">Session · v1</div>
-        <div class="dp-card-subtitle">A standardized, cross-product view of sessions used to track adoption and support portfolio decision-making.</div>
-      </div>
-      <span class="dp-card-tag">Target example</span>
-    </div>
-    <div class="dp-card-body">
-
-      <div class="dp-card-section" data-area="identity">
-        <div class="dp-card-section-name">Identity</div>
-        <div class="dp-card-row"><div class="dp-card-label">Domain</div><div class="dp-card-value">Engagement &amp; Usage<a href="domain-map.html" class="dp-inline-link">→ overview</a></div></div>
-        <div class="dp-card-row"><div class="dp-card-label">Sub-domain</div><div class="dp-card-value">Session</div></div>
-        <div class="dp-card-row"><div class="dp-card-label">Type</div><div class="dp-card-value"><a href="#type-explanation" class="dp-type-link" id="type-link">Enabler</a></div></div>
-        <div class="dp-card-row"><div class="dp-card-label">Status</div><div class="dp-card-value"><span class="dp-chip">Prototype</span></div></div>
-        <div class="dp-card-row"><div class="dp-card-label">Description</div><div class="dp-card-value">A standardized, cross-product view of sessions representing when and how often Laerdal products are used, based on a shared and simple definition of a "session".</div></div>
-      </div>
-
-      <div class="dp-card-section" data-area="composition">
-        <div class="dp-card-section-name">Composition</div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Required schemas</div>
-          <div class="dp-card-value">
-            <ul class="dp-schema-list">
-              <li><code>schema:session:v1</code><span class="schema-from">← hpcpr_datacontract:v1.2.0 · simgo_datacontract:v1.0.0 · simtoimprove_datacontract:v0.4.0</span></li>
-              <li><code>schema:user:v1</code><span class="schema-from">← identity_team_datacontract:v2.1.0</span></li>
-              <li><code>schema:product:v1</code><span class="schema-from">← product_registry_datacontract:v1.0.0</span></li>
-            </ul>
-            <a class="dp-action-link" href="#">View in model builder</a>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Data model</div>
-          <div class="dp-card-value">
-            <div class="dp-data-model">
-              <div class="dp-model-entities">
-                <span class="dp-entity">User</span>
-                <span class="dp-model-arrow">↔</span>
-                <span class="dp-entity dp-entity-central">Session</span>
-                <span class="dp-model-arrow">↔</span>
-                <span class="dp-entity">Attempt</span>
+              <div class="dp-card-section" data-area="lifecycle">
+                <div class="dp-card-section-name">§6 · Life cycle</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Storage tiers</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li><strong>Hot</strong> — sub-second query latency</li>
+                      <li><strong>Warm</strong> — seconds query latency</li>
+                      <li><strong>Cold</strong> — seconds-to-minutes latency</li>
+                      <li><strong>Frozen</strong> — compliance archive · on-demand restore</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Versioning</div>
+                  <div class="dp-card-value">Backward-compat policy and breaking-change rules.</div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Deprecation</div>
+                  <div class="dp-card-value">Consumer notice + sign-off process.</div>
+                </div>
               </div>
-              <div class="dp-model-secondary">runs in a <strong>Product</strong></div>
+
+              <div class="dp-card-section" data-area="quality">
+                <div class="dp-card-section-name">§7 · Quality &amp; support</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Data quality</div>
+                  <div class="dp-card-value">
+                    <table class="dp-quality-table">
+                      <thead>
+                        <tr><th>Source</th><th>Freshness</th><th>Completeness</th><th>Region</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>&lt;source&gt;</td><td>&lt;target&gt;</td><td>&lt;%&gt;</td><td>&lt;region&gt;</td></tr>
+                      </tbody>
+                    </table>
+                    <span class="note">Quality SLOs differ per source — consumers should account for the lowest tier when relying on cross-product joins.</span>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Support</div>
+                  <div class="dp-card-value"><a class="dp-action-link" href="#">Submit a feature request or support ticket</a></div>
+                </div>
+              </div>
+
             </div>
-            <span class="note">Conceptual entities composed from the required schemas above.</span>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Glossary</div>
-          <div class="dp-card-value">
-            <a class="dp-action-link" href="#">Laerdal glossary v1.2</a>
-            <span class="note">Common definitions for Session · User · Product · Usage timestamp. Reference a specific version to lock the meaning.</span>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Pairs with</div>
-          <div class="dp-card-value">Future data products such as:
-            <ul>
-              <li>Performance metrics</li>
-              <li>Outcome / quality metrics</li>
-            </ul>
           </div>
         </div>
       </div>
 
-      <div class="dp-card-section" data-area="value">
-        <div class="dp-card-section-name">Value</div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Use cases</div>
-          <div class="dp-card-value">
-            <ul>
-              <li>Track product adoption across the portfolio</li>
-              <li>Identify products that are used vs. underutilised</li>
-              <li>Support portfolio investment decisions</li>
-              <li>Establish baseline for future analytics</li>
-            </ul>
-          </div>
+      <!-- STATE 4 — TARGET EXAMPLE (Session · Aggregated) -->
+      <div class="state-row state-example">
+        <div class="state-row-text">
+          <div class="state-eyebrow">State 4 · Target example</div>
+          <div class="state-card-title">Session — aggregated example</div>
+          <div class="state-summary">A cross-product view of sessions composed from three producer contracts. Owned by the <strong>Engagement &amp; Usage</strong> domain. This is an <strong>aggregated</strong> data product — its Composition section has multiple input ports from different producers, joined on <code style="font-size:11px;font-family:monospace">session_id</code>.</div>
+          <div class="state-why">What a production aggregated data product looks like once the contracts upstream are signed and the model is built.</div>
         </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Consumers</div>
-          <div class="dp-card-value">
-            <ul>
-              <li>Product teams</li>
-              <li>Portfolio / strategy</li>
-              <li>Commercial leadership</li>
-            </ul>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Outputs</div>
-          <div class="dp-card-value">
-            <ul>
-              <li>Adoption dashboards</li>
-              <li>Portfolio review materials</li>
-              <li>Input for future analytics / AI use cases</li>
-            </ul>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Required output metrics</div>
-          <div class="dp-card-value">
-            <ul>
-              <li>Sessions per product per week (rolling)</li>
-              <li>Sessions per user — distribution across products</li>
-              <li>Underused products list — sessions/day below threshold</li>
-              <li>Adoption trend by product family — 90-day window</li>
-            </ul>
-            <span class="note">Concrete metrics the data product must expose so the use cases above are testable.</span>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Usage</div>
-          <div class="dp-card-value">
-            <a class="dp-action-link" href="#usage-dashboard">View live dashboard</a>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Pricing</div>
-          <div class="dp-card-value">
-            <ul>
-              <li>Internal data product — no direct pricing</li>
-              <li>Value realised via better portfolio investment decisions</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="dp-card-section" data-area="access">
-        <div class="dp-card-section-name">Access &amp; governance</div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Access policy</div>
-          <div class="dp-card-value">
-            <ul>
-              <li><strong>product-analytics-consumers</strong> — read access for product + analytics teams</li>
-              <li><strong>executive-consumers</strong> — read access for portfolio + commercial leadership</li>
-              <li><strong>ai-consumers</strong> — read access for AI / agent use cases (declared purpose required)</li>
-            </ul>
-            <span class="note">Domain governs role membership · alignment required across contributing products.</span>
-            <a class="dp-action-link" href="#request-access">Request access to this data product</a>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Legal &amp; geographic</div>
-          <div class="dp-card-value">
-            <div class="dp-tag-grid">
-              <span class="dp-tag legal">EU / GDPR ✓</span>
-              <span class="dp-tag legal na">US / HIPAA — n/a (no PHI)</span>
-              <span class="dp-tag legal">APAC / data residency ✓</span>
+        <div class="illust">
+          <div class="dp-card">
+            <div class="dp-card-header">
+              <div class="dp-card-header-content">
+                <div class="dp-card-title">dp:session:v1</div>
+                <div class="dp-card-subtitle">A standardized, cross-product view of sessions used to track adoption and support portfolio decision-making.</div>
+              </div>
+              <span class="dp-card-tag">Target example</span>
             </div>
-            <span class="note">No strict dependency on personal data (aggregable / anonymisable). Coverage follows product availability.</span>
+            <div class="dp-card-body">
+
+              <div class="dp-card-section" data-area="identity">
+                <div class="dp-card-section-name">§1 · Identity</div>
+                <div class="dp-card-row"><div class="dp-card-label">Domain</div><div class="dp-card-value">Engagement &amp; Usage<a href="domain-map.html" class="dp-inline-link">→ overview</a></div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Sub-domain</div><div class="dp-card-value">Session</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Owner</div><div class="dp-card-value">Domain Owner: TBD (Engagement &amp; Usage) · Sub-domain Responsible: TBD</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Product type</div><div class="dp-card-value">Aggregated — composed from three source-aligned producers</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Classification</div><div class="dp-card-value"><a href="#type-explanation" class="dp-type-link" id="type-link">Enabler</a></div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Status</div><div class="dp-card-value"><span class="dp-chip">Draft</span></div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Tags</div><div class="dp-card-value">engagement-usage · session · cross-product · ai-ready</div></div>
+                <div class="dp-card-row"><div class="dp-card-label">Description</div><div class="dp-card-value">A standardized, cross-product view of sessions representing when and how often Laerdal products are used, based on a shared definition of a "session".</div></div>
+              </div>
+
+              <div class="dp-card-section" data-area="composition">
+                <div class="dp-card-section-name">§2 · Composition</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Input ports</div>
+                  <div class="dp-card-value">
+                    <ul class="dp-schema-list">
+                      <li><code>schema:session:v1</code><span class="schema-from">Composed ← hpcpr_dc:v1.2.0 · simgo_dc:v1.0.0 · simtoimprove_dc:v0.4.0 — joined on session_id</span></li>
+                      <li><code>schema:user:v1</code><span class="schema-from">Source ← contractId: identity_team_dc:v2.1.0</span></li>
+                      <li><code>schema:product:v1</code><span class="schema-from">Source ← contractId: product_registry_dc:v1.0.0</span></li>
+                    </ul>
+                    <a class="dp-action-link" href="#">View in model builder</a>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Output ports</div>
+                  <div class="dp-card-value">
+                    <ul class="dp-schema-list">
+                      <li><code>output:tables:session:v1</code><span class="schema-from">Unity Catalog (Delta) · ai-consumers + product-analytics-consumers ← contractId: engagement_usage_session_dc:v1</span></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Data model</div>
+                  <div class="dp-card-value">
+                    <div class="dp-data-model">
+                      <div class="dp-model-entities">
+                        <span class="dp-entity">User</span>
+                        <span class="dp-model-arrow">↔</span>
+                        <span class="dp-entity dp-entity-central">Session</span>
+                        <span class="dp-model-arrow">↔</span>
+                        <span class="dp-entity">Attempt</span>
+                      </div>
+                      <div class="dp-model-secondary">runs in a <strong>Product</strong></div>
+                    </div>
+                    <span class="note">Conceptual entities composed from the input ports above.</span>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Glossary</div>
+                  <div class="dp-card-value">
+                    <a class="dp-action-link" href="#">Laerdal glossary v1.2</a>
+                    <span class="note">Common definitions for Session · User · Product · Usage timestamp. Reference a specific version to lock the meaning.</span>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Pairs with</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>Performance metrics (future)</li>
+                      <li>Outcome / quality metrics (future)</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dp-card-section" data-area="value">
+                <div class="dp-card-section-name">§3 · Value</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Use cases</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>Track product adoption across the portfolio</li>
+                      <li>Identify products that are used vs. underutilised</li>
+                      <li>Support portfolio investment decisions</li>
+                      <li>Establish baseline for future analytics</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Consumers</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>Product teams</li>
+                      <li>Portfolio / strategy</li>
+                      <li>Commercial leadership</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Outputs</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>Adoption dashboards</li>
+                      <li>Portfolio review materials</li>
+                      <li>Input for future analytics / AI use cases</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Required metrics</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>Sessions per product per week (rolling)</li>
+                      <li>Sessions per user — distribution across products</li>
+                      <li>Underused products — sessions/day below threshold</li>
+                      <li>Adoption trend by product family — 90-day window</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Usage</div>
+                  <div class="dp-card-value"><a class="dp-action-link" href="#usage-dashboard">View live dashboard</a></div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Pricing</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>Internal data product — no direct pricing</li>
+                      <li>Value via better portfolio investment decisions</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dp-card-section" data-area="access">
+                <div class="dp-card-section-name">§4 · Access &amp; governance</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Access policy</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li><strong>product-analytics-consumers</strong> — read access for product + analytics teams</li>
+                      <li><strong>executive-consumers</strong> — read access for portfolio + commercial leadership</li>
+                      <li><strong>ai-consumers</strong> — read access for AI / agent use cases (declared purpose required)</li>
+                    </ul>
+                    <a class="dp-action-link" href="#request-access">Request access</a>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Legal &amp; geographic</div>
+                  <div class="dp-card-value">
+                    <div class="dp-tag-grid">
+                      <span class="dp-tag legal">EU / GDPR ✓</span>
+                      <span class="dp-tag legal na">US / HIPAA — n/a (no PHI)</span>
+                      <span class="dp-tag legal">APAC / data residency ✓</span>
+                    </div>
+                    <span class="note">No strict dependency on personal data (aggregable / anonymisable).</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dp-card-section" data-area="compliance">
+                <div class="dp-card-section-name">§5 · Compliance</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Privacy</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>No strict dependency on personal data (aggregable / anonymisable)</li>
+                      <li>If identifiable data is included, GDPR-style consent and lawful basis required</li>
+                      <li>Data residency policy: TBD with Domain Owner</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Ethics</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>Portfolio and adoption insights — not for individual performance judgement</li>
+                      <li>AI consumers must declare purpose; audit trail TBD</li>
+                      <li>Sensitive use cases (assessment, certification) reviewed by Domain Owner</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dp-card-section" data-area="lifecycle">
+                <div class="dp-card-section-name">§6 · Life cycle</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Storage tiers</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li><strong>Hot</strong> — 90 days · sub-second query latency</li>
+                      <li><strong>Warm</strong> — 1 year · seconds query latency</li>
+                      <li><strong>Cold</strong> — 5 years · seconds-to-minutes latency</li>
+                      <li><strong>Frozen</strong> — 7 years compliance archive · on-demand restore</li>
+                    </ul>
+                    <span class="note">Tier transitions automatic based on access patterns.</span>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Versioning</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>Backward-compatible by default; breaking changes get a new major version</li>
+                      <li>Previous major version supported for an overlap period (length TBD)</li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Deprecation</div>
+                  <div class="dp-card-value">
+                    <ul>
+                      <li>Consumers notified ahead of deprecation (timeline TBD)</li>
+                      <li>Retirement requires Domain sign-off and confirmation no active consumers remain</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dp-card-section" data-area="quality">
+                <div class="dp-card-section-name">§7 · Quality &amp; support</div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Data quality</div>
+                  <div class="dp-card-value">
+                    <table class="dp-quality-table">
+                      <thead>
+                        <tr><th>Source</th><th>Freshness</th><th>Completeness</th><th>Region</th></tr>
+                      </thead>
+                      <tbody>
+                        <tr><td>HPCPR</td><td>&lt;5min</td><td>99.5%</td><td>Global</td></tr>
+                        <tr><td>SimGo / LENS</td><td>Daily</td><td>95%</td><td>EU + US</td></tr>
+                        <tr><td>SimToImprove</td><td>Daily</td><td>90% (early)</td><td>EU pilot</td></tr>
+                      </tbody>
+                    </table>
+                    <span class="note">Quality SLOs differ per source — account for the lowest tier when relying on cross-product joins.</span>
+                  </div>
+                </div>
+                <div class="dp-card-row">
+                  <div class="dp-card-label">Support</div>
+                  <div class="dp-card-value"><a class="dp-action-link" href="#support-request">Submit a feature request or support ticket</a></div>
+                </div>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
 
-      <div class="dp-card-section" data-area="compliance">
-        <div class="dp-card-section-name">Compliance</div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Privacy</div>
-          <div class="dp-card-value">
-            <ul>
-              <li>No strict dependency on personal data (aggregable / anonymisable)</li>
-              <li>If identifiable data is included, GDPR-style consent and lawful basis required</li>
-              <li>Data residency policy: TBD with Domain Owner</li>
-            </ul>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Ethics</div>
-          <div class="dp-card-value">
-            <ul>
-              <li>Used for portfolio and adoption insights — not for individual performance judgement</li>
-              <li>AI consumers must declare purpose; audit trail TBD</li>
-              <li>Sensitive use cases (assessment, certification) reviewed by Domain Owner</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="dp-card-section" data-area="lifecycle">
-        <div class="dp-card-section-name">Life cycle</div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Storage tiers</div>
-          <div class="dp-card-value">
-            <ul>
-              <li><strong>Hot</strong> — 90 days · sub-second query latency</li>
-              <li><strong>Warm</strong> — 1 year · seconds query latency</li>
-              <li><strong>Cold</strong> — 5 years · seconds-to-minutes latency</li>
-              <li><strong>Frozen</strong> — 7 years compliance archive · on-demand restore</li>
-            </ul>
-            <span class="note">Tier transitions automatic based on access patterns. Cost drops by ~10× per tier.</span>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Versioning</div>
-          <div class="dp-card-value">
-            <ul>
-              <li>Backward-compatible by default; breaking changes get a new major version</li>
-              <li>Previous major version supported for an overlap period (length TBD)</li>
-            </ul>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Deprecation &amp; retirement</div>
-          <div class="dp-card-value">
-            <ul>
-              <li>Consumers notified ahead of deprecation (timeline TBD)</li>
-              <li>Retirement requires Domain sign-off and confirmation no active consumers remain</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="dp-card-section" data-area="quality">
-        <div class="dp-card-section-name">Quality &amp; support</div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Data quality</div>
-          <div class="dp-card-value">
-            <table class="dp-quality-table">
-              <thead>
-                <tr><th>Source</th><th>Freshness</th><th>Completeness</th><th>Region</th></tr>
-              </thead>
-              <tbody>
-                <tr><td>HPCPR</td><td>&lt;5min</td><td>99.5%</td><td>Global</td></tr>
-                <tr><td>SimGo / LENS</td><td>Daily</td><td>95%</td><td>EU + US</td></tr>
-                <tr><td>SimToImprove</td><td>Daily</td><td>90% (early)</td><td>EU pilot</td></tr>
-              </tbody>
-            </table>
-            <span class="note">Quality SLOs differ per source — consumers should account for the lowest tier when relying on cross-product joins.</span>
-          </div>
-        </div>
-        <div class="dp-card-row">
-          <div class="dp-card-label">Support &amp; feedback</div>
-          <div class="dp-card-value">
-            <a class="dp-action-link" href="#support-request">Submit a feature request or support ticket</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
+    </section>
   </div>
+
+  <!-- ── REFERENCES ── -->
+  <div class="section">
+    <div class="section-label">References</div>
+    <section class="context-section">
+      <div class="context-box">
+        <div class="context-box-title">This data product references</div>
+        <ul>
+          <li><strong>Laerdal glossary</strong> — common definitions (Session, User, Product, Usage timestamp) from §2 Composition <em>(planned)</em></li>
+          <li><strong>Producer data contracts</strong> — schema-publishing commitments upstream, referenced as contractIds in §2 Composition</li>
+          <li><strong>Model builder</strong> — where schemas live and can be inspected, from §2 Composition <em>(planned)</em></li>
+          <li><strong>Domain overview</strong> — the domain map showing all domains and their data products, from §1 Identity</li>
+          <li><strong>Data classification standard</strong> — PII levels + Laerdal classification, from §5 Compliance <em>(planned)</em></li>
+          <li><strong>Open Data Product Standard v1.0.0</strong> — <a href="https://bitol-io.github.io/open-data-product-standard/v1.0.0/" target="_blank" rel="noopener">bitol-io.github.io ↗</a> — input/output port model, team, status vocabulary</li>
+        </ul>
       </div>
-    </div>
-
-  </section>
-
-  <section class="context-section">
-    <div class="context-box refs-out">
-      <div class="context-box-title">This data product references</div>
-      <ul>
-        <li><strong>Laerdal glossary</strong> — common definitions (Session, User, Product, Usage timestamp) referenced from §2 Composition <em>(planned)</em></li>
-        <li><strong>Producer data contracts</strong> — schema-publishing commitments upstream, referenced from §2 Composition</li>
-        <li><strong>Model builder</strong> — where schemas live and can be inspected, referenced from §2 Composition <em>(planned)</em></li>
-        <li><strong>Domain overview</strong> — the domain map showing all domains and their data products, referenced from §1 Identity</li>
-        <li><strong>Data classification standard</strong> — PII levels + Laerdal classification, referenced from §5 Compliance <em>(planned)</em></li>
-        <li><strong>Secure Data Vault levels</strong> — security-tier taxonomy, referenced from §5 Compliance <em>(planned)</em></li>
-      </ul>
-    </div>
-    <div class="context-box">
-      <div class="context-box-title">Referenced by</div>
-      <ul>
-        <li><a href="../data-journey/data-journey-ideal.html">The data journey</a> — Session ends up in the catalog after ingestion</li>
-        <li><a href="domain-map.html">The domain map</a> — every data product on the map carries this shape</li>
-        <li><a href="mcp-data-paths.html">MCP data paths</a> — data products served via MCP carry the same definition</li>
-      </ul>
-    </div>
-  </section>
+      <div class="context-box">
+        <div class="context-box-title">Referenced by</div>
+        <ul>
+          <li><a href="../data-journey/data-journey-ideal.html">The data journey</a> — Session ends up in the catalog after ingestion</li>
+          <li><a href="domain-map.html">The domain map</a> — every data product on the map carries this shape</li>
+          <li><a href="mcp-data-paths.html">MCP data paths</a> — data products served via MCP carry the same definition</li>
+        </ul>
+      </div>
+    </section>
+  </div>
 
 </div>
 </div>
 
-<!-- Type explanation modal -->
+<!-- Classification modal -->
 <div class="data-product-definition">
   <div class="dp-modal" id="type-modal" hidden>
     <div class="dp-modal-overlay" data-modal-close></div>
     <div class="dp-modal-content" role="dialog" aria-modal="true" aria-labelledby="type-modal-title">
       <button class="dp-modal-close" data-modal-close aria-label="Close">×</button>
-      <div class="dp-modal-title" id="type-modal-title">Data product types</div>
-      <p class="dp-modal-intro">Every data product is one of three types, depending on how consumers expect to use it. The <strong>Session</strong> data product is an <strong>Enabler</strong>.</p>
+      <div class="dp-modal-title" id="type-modal-title">Data product classification</div>
+      <p class="dp-modal-intro">Every data product is classified by how consumers expect to use it. The <strong>Session</strong> data product is an <strong>Enabler</strong>. Separate from classification, each product also has a <strong>product type</strong> (source-aligned, aggregated, etc.) that describes how it is built — see §1 Identity.</p>
       <table class="dp-modal-table">
         <thead>
           <tr>
-            <th>Type</th>
+            <th>Classification</th>
             <th>Use case</th>
             <th>Market</th>
             <th>Success measures</th>
@@ -1144,6 +1191,7 @@
   <details class="sources">
     <summary>Sources &amp; further reading</summary>
     <ul>
+      <li><span class="src-title">Bitol — Open Data Product Standard v1.0.0</span> (2024). Input/output port model, team ownership, and status vocabulary — the structural foundation this definition is aligned with. <a href="https://bitol-io.github.io/open-data-product-standard/v1.0.0/" target="_blank" rel="noopener" style="color:var(--link)">bitol-io.github.io ↗</a></li>
       <li><span class="src-title">Zhamak Dehghani — Data Mesh: Delivering Data-Driven Value at Scale</span> (O'Reilly, 2022). Product ownership, the interface contract, and quality requirements — the framework behind the seven clauses used here.</li>
       <li><span class="src-title">Gartner — Reference Architecture Brief: Data Products</span> (L. Ferguson, Aug 2025) <span class="src-tag">internal</span>. Canonical four-attribute definition of a data product, and the Source / Master / Insights type taxonomy.</li>
       <li><span class="src-title">Gartner — How Data Architects Can Effectively Govern Data Products</span> (S. Das, Oct 2025) <span class="src-tag">internal</span>. The six data-product policy types that the spec's access, compliance, and quality clauses map to.</li>
@@ -1153,7 +1201,7 @@
 
   <footer class="page-footer">
     <a href="../index.html">← Overview</a>
-    <span>Confidential · Laerdal Medical · 19.06.2026</span>
+    <span>Confidential · Laerdal Medical · 29.06.2026</span>
   </footer>
 </div>
 </div>
