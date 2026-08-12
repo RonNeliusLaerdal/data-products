@@ -16,3 +16,6 @@ governance-model/archive/
 
 # macOS
 .DS_Store
+
+# Per-product working specs (internal, not part of the published microsite)
+products/
